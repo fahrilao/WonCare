@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+  # PHP Application
+  app:
+    image: fahlaosa/woncare:latest
+    build:
+      context: ..
+      dockerfile: build/Dockerfile
+    container_name: woncare_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ../:/var/www/html
+    networks:
+      - woncare_network
+    depends_on:
+      - mysql
+      - redis
+
+  # Nginx Web Server
+  nginx:
+    image: nginx:alpine
+    container_name: woncare_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ../:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - woncare_network
+    depends_on:
+      - app
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: woncare_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: woncare
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: woncare_user
+      MYSQL_PASSWORD: woncare_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - woncare_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: woncare_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./redis/redis.conf:/etc/redis/redis.conf
+    command: redis-server /etc/redis/redis.conf
+    networks:
+      - woncare_network
+
+  # Mailpit (for email testing)
+  mailpit:
+    image: axllent/mailpit
+    container_name: woncare_mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - woncare_network
+
+  # Node.js for asset compilation (development)
+  node:
+    image: node:18-alpine
+    container_name: woncare_node
+    working_dir: /var/www/html
+    volumes:
+      - ../:/var/www/html
+    command: sh -c "npm install && npm run dev"
+    networks:
+      - woncare_network
+    profiles:
+      - dev
+
+  # Queue Worker (production)
+  queue:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile
+    container_name: woncare_queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ../:/var/www/html
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    networks:
+      - woncare_network
+    depends_on:
+      - mysql
+      - redis
+    profiles:
+      - production
+
+  # Scheduler (production)
+  scheduler:
+    build:
+      context: ..
+      dockerfile: build/Dockerfile
+    container_name: woncare_scheduler
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ../:/var/www/html
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    command: sh -c "while true; do php artisan schedule:run --verbose --no-interaction; sleep 60; done"
+    networks:
+      - woncare_network
+    depends_on:
+      - mysql
+      - redis
+    profiles:
+      - production
+
+networks:
+  woncare_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
