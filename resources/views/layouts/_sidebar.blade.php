@@ -17,12 +17,7 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Page -->
-                    <li class="menu-item active">
-                        <a href="{{ route('admin.home') }}" class="menu-link">
-                            <i class="menu-icon icon-base ti tabler-smart-home"></i>
-                            <div data-i18n="Home">{{ __('navigation.home') }}</div>
-                        </a>
-                    </li>
+                    @include('layouts.navigations.admin')
                 </ul>
             </aside>
 

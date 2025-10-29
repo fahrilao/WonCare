@@ -8,7 +8,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>{{ config('app.name') }}</title>
+    <title>{{ config('app.name') }} | @yield('title')</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
@@ -35,12 +35,15 @@
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
 
     <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}">
+    @stack('vendor_styles')
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <!-- endbuild -->
 
     <!-- Page CSS -->
+    @stack('styles')
 
     <!-- Helpers -->
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
@@ -52,8 +55,6 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
     <script src="{{ asset('assets/js/config.js') }}"></script>
-
-    <link rel="stylesheet" href="{{ asset('assets/css/styles.css?v=1') }}">
 </head>
 
 <body>
@@ -245,12 +246,32 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
+    <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
+    @stack('vendor_scripts')
 
     <!-- Main JS -->
 
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: `{{ __('common.success') }}`,
+                text: `{{ session('success') }}`,
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: `{{ __('common.failed') }}`,
+                text: `{{ session('error') }}`,
+            });
+        @endif
+    </script>
+    @stack('scripts')
 </body>
 
 </html>

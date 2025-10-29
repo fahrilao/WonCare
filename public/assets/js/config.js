@@ -85,15 +85,15 @@ if (typeof TemplateCustomizer !== 'undefined') {
     // defaultFooterFixed: false,
     // defaultShowDropdownOnHover: false,
     controls: [
-      'color',
-      'theme',
-      'skins',
-      'semiDark',
-      'layoutCollapsed',
-      'layoutNavbarOptions',
-      'headerType',
-      'contentLayout',
-      'rtl'
+      // 'color',
+      // 'theme',
+      // 'skins',
+      // 'semiDark',
+      // 'layoutCollapsed',
+      // 'layoutNavbarOptions',
+      // 'headerType',
+      // 'contentLayout',
+      // 'rtl'
     ]
   });
 }
