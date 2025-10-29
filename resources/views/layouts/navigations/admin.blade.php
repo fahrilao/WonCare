@@ -10,3 +10,13 @@
                             <div data-i18n="Home">{{ __('navigation.users') }}</div>
                         </a>
                     </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">{{ __('navigation.e-course') }}</span>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.categories.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-category"></i>
+                            <div data-i18n="Categories">{{ __('navigation.categories') }}</div>
+                        </a>
+                    </li>

@@ -29,5 +29,10 @@ return [
         'verified' => 'Verified',
         'not_verified' => 'Not Verified',
         'delete_title' => 'Delete User',
+    ],
+    'categories' => [
+        'emptyTable' => 'No categories found',
+        'zeroRecords' => 'No matching categories found',
+        'delete_title' => 'Delete Category',
     ]
 ];

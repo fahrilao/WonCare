@@ -29,5 +29,10 @@ return [
         'verified' => 'Terverifikasi',
         'not_verified' => 'Belum Terverifikasi',
         'delete_title' => 'Hapus Pengguna',
+    ],
+    'categories' => [
+        'emptyTable' => 'Tidak ada kategori ditemukan',
+        'zeroRecords' => 'Tidak ada kategori yang cocok ditemukan',
+        'delete_title' => 'Hapus Kategori',
     ]
 ];

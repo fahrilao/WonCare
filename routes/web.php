@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthAdminController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::get('', HomeController::class)->name('home');
   Route::get('users/search', [UserController::class, 'search'])->name('users.search');
   Route::resource('users', UserController::class);
+  Route::get('categories/search', [CategoryController::class, 'search'])->name('categories.search');
+  Route::resource('categories', CategoryController::class);
 });

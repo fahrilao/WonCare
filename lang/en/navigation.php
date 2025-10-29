@@ -3,4 +3,6 @@
 return [
   'home' => 'Home',
   'users' => 'Users',
+  'e-course' => 'E-Course',
+  'categories' => 'Categories',
 ];

@@ -29,5 +29,10 @@ return [
         'verified' => '인증됨',
         'not_verified' => '미인증',
         'delete_title' => '사용자 삭제',
+    ],
+    'categories' => [
+        'emptyTable' => '카테고리를 찾을 수 없습니다',
+        'zeroRecords' => '일치하는 카테고리를 찾을 수 없습니다',
+        'delete_title' => '카테고리 삭제',
     ]
 ];
