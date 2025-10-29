@@ -40,6 +40,14 @@ class Module extends Model
     }
 
     /**
+     * Get the lessons for the module.
+     */
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class, 'module_id')->orderBy('position');
+    }
+
+    /**
      * Scope a query to order by position.
      */
     public function scopeOrdered($query)

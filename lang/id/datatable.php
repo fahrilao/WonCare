@@ -46,5 +46,10 @@ return [
         'emptyTable' => 'Tidak ada modul ditemukan',
         'zeroRecords' => 'Tidak ada modul yang cocok ditemukan',
         'delete_title' => 'Hapus Modul',
+    ],
+    'lessons' => [
+        'emptyTable' => 'Tidak ada pelajaran ditemukan',
+        'zeroRecords' => 'Tidak ada pelajaran yang cocok ditemukan',
+        'delete_title' => 'Hapus Pelajaran',
     ]
 ];

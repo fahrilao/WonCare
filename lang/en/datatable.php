@@ -46,5 +46,10 @@ return [
         'emptyTable' => 'No modules found',
         'zeroRecords' => 'No matching modules found',
         'delete_title' => 'Delete Module',
+    ],
+    'lessons' => [
+        'emptyTable' => 'No lessons found',
+        'zeroRecords' => 'No matching lessons found',
+        'delete_title' => 'Delete Lesson',
     ]
 ];

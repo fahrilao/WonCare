@@ -32,3 +32,9 @@
                             <div data-i18n="Modules">{{ __('navigation.modules') }}</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.lessons.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.lessons.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-book"></i>
+                            <div data-i18n="Lessons">{{ __('navigation.lessons') }}</div>
+                        </a>
+                    </li>

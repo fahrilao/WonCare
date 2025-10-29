@@ -7,4 +7,5 @@ return [
   'categories' => 'Categories',
   'classes' => 'Classes',
   'modules' => 'Modules',
+  'lessons' => 'Lessons',
 ];

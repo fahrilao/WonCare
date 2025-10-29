@@ -46,5 +46,10 @@ return [
         'emptyTable' => '모듈을 찾을 수 없습니다',
         'zeroRecords' => '일치하는 모듈을 찾을 수 없습니다',
         'delete_title' => '모듈 삭제',
+    ],
+    'lessons' => [
+        'emptyTable' => '레슨을 찾을 수 없습니다',
+        'zeroRecords' => '일치하는 레슨을 찾을 수 없습니다',
+        'delete_title' => '레슨 삭제',
     ]
 ];

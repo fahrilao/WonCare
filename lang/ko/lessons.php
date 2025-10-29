@@ -1,0 +1,27 @@
+<?php
+
+return [
+  'list_description' => '모든 레슨 목록입니다. 여기서 레슨을 관리할 수 있습니다.',
+  'create_title' => '레슨 생성',
+  'create_description' => '새 레슨을 생성합니다.',
+  'edit_title' => '레슨 편집',
+  'edit_description' => '레슨을 편집합니다.',
+  'view_title' => '레슨 상세정보',
+
+  'title' => '제목',
+  'content' => '내용',
+  'module' => '모듈',
+  'class' => '클래스',
+  'select_module' => '모듈 선택...',
+  'duration' => '지속시간',
+  'duration_help' => '초 단위 지속시간 (예: 5분은 300)',
+  'position' => '위치',
+  'position_help' => '다음 위치를 자동으로 할당하려면 비워두세요',
+  'type' => '유형',
+  'select_type' => '레슨 유형 선택...',
+  'type_video' => '비디오',
+  'type_text' => '텍스트',
+  'type_quiz' => '퀴즈',
+  'type_assignment' => '과제',
+  'created_at' => '생성일',
+];
