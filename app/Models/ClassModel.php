@@ -42,6 +42,14 @@ class ClassModel extends Model
     }
 
     /**
+     * Get the modules for the class.
+     */
+    public function modules()
+    {
+        return $this->hasMany(Module::class, 'class_id')->orderBy('position');
+    }
+
+    /**
      * Scope a query to only include published classes.
      */
     public function scopePublished($query)

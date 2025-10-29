@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,4 +40,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::resource('categories', CategoryController::class);
   Route::get('classes/search', [ClassController::class, 'search'])->name('classes.search');
   Route::resource('classes', ClassController::class);
+  Route::get('modules/search', [ModuleController::class, 'search'])->name('modules.search');
+  Route::resource('modules', ModuleController::class);
 });

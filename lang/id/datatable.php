@@ -41,5 +41,10 @@ return [
         'delete_title' => 'Hapus Kelas',
         'draft' => 'Draft',
         'published' => 'Dipublikasikan',
+    ],
+    'modules' => [
+        'emptyTable' => 'Tidak ada modul ditemukan',
+        'zeroRecords' => 'Tidak ada modul yang cocok ditemukan',
+        'delete_title' => 'Hapus Modul',
     ]
 ];

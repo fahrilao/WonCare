@@ -41,5 +41,10 @@ return [
         'delete_title' => '클래스 삭제',
         'draft' => '초안',
         'published' => '게시됨',
+    ],
+    'modules' => [
+        'emptyTable' => '모듈을 찾을 수 없습니다',
+        'zeroRecords' => '일치하는 모듈을 찾을 수 없습니다',
+        'delete_title' => '모듈 삭제',
     ]
 ];

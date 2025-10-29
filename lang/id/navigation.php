@@ -6,4 +6,5 @@ return [
   'e-course' => 'E-Course',
   'categories' => 'Kategori',
   'classes' => 'Kelas',
+  'modules' => 'Modul',
 ];

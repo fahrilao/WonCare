@@ -41,5 +41,10 @@ return [
         'delete_title' => 'Delete Class',
         'draft' => 'Draft',
         'published' => 'Published',
+    ],
+    'modules' => [
+        'emptyTable' => 'No modules found',
+        'zeroRecords' => 'No matching modules found',
+        'delete_title' => 'Delete Module',
     ]
 ];

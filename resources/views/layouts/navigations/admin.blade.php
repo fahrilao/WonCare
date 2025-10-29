@@ -26,3 +26,9 @@
                             <div data-i18n="Classes">{{ __('navigation.classes') }}</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.modules.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.modules.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-components"></i>
+                            <div data-i18n="Modules">{{ __('navigation.modules') }}</div>
+                        </a>
+                    </li>
