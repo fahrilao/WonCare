@@ -24,4 +24,17 @@ return [
   'type_quiz' => 'Kuis',
   'type_assignment' => 'Tugas',
   'created_at' => 'Dibuat Pada',
+
+  // Video fields
+  'video' => 'Video',
+  'video_source' => 'Sumber Video',
+  'select_video_source' => 'Pilih sumber video...',
+  'video_source_youtube' => 'YouTube',
+  'video_source_upload' => 'Unggah File Video',
+  'youtube_url' => 'URL YouTube',
+  'youtube_url_help' => 'Masukkan URL video YouTube yang valid',
+  'video_file' => 'File Video',
+  'video_file_help' => 'Unggah file video (MP4, AVI, MOV, WMV, FLV, WebM) maksimal 100MB',
+  'video_file_help_edit' => 'Unggah file video baru untuk mengganti yang lama (opsional)',
+  'current_video' => 'File video saat ini',
 ];

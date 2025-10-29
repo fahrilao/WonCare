@@ -71,6 +71,37 @@
                         </div>
                         <hr>
 
+                        @if($lesson->type === 'video' && $lesson->hasVideo())
+                            <div class="row">
+                                <div class="col-md-3"><strong>{{ __('lessons.video') }}:</strong></div>
+                                <div class="col-md-9">
+                                    @if($lesson->video_source === 'youtube' && $lesson->youtube_url)
+                                        <div class="embed-responsive embed-responsive-16by9 mb-3">
+                                            <iframe class="embed-responsive-item" 
+                                                src="{{ $lesson->youtube_embed_url }}" 
+                                                allowfullscreen
+                                                style="width: 100%; height: 315px; border: none;">
+                                            </iframe>
+                                        </div>
+                                        <small class="text-muted">
+                                            <strong>{{ __('lessons.youtube_url') }}:</strong> 
+                                            <a href="{{ $lesson->youtube_url }}" target="_blank">{{ $lesson->youtube_url }}</a>
+                                        </small>
+                                    @elseif($lesson->video_source === 'upload' && $lesson->video_file)
+                                        <video controls style="width: 100%; max-width: 600px;">
+                                            <source src="{{ asset('storage/' . $lesson->video_file) }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <br>
+                                        <small class="text-muted">
+                                            <strong>{{ __('lessons.video_file') }}:</strong> {{ basename($lesson->video_file) }}
+                                        </small>
+                                    @endif
+                                </div>
+                            </div>
+                            <hr>
+                        @endif
+
                         <div class="row">
                             <div class="col-md-3"><strong>{{ __('lessons.type') }}:</strong></div>
                             <div class="col-md-9">

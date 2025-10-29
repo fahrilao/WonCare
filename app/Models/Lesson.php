@@ -21,6 +21,9 @@ class Lesson extends Model
         'duration',
         'position',
         'type',
+        'video_source',
+        'youtube_url',
+        'video_file',
     ];
 
     /**
@@ -80,5 +83,48 @@ class Lesson extends Model
         $seconds = $this->duration % 60;
         
         return sprintf('%d:%02d', $minutes, $seconds);
+    }
+
+    /**
+     * Get YouTube video ID from URL.
+     */
+    public function getYoutubeVideoIdAttribute()
+    {
+        if (!$this->youtube_url) {
+            return null;
+        }
+
+        // Extract video ID from various YouTube URL formats
+        preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $this->youtube_url, $matches);
+        
+        return $matches[1] ?? null;
+    }
+
+    /**
+     * Get YouTube embed URL.
+     */
+    public function getYoutubeEmbedUrlAttribute()
+    {
+        $videoId = $this->youtube_video_id;
+        return $videoId ? "https://www.youtube.com/embed/{$videoId}" : null;
+    }
+
+    /**
+     * Get YouTube thumbnail URL.
+     */
+    public function getYoutubeThumbnailAttribute()
+    {
+        $videoId = $this->youtube_video_id;
+        return $videoId ? "https://img.youtube.com/vi/{$videoId}/maxresdefault.jpg" : null;
+    }
+
+    /**
+     * Check if lesson has video content.
+     */
+    public function hasVideo()
+    {
+        return $this->type === 'video' && 
+               ($this->video_source === 'youtube' && $this->youtube_url) ||
+               ($this->video_source === 'upload' && $this->video_file);
     }
 }

@@ -24,4 +24,17 @@ return [
   'type_quiz' => '퀴즈',
   'type_assignment' => '과제',
   'created_at' => '생성일',
+
+  // Video fields
+  'video' => '비디오',
+  'video_source' => '비디오 소스',
+  'select_video_source' => '비디오 소스 선택...',
+  'video_source_youtube' => 'YouTube',
+  'video_source_upload' => '비디오 파일 업로드',
+  'youtube_url' => 'YouTube URL',
+  'youtube_url_help' => '유효한 YouTube 비디오 URL을 입력하세요',
+  'video_file' => '비디오 파일',
+  'video_file_help' => '비디오 파일 업로드 (MP4, AVI, MOV, WMV, FLV, WebM) 최대 100MB',
+  'video_file_help_edit' => '현재 파일을 교체할 새 비디오 파일 업로드 (선택사항)',
+  'current_video' => '현재 비디오 파일',
 ];

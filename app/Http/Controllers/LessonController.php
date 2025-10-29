@@ -7,6 +7,7 @@ use App\Http\Requests\LessonUpdateRequest;
 use App\Models\Lesson;
 use App\Models\Module;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class LessonController extends Controller
@@ -77,6 +78,25 @@ class LessonController extends Controller
     {
         $validated = $request->validated();
         
+        // Handle video file upload
+        if ($request->hasFile('video_file') && $validated['video_source'] === 'upload') {
+            $validated['video_file'] = $request->file('video_file')->store('lessons/videos', 'public');
+        }
+
+        // Clear video fields based on source
+        if ($validated['type'] === 'video') {
+            if ($validated['video_source'] === 'youtube') {
+                $validated['video_file'] = null;
+            } elseif ($validated['video_source'] === 'upload') {
+                $validated['youtube_url'] = null;
+            }
+        } else {
+            // Clear all video fields if not a video lesson
+            $validated['video_source'] = null;
+            $validated['youtube_url'] = null;
+            $validated['video_file'] = null;
+        }
+        
         // Auto-set position if not provided
         if (empty($validated['position'])) {
             $maxPosition = Lesson::where('module_id', $validated['module_id'])->max('position');
@@ -119,6 +139,36 @@ class LessonController extends Controller
     public function update(LessonUpdateRequest $request, Lesson $lesson)
     {
         $validated = $request->validated();
+        
+        // Handle video file upload
+        if ($request->hasFile('video_file') && $validated['video_source'] === 'upload') {
+            // Delete old video file if exists
+            if ($lesson->video_file) {
+                Storage::disk('public')->delete($lesson->video_file);
+            }
+            $validated['video_file'] = $request->file('video_file')->store('lessons/videos', 'public');
+        }
+
+        // Clear video fields based on source
+        if ($validated['type'] === 'video') {
+            if ($validated['video_source'] === 'youtube') {
+                // Delete old video file if switching to YouTube
+                if ($lesson->video_file) {
+                    Storage::disk('public')->delete($lesson->video_file);
+                }
+                $validated['video_file'] = null;
+            } elseif ($validated['video_source'] === 'upload') {
+                $validated['youtube_url'] = null;
+            }
+        } else {
+            // Clear all video fields if not a video lesson
+            if ($lesson->video_file) {
+                Storage::disk('public')->delete($lesson->video_file);
+            }
+            $validated['video_source'] = null;
+            $validated['youtube_url'] = null;
+            $validated['video_file'] = null;
+        }
         
         $oldPosition = $lesson->position;
         $oldModuleId = $lesson->module_id;
@@ -176,6 +226,11 @@ class LessonController extends Controller
     {
         $moduleId = $lesson->module_id;
         $position = $lesson->position;
+        
+        // Delete video file if exists
+        if ($lesson->video_file) {
+            Storage::disk('public')->delete($lesson->video_file);
+        }
         
         $lesson->delete();
 
