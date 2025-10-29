@@ -5,4 +5,5 @@ return [
   'users' => 'Users',
   'e-course' => 'E-Course',
   'categories' => 'Categories',
+  'classes' => 'Classes',
 ];

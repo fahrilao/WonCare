@@ -20,3 +20,9 @@
                             <div data-i18n="Categories">{{ __('navigation.categories') }}</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.classes.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.classes.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-school"></i>
+                            <div data-i18n="Classes">{{ __('navigation.classes') }}</div>
+                        </a>
+                    </li>

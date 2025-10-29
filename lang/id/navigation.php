@@ -5,4 +5,5 @@ return [
   'users' => 'Pengguna',
   'e-course' => 'E-Course',
   'categories' => 'Kategori',
+  'classes' => 'Kelas',
 ];

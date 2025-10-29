@@ -34,5 +34,12 @@ return [
         'emptyTable' => 'No categories found',
         'zeroRecords' => 'No matching categories found',
         'delete_title' => 'Delete Category',
+    ],
+    'classes' => [
+        'emptyTable' => 'No classes found',
+        'zeroRecords' => 'No matching classes found',
+        'delete_title' => 'Delete Class',
+        'draft' => 'Draft',
+        'published' => 'Published',
     ]
 ];

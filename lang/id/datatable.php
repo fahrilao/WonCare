@@ -34,5 +34,12 @@ return [
         'emptyTable' => 'Tidak ada kategori ditemukan',
         'zeroRecords' => 'Tidak ada kategori yang cocok ditemukan',
         'delete_title' => 'Hapus Kategori',
+    ],
+    'classes' => [
+        'emptyTable' => 'Tidak ada kelas ditemukan',
+        'zeroRecords' => 'Tidak ada kelas yang cocok ditemukan',
+        'delete_title' => 'Hapus Kelas',
+        'draft' => 'Draft',
+        'published' => 'Dipublikasikan',
     ]
 ];

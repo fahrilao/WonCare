@@ -31,6 +31,14 @@ class Category extends Model
     ];
 
     /**
+     * Get the classes for the category.
+     */
+    public function classes()
+    {
+        return $this->belongsToMany(ClassModel::class, 'class_categories', 'category_id', 'class_id');
+    }
+
+    /**
      * Boot the model.
      */
     protected static function boot()
