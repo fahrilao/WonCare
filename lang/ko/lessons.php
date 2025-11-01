@@ -37,4 +37,8 @@ return [
   'video_file_help' => '비디오 파일 업로드 (MP4, AVI, MOV, WMV, FLV, WebM) 최대 100MB',
   'video_file_help_edit' => '현재 파일을 교체할 새 비디오 파일 업로드 (선택사항)',
   'current_video' => '현재 비디오 파일',
+  
+  // Question section
+  'question' => '질문',
+  'options' => '선택지',
 ];

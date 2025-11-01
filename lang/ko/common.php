@@ -27,4 +27,6 @@ return [
   'delete_confirmation_text' => '정말로 삭제하시겠습니까',
   'delete_confirm_button' => '네, 삭제합니다!',
   'delete_cancel_button' => '취소',
+  
+  'error' => '오류가 발생했습니다',
 ];

@@ -22,9 +22,12 @@ return [
   'back_to_list' => 'Back To List',
   'created_at' => 'Created At',
   'updated_at' => 'Updated At',
-  
+
   // Delete confirmation
   'delete_confirmation_text' => 'Are you sure want to delete',
   'delete_confirm_button' => 'Yes, delete it!',
   'delete_cancel_button' => 'Cancel',
+
+  'no_content' => 'No content available',
+  'error' => 'An error occurred',
 ];

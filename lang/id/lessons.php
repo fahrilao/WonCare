@@ -37,4 +37,8 @@ return [
   'video_file_help' => 'Unggah file video (MP4, AVI, MOV, WMV, FLV, WebM) maksimal 100MB',
   'video_file_help_edit' => 'Unggah file video baru untuk mengganti yang lama (opsional)',
   'current_video' => 'File video saat ini',
+  
+  // Question section
+  'question' => 'Pertanyaan',
+  'options' => 'Pilihan',
 ];

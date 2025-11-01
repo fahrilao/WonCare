@@ -127,4 +127,12 @@ class Lesson extends Model
                ($this->video_source === 'youtube' && $this->youtube_url) ||
                ($this->video_source === 'upload' && $this->video_file);
     }
+
+    /**
+     * Get the questions for the lesson.
+     */
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'lesson_id')->orderBy('position');
+    }
 }

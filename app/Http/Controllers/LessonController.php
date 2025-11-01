@@ -6,6 +6,8 @@ use App\Http\Requests\LessonCreateRequest;
 use App\Http\Requests\LessonUpdateRequest;
 use App\Models\Lesson;
 use App\Models\Module;
+use App\Models\Question;
+use App\Models\QuestionOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -35,7 +37,7 @@ class LessonController extends Controller
                     if (!$lesson->type) {
                         return '<span class="badge bg-secondary">-</span>';
                     }
-                    $badgeClass = match($lesson->type) {
+                    $badgeClass = match ($lesson->type) {
                         'video' => 'bg-primary',
                         'text' => 'bg-info',
                         'quiz' => 'bg-warning',
@@ -77,7 +79,7 @@ class LessonController extends Controller
     public function store(LessonCreateRequest $request)
     {
         $validated = $request->validated();
-        
+
         // Handle video file upload
         if ($request->hasFile('video_file') && $validated['video_source'] === 'upload') {
             $validated['video_file'] = $request->file('video_file')->store('lessons/videos', 'public');
@@ -96,7 +98,7 @@ class LessonController extends Controller
             $validated['youtube_url'] = null;
             $validated['video_file'] = null;
         }
-        
+
         // Auto-set position if not provided
         if (empty($validated['position'])) {
             $maxPosition = Lesson::where('module_id', $validated['module_id'])->max('position');
@@ -108,7 +110,12 @@ class LessonController extends Controller
                 ->increment('position');
         }
 
-        Lesson::create($validated);
+        $lesson = Lesson::create($validated);
+
+        if ($validated['type'] === 'quiz') {
+            return redirect()->route('admin.lessons.show', $lesson)
+                ->with('success', 'Lesson created successfully.');
+        }
 
         return redirect()->route('admin.lessons.index')
             ->with('success', 'Lesson created successfully.');
@@ -119,7 +126,7 @@ class LessonController extends Controller
      */
     public function show(Lesson $lesson)
     {
-        $lesson->load(['module', 'module.class']);
+        $lesson->load(['module', 'module.class', 'questions.options']);
         return view('admin.lessons.show', compact('lesson'));
     }
 
@@ -139,7 +146,7 @@ class LessonController extends Controller
     public function update(LessonUpdateRequest $request, Lesson $lesson)
     {
         $validated = $request->validated();
-        
+
         // Handle video file upload
         if ($request->hasFile('video_file') && $validated['video_source'] === 'upload') {
             // Delete old video file if exists
@@ -169,12 +176,12 @@ class LessonController extends Controller
             $validated['youtube_url'] = null;
             $validated['video_file'] = null;
         }
-        
+
         $oldPosition = $lesson->position;
         $oldModuleId = $lesson->module_id;
         $newPosition = $validated['position'];
         $newModuleId = $validated['module_id'];
-        
+
         // Auto-set position if not provided
         if (empty($newPosition)) {
             $maxPosition = Lesson::where('module_id', $newModuleId)->max('position');
@@ -206,7 +213,7 @@ class LessonController extends Controller
             Lesson::where('module_id', $oldModuleId)
                 ->where('position', '>', $oldPosition)
                 ->decrement('position');
-            
+
             // Shift lessons down in new module that are at or after the new position
             Lesson::where('module_id', $newModuleId)
                 ->where('position', '>=', $newPosition)
@@ -226,12 +233,12 @@ class LessonController extends Controller
     {
         $moduleId = $lesson->module_id;
         $position = $lesson->position;
-        
+
         // Delete video file if exists
         if ($lesson->video_file) {
             Storage::disk('public')->delete($lesson->video_file);
         }
-        
+
         $lesson->delete();
 
         // Shift remaining lessons up to fill the gap
@@ -271,7 +278,7 @@ class LessonController extends Controller
             $moduleTitle = $lesson->module ? $lesson->module->title : 'No Module';
             $classTitle = $lesson->module && $lesson->module->class ? $lesson->module->class->title : '';
             $displayText = $lesson->title . ' (' . $moduleTitle . ($classTitle ? ' - ' . $classTitle : '') . ')';
-            
+
             return [
                 'id' => $lesson->id,
                 'text' => $displayText,
@@ -287,6 +294,159 @@ class LessonController extends Controller
             'pagination' => [
                 'more' => ($page * $perPage) < $total
             ]
+        ]);
+    }
+
+    /**
+     * Store a new question for the lesson.
+     */
+    public function storeQuestion(Request $request, Lesson $lesson)
+    {
+        $request->validate([
+            'question' => 'required|string',
+        ]);
+
+        $maxPosition = Question::where('lesson_id', $lesson->id)->max('position');
+        
+        $question = Question::create([
+            'lesson_id' => $lesson->id,
+            'question' => $request->question,
+            'position' => ($maxPosition ?? 0) + 1,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('questions.created_successfully'),
+            'question' => $question->load('options'),
+        ]);
+    }
+
+    /**
+     * Update a question.
+     */
+    public function updateQuestion(Request $request, Question $question)
+    {
+        $request->validate([
+            'question' => 'required|string',
+        ]);
+
+        $question->update([
+            'question' => $request->question,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('questions.updated_successfully'),
+            'question' => $question->load('options'),
+        ]);
+    }
+
+    /**
+     * Delete a question.
+     */
+    public function destroyQuestion(Question $question)
+    {
+        $lessonId = $question->lesson_id;
+        $position = $question->position;
+        
+        $question->delete();
+
+        // Shift remaining questions up to fill the gap
+        Question::where('lesson_id', $lessonId)
+            ->where('position', '>', $position)
+            ->decrement('position');
+
+        return response()->json([
+            'success' => true,
+            'message' => __('questions.deleted_successfully'),
+        ]);
+    }
+
+    /**
+     * Store a new option for a question.
+     */
+    public function storeOption(Request $request, Question $question)
+    {
+        $request->validate([
+            'option_text' => 'required|string',
+            'is_correct' => 'boolean',
+        ]);
+
+        $maxPosition = QuestionOption::where('question_id', $question->id)->max('position');
+        
+        $option = QuestionOption::create([
+            'question_id' => $question->id,
+            'option_text' => $request->option_text,
+            'is_correct' => $request->boolean('is_correct', false),
+            'position' => ($maxPosition ?? 0) + 1,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('questions.option_created_successfully'),
+            'option' => $option,
+        ]);
+    }
+
+    /**
+     * Update an option.
+     */
+    public function updateOption(Request $request, QuestionOption $option)
+    {
+        $request->validate([
+            'option_text' => 'required|string',
+            'is_correct' => 'boolean',
+        ]);
+
+        $option->update([
+            'option_text' => $request->option_text,
+            'is_correct' => $request->boolean('is_correct', false),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('questions.option_updated_successfully'),
+            'option' => $option,
+        ]);
+    }
+
+    /**
+     * Delete an option.
+     */
+    public function destroyOption(QuestionOption $option)
+    {
+        $questionId = $option->question_id;
+        $position = $option->position;
+        
+        $option->delete();
+
+        // Shift remaining options up to fill the gap
+        QuestionOption::where('question_id', $questionId)
+            ->where('position', '>', $position)
+            ->decrement('position');
+
+        return response()->json([
+            'success' => true,
+            'message' => __('questions.option_deleted_successfully'),
+        ]);
+    }
+
+    /**
+     * Set an option as correct answer.
+     */
+    public function setCorrectOption(QuestionOption $option)
+    {
+        // First, unset all correct answers for this question
+        QuestionOption::where('question_id', $option->question_id)
+            ->update(['is_correct' => false]);
+
+        // Set this option as correct
+        $option->update(['is_correct' => true]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('questions.correct_answer_set'),
+            'option' => $option,
         ]);
     }
 }

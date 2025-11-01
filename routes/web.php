@@ -45,4 +45,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::resource('modules', ModuleController::class);
   Route::get('lessons/search', [LessonController::class, 'search'])->name('lessons.search');
   Route::resource('lessons', LessonController::class);
+  
+  // Question management routes
+  Route::post('lessons/{lesson}/questions', [LessonController::class, 'storeQuestion'])->name('lessons.questions.store');
+  Route::put('questions/{question}', [LessonController::class, 'updateQuestion'])->name('questions.update');
+  Route::delete('questions/{question}', [LessonController::class, 'destroyQuestion'])->name('questions.destroy');
+  
+  // Question option management routes
+  Route::post('questions/{question}/options', [LessonController::class, 'storeOption'])->name('questions.options.store');
+  Route::put('options/{option}', [LessonController::class, 'updateOption'])->name('options.update');
+  Route::delete('options/{option}', [LessonController::class, 'destroyOption'])->name('options.destroy');
+  Route::patch('options/{option}/correct', [LessonController::class, 'setCorrectOption'])->name('options.correct');
 });

@@ -16,6 +16,8 @@ return [
   'cancel' => 'Batal',
   'create' => 'Buat',
   'edit' => 'Edit',
+  'no_content' => 'Tidak ada konten tersedia',
+  'error' => 'Terjadi kesalahan',
   'update' => 'Perbarui',
   'delete' => 'Hapus',
   'view' => 'Lihat',

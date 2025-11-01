@@ -9,7 +9,7 @@ return [
   'view_title' => 'Lesson Details',
 
   'title' => 'Title',
-  'content' => 'Content',
+  'content' => 'Description',
   'module' => 'Module',
   'class' => 'Class',
   'select_module' => 'Select a module...',
@@ -37,4 +37,8 @@ return [
   'video_file_help' => 'Upload video file (MP4, AVI, MOV, WMV, FLV, WebM) max 100MB',
   'video_file_help_edit' => 'Upload new video file to replace current one (optional)',
   'current_video' => 'Current video file',
+  
+  // Question section
+  'question' => 'Question',
+  'options' => 'Options',
 ];
