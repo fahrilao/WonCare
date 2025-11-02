@@ -1,11 +1,8 @@
 <?php
 
 return [
-  'list_description' => 'List of all lessons. You can manage lessons here.',
   'create_title' => 'Create Lesson',
-  'create_description' => 'Create a new lesson.',
   'edit_title' => 'Edit Lesson',
-  'edit_description' => 'Edit a lesson.',
   'view_title' => 'Lesson Details',
 
   'title' => 'Title',
@@ -23,7 +20,6 @@ return [
   'type_text' => 'Text',
   'type_quiz' => 'Quiz',
   'type_assignment' => 'Assignment',
-  'created_at' => 'Created At',
 
   // Video fields
   'video' => 'Video',

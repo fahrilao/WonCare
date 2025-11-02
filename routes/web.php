@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\DonationCampaignController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ModuleController;
@@ -56,4 +57,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::put('options/{option}', [LessonController::class, 'updateOption'])->name('options.update');
   Route::delete('options/{option}', [LessonController::class, 'destroyOption'])->name('options.destroy');
   Route::patch('options/{option}/correct', [LessonController::class, 'setCorrectOption'])->name('options.correct');
+  
+  // Donation Campaign routes
+  Route::get('donation-campaigns/search', [DonationCampaignController::class, 'search'])->name('donation-campaigns.search');
+  Route::resource('donation-campaigns', DonationCampaignController::class);
 });

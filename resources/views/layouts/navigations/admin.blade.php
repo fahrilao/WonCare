@@ -38,3 +38,14 @@
                             <div data-i18n="Lessons">{{ __('navigation.lessons') }}</div>
                         </a>
                     </li>
+
+                    <!-- Donation Section -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">{{ __('navigation.donation') }}</span>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.donation-campaigns.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.donation-campaigns.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-heart-handshake"></i>
+                            <div data-i18n="Donation Campaigns">{{ __('navigation.donation_campaigns') }}</div>
+                        </a>
+                    </li>

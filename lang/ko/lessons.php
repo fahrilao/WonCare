@@ -1,11 +1,8 @@
 <?php
 
 return [
-  'list_description' => '모든 레슨 목록입니다. 여기서 레슨을 관리할 수 있습니다.',
   'create_title' => '레슨 생성',
-  'create_description' => '새 레슨을 생성합니다.',
   'edit_title' => '레슨 편집',
-  'edit_description' => '레슨을 편집합니다.',
   'view_title' => '레슨 상세정보',
 
   'title' => '제목',
@@ -23,7 +20,6 @@ return [
   'type_text' => '텍스트',
   'type_quiz' => '퀴즈',
   'type_assignment' => '과제',
-  'created_at' => '생성일',
 
   // Video fields
   'video' => '비디오',

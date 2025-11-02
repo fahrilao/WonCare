@@ -1,11 +1,8 @@
 <?php
 
 return [
-  'list_description' => 'Daftar semua pelajaran. Anda dapat mengelola pelajaran di sini.',
   'create_title' => 'Buat Pelajaran',
-  'create_description' => 'Buat pelajaran baru.',
   'edit_title' => 'Edit Pelajaran',
-  'edit_description' => 'Edit pelajaran.',
   'view_title' => 'Detail Pelajaran',
 
   'title' => 'Judul',
@@ -23,7 +20,6 @@ return [
   'type_text' => 'Teks',
   'type_quiz' => 'Kuis',
   'type_assignment' => 'Tugas',
-  'created_at' => 'Dibuat Pada',
 
   // Video fields
   'video' => 'Video',
