@@ -28,5 +28,8 @@ return [
   'delete_confirm_button' => '네, 삭제합니다!',
   'delete_cancel_button' => '취소',
   
+  'no_content' => '사용 가능한 콘텐츠가 없습니다',
   'error' => '오류가 발생했습니다',
+  'active' => '활성',
+  'inactive' => '비활성',
 ];

@@ -49,3 +49,14 @@
                             <div data-i18n="Donation Campaigns">{{ __('navigation.donation_campaigns') }}</div>
                         </a>
                     </li>
+
+                    <!-- Settings Section -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">{{ __('navigation.settings') }}</span>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.payment-gateways.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.payment-gateways.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-credit-card"></i>
+                            <div data-i18n="Payment Gateways">{{ __('navigation.payment_gateways') }}</div>
+                        </a>
+                    </li>

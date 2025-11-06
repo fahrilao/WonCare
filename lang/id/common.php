@@ -16,8 +16,6 @@ return [
   'cancel' => 'Batal',
   'create' => 'Buat',
   'edit' => 'Edit',
-  'no_content' => 'Tidak ada konten tersedia',
-  'error' => 'Terjadi kesalahan',
   'update' => 'Perbarui',
   'delete' => 'Hapus',
   'view' => 'Lihat',
@@ -29,4 +27,9 @@ return [
   'delete_confirmation_text' => 'Apakah Anda yakin ingin menghapus',
   'delete_confirm_button' => 'Ya, hapus!',
   'delete_cancel_button' => 'Batal',
+
+  'no_content' => 'Tidak ada konten tersedia',
+  'error' => 'Terjadi kesalahan',
+  'active' => 'Aktif',
+  'inactive' => 'Tidak Aktif',
 ];

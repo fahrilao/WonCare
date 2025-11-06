@@ -18,5 +18,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@example.com',
         ]);
+
+        // Seed payment gateways
+        $this->call([
+            PaymentGatewaySeeder::class,
+        ]);
     }
 }

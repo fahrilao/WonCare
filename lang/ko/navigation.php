@@ -8,4 +8,8 @@ return [
   'classes' => '클래스',
   'modules' => '모듈',
   'lessons' => '레슨',
+  'donation' => '기부',
+  'donation_campaigns' => '기부 캠페인',
+  'settings' => '설정',
+  'payment_gateways' => '결제 게이트웨이',
 ];

@@ -30,4 +30,6 @@ return [
 
   'no_content' => 'No content available',
   'error' => 'An error occurred',
+  'active' => 'Active',
+  'inactive' => 'Inactive',
 ];

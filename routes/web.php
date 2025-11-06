@@ -8,6 +8,7 @@ use App\Http\Controllers\DonationCampaignController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\PaymentGatewayController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -61,4 +62,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   // Donation Campaign routes
   Route::get('donation-campaigns/search', [DonationCampaignController::class, 'search'])->name('donation-campaigns.search');
   Route::resource('donation-campaigns', DonationCampaignController::class);
+  
+  // Payment Gateway routes
+  Route::get('payment-gateways/search', [PaymentGatewayController::class, 'search'])->name('payment-gateways.search');
+  Route::post('payment-gateways/{paymentGateway}/test-connection', [PaymentGatewayController::class, 'testConnection'])->name('payment-gateways.test-connection');
+  Route::resource('payment-gateways', PaymentGatewayController::class);
 });
