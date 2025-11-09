@@ -32,4 +32,9 @@ return [
   'error' => 'Terjadi kesalahan',
   'active' => 'Aktif',
   'inactive' => 'Tidak Aktif',
+
+  // Others
+  'this_week' => 'Minggu ini',
+  'from_donation' => 'dari :0 donasi',
+  'hours' => 'jam',
 ];

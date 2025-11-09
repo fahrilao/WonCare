@@ -1,14 +1,16 @@
 <!doctype html>
 
-<html lang="en" class=" layout-navbar-fixed layout-menu-fixed layout-wide " dir="ltr" data-skin="default"
-    data-bs-theme="light" data-assets-path="{{ asset('') }}" data-template="vertical-menu-template-starter">
+<html lang="en" class=" layout-navbar-fixed layout-menu-fixed layout-compact " dir="ltr" data-skin="default"
+    data-bs-theme="light" data-assets-path="{{ asset('') }}" data-template="horizontal-menu-template-starter">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>{{ config('app.name') }} | @yield('title')</title>
+    <title>{{ config('app.name') }} - @yield('title')</title>
+
+    <meta name="description" content="" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
@@ -59,19 +61,26 @@
 
 <body>
     <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar  ">
+    <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
         <div class="layout-container">
-            <!-- Menu -->
-            @include('layouts._sidebar')
-            <!-- / Menu -->
+            <!-- Navbar -->
 
-            <!-- Layout container -->
-            <div class="layout-page">
-                <!-- Navbar -->
+            <nav class="layout-navbar navbar navbar-expand-xl align-items-center" id="layout-navbar">
+                <div class="container-xxl">
+                    <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4 ms-0">
+                        <a href="{{ route('dashboard') }}" class="app-brand-link">
+                            <span class="app-brand-text demo menu-text fw-bold text-heading">
+                                {{ config('app.name') }}
+                            </span>
+                        </a>
 
-                <nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
-                    id="layout-navbar">
-                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0   d-xl-none ">
+                        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
+                            <i
+                                class="icon-base ti tabler-x icon-sm d-flex align-items-center justify-content-center"></i>
+                        </a>
+                    </div>
+
+                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0  d-xl-none  ">
                         <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
                             <i class="icon-base ti tabler-menu-2 icon-md"></i>
                         </a>
@@ -90,21 +99,21 @@
                                         <button type="button" class="dropdown-item align-items-center active"
                                             data-bs-theme-value="light" aria-pressed="false">
                                             <span><i class="icon-base ti tabler-sun icon-md me-3"
-                                                    data-icon="sun"></i>{{ __('common.light') }}</span>
+                                                    data-icon="sun"></i>Light</span>
                                         </button>
                                     </li>
                                     <li>
                                         <button type="button" class="dropdown-item align-items-center"
                                             data-bs-theme-value="dark" aria-pressed="true">
                                             <span><i class="icon-base ti tabler-moon-stars icon-md me-3"
-                                                    data-icon="moon-stars"></i>{{ __('common.dark') }}</span>
+                                                    data-icon="moon-stars"></i>Dark</span>
                                         </button>
                                     </li>
                                     <li>
                                         <button type="button" class="dropdown-item align-items-center"
                                             data-bs-theme-value="system" aria-pressed="false">
                                             <span><i class="icon-base ti tabler-device-desktop-analytics icon-md me-3"
-                                                    data-icon="device-desktop-analytics"></i>{{ __('common.system') }}</span>
+                                                    data-icon="device-desktop-analytics"></i>System</span>
                                         </button>
                                     </li>
                                 </ul>
@@ -144,39 +153,39 @@
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
-                                    <h6 class="mb-0">{{ auth()->user()->name }}</h6>
+                                    <div class="avatar avatar-online">
+                                        <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
+                                    </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <a class="dropdown-item" href="#">
-                                            <div class="flex-grow-1">
-                                                <h6 class="mb-0">{{ auth()->user()->name }}</h6>
-                                                <small class="text-body-secondary">Admin</small>
-                                            </div>
+                                            <h6 class="mb-0">{{ auth('member')->user()->name }}</h6>
+                                            <small class="text-body-secondary">Member</small>
                                         </a>
                                     </li>
                                     <li>
                                         <div class="dropdown-divider my-1 mx-n2"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                             <i class="icon-base ti tabler-user icon-md me-3"></i>
                                             <span>{{ __('common.my_profile') }}</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="icon-base ti tabler-settings icon-md me-3"></i>
-                                            <span>{{ __('common.settings') }}</span>
+                                        <a class="dropdown-item" href="{{ route('profile.change-password') }}">
+                                            <i class="icon-base ti tabler-key icon-md me-3"></i>
+                                            <span>{{ __('members.change_password') }}</span>
                                         </a>
                                     </li>
                                     <li>
                                         <div class="dropdown-divider my-1 mx-n2"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('admin.logout') }}">
-                                            <i class="icon-base ti tabler-power icon-md me-3"></i>
-                                            <span>{{ __('common.logout') }}</span>
+                                        <a class="dropdown-item" href="{{ route('logout') }}">
+                                            <i
+                                                class="icon-base ti tabler-power icon-md me-3"></i><span>{{ __('common.logout') }}</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -184,16 +193,31 @@
                             <!--/ User -->
                         </ul>
                     </div>
-                </nav>
+                </div>
+            </nav>
 
-                <!-- / Navbar -->
+            <!-- / Navbar -->
 
+            <!-- Layout container -->
+            <div class="layout-page">
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
-                    <!-- Content -->
-                    @yield('content')
-                    <!-- / Content -->
+                    <!-- Menu -->
+                    <aside id="layout-menu" class="layout-menu-horizontal menu-horizontal menu grow-0">
+                        <div class="container-xxl d-flex h-100">
+                            <ul class="menu-inner py-1">
+                                <!-- Page -->
+                                @include('layouts.navigations.member')
+                            </ul>
+                        </div>
+                    </aside>
+                    <!-- / Menu -->
 
+                    <!-- Content -->
+                    <div class="container-xxl grow container-p-y">
+                        @yield('content')
+                    </div>
+                    <!--/ Content -->
                     <!-- Footer -->
                     <footer class="content-footer footer bg-footer-theme">
                         <div class="container-xxl">
@@ -213,18 +237,20 @@
 
                     <div class="content-backdrop fade"></div>
                 </div>
-                <!-- Content wrapper -->
+                <!--/ Content wrapper -->
             </div>
-            <!-- / Layout page -->
+
+            <!--/ Layout container -->
         </div>
-
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
-
-        <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-        <div class="drag-target"></div>
     </div>
-    <!-- / Layout wrapper -->
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target"></div>
+
+    <!--/ Layout wrapper -->
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/theme.js  -->

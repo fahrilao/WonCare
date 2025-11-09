@@ -10,6 +10,7 @@ return [
   'lessons' => 'Lessons',
   'donation' => 'Donation',
   'donation_campaigns' => 'Donation Campaigns',
+  'donate' => 'Donate',
   'settings' => 'Settings',
   'payment_gateways' => 'Payment Gateways',
 ];

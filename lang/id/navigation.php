@@ -10,6 +10,7 @@ return [
   'lessons' => 'Pelajaran',
   'donation' => 'Donasi',
   'donation_campaigns' => 'Kampanye Donasi',
+  'donate' => 'Donasi',
   'settings' => 'Pengaturan',
   'payment_gateways' => 'Gateway Pembayaran',
 ];

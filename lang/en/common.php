@@ -32,4 +32,9 @@ return [
   'error' => 'An error occurred',
   'active' => 'Active',
   'inactive' => 'Inactive',
+
+  // Others
+  'this_week' => 'This week',
+  'from_donation' => 'from :0 donations',
+  'hours' => 'hours',
 ];

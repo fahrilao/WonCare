@@ -32,4 +32,9 @@ return [
   'error' => '오류가 발생했습니다',
   'active' => '활성',
   'inactive' => '비활성',
+
+  // Others
+  'this_week' => '이번 주',
+  'from_donation' => ':0개의 기부에서',
+  'hours' => '시간',
 ];

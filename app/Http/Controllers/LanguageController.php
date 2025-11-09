@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -24,6 +25,11 @@ class LanguageController extends Controller
         // Update user's language preference if authenticated
         if (auth()->check()) {
             User::where('id', auth()->user()->id)->update([
+                'language' => $locale,
+            ]);
+        }
+        if (auth('member')->check()) {
+            Member::where('id', auth('member')->user()->id)->update([
                 'language' => $locale,
             ]);
         }
