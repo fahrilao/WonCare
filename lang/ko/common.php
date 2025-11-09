@@ -35,6 +35,7 @@ return [
 
   // Others
   'this_week' => '이번 주',
-  'from_donation' => ':0개의 기부에서',
+  'from_donation' => '기부에서',
   'hours' => '시간',
+  'minutes' => '분',
 ];

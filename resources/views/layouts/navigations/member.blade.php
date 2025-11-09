@@ -1,12 +1,18 @@
-                                <li class="menu-item active">
-                                    <a href="index.html" class="menu-link">
+                                <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                                    <a href="{{ route('dashboard') }}" class="menu-link">
                                         <i class="menu-icon icon-base ti tabler-smart-home"></i>
-                                        <div data-i18n="Page 1">Page 1</div>
+                                        <div>{{ __('navigation.home') }}</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{ request()->routeIs('member.courses.*') ? 'active' : '' }}">
+                                    <a href="{{ route('member.courses.index') }}" class="menu-link">
+                                        <i class="menu-icon icon-base ti tabler-book"></i>
+                                        <div>{{ __('ecourse.course_catalog') }}</div>
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="page-2.html" class="menu-link">
-                                        <i class="menu-icon icon-base ti tabler-app-window"></i>
-                                        <div data-i18n="Page 2">Page 2</div>
+                                    <a href="#" class="menu-link">
+                                        <i class="menu-icon icon-base ti tabler-heart"></i>
+                                        <div>{{ __('navigation.donate') }}</div>
                                     </a>
                                 </li>

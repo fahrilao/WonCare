@@ -16,6 +16,7 @@ use App\Http\Controllers\Member\Auth\GoogleController as MemberGoogleController;
 use App\Http\Controllers\Member\Auth\EmailVerificationController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\ProfileController as MemberProfileController;
+use App\Http\Controllers\Member\LessonProgressController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,6 +103,16 @@ Route::group(['middleware' => ['auth:member', 'member.verified']], function () {
   Route::put('profile', [MemberProfileController::class, 'update'])->name('profile.update');
   Route::get('profile/change-password', [MemberProfileController::class, 'showChangePasswordForm'])->name('profile.change-password');
   Route::put('profile/change-password', [MemberProfileController::class, 'updatePassword'])->name('profile.update-password');
+
+  // E-Course routes
+  Route::prefix('courses')->name('member.courses.')->group(function () {
+    Route::get('/', [LessonProgressController::class, 'index'])->name('index');
+    Route::get('/progress', [LessonProgressController::class, 'getProgress'])->name('progress');
+    Route::post('/{class}/join', [LessonProgressController::class, 'enroll'])->name('join');
+    Route::get('/{class}', [LessonProgressController::class, 'show'])->name('show');
+    Route::get('/{class}/{module}/{lesson}', [LessonProgressController::class, 'showLesson'])->name('lesson');
+    Route::post('/{class}/{module}/{lesson}/complete', [LessonProgressController::class, 'completeLesson'])->name('lesson.complete');
+  });
 
   Route::get('logout', [MemberLoginController::class, 'logout'])->name('logout');
 });

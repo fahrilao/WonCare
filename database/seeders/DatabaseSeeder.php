@@ -19,8 +19,14 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
         ]);
 
-        // Seed payment gateways
+        // Seed e-course data
         $this->call([
+            CategorySeeder::class,
+            ClassSeeder::class,
+            ModuleSeeder::class,
+            LessonSeeder::class,
+            AdditionalLessonSeeder::class,
+            MemberSeeder::class,
             PaymentGatewaySeeder::class,
         ]);
     }

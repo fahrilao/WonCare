@@ -139,4 +139,52 @@ class Member extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new MemberVerifyEmail);
     }
+
+    /**
+     * Get the enrollments for the member.
+     */
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    /**
+     * Get active enrollments for the member.
+     */
+    public function activeEnrollments()
+    {
+        return $this->enrollments()->active();
+    }
+
+    /**
+     * Get completed enrollments for the member.
+     */
+    public function completedEnrollments()
+    {
+        return $this->enrollments()->completed();
+    }
+
+    /**
+     * Get lesson progress through enrollments.
+     */
+    public function lessonProgress()
+    {
+        return $this->hasManyThrough(LessonProgress::class, Enrollment::class);
+    }
+
+    /**
+     * Get total points earned by the member.
+     */
+    public function getTotalPointsAttribute()
+    {
+        return $this->enrollments()->sum('total_points');
+    }
+
+    /**
+     * Check if member is enrolled in a specific class.
+     */
+    public function isEnrolledIn($classId)
+    {
+        return $this->activeEnrollments()->where('class_id', $classId)->exists();
+    }
 }

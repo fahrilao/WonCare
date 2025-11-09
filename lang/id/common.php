@@ -34,7 +34,8 @@ return [
   'inactive' => 'Tidak Aktif',
 
   // Others
-  'this_week' => 'Minggu ini',
-  'from_donation' => 'dari :0 donasi',
-  'hours' => 'jam',
+  'this_week' => 'Minggu Ini',
+  'from_donation' => 'Dari Donasi',
+  'hours' => 'Jam',
+  'minutes' => 'menit',
 ];

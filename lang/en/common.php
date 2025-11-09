@@ -34,7 +34,8 @@ return [
   'inactive' => 'Inactive',
 
   // Others
-  'this_week' => 'This week',
-  'from_donation' => 'from :0 donations',
-  'hours' => 'hours',
+  'this_week' => 'This Week',
+  'from_donation' => 'From Donation',
+  'hours' => 'Hours',
+  'minutes' => 'minutes',
 ];
