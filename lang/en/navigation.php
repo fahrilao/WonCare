@@ -11,6 +11,7 @@ return [
   'donation' => 'Donation',
   'donation_campaigns' => 'Donation Campaigns',
   'donation_tags' => 'Donation Tags',
+  'donation_reports' => 'Donation Reports',
   'donate' => 'Donate',
   'settings' => 'Settings',
   'payment_gateways' => 'Payment Gateways',

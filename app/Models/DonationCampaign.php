@@ -77,6 +77,14 @@ class DonationCampaign extends Model
     }
 
     /**
+     * Get the donation reports for the campaign.
+     */
+    public function donationReports()
+    {
+        return $this->hasMany(DonationReport::class)->latest();
+    }
+
+    /**
      * Get the progress percentage of the campaign.
      */
     public function getProgressPercentageAttribute()

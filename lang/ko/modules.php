@@ -4,6 +4,7 @@ return [
   'create_title' => '모듈 생성',
   'edit_title' => '모듈 편집',
   'view_title' => '모듈 상세정보',
+  'list_description' => '모든 모듈 목록',
 
   'title' => '제목',
   'class' => '클래스',

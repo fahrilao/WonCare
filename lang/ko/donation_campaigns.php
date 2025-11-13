@@ -75,6 +75,13 @@ return [
     'tags_note_text' => '더 나은 구성을 위해 태그는 이제 별도로 관리됩니다.',
     'manage_tags_link' => '여기서 태그 관리',
 
+    // Reports tab
+    'donation_reports' => '기부 보고서',
+    'add_new_report' => '새 보고서 추가',
+    'no_reports' => '아직 보고서 없음',
+    'no_reports_description' => '이 캠페인에 대한 기부 보고서가 아직 제출되지 않았습니다.',
+    'add_first_report' => '첫 번째 보고서 추가',
+
     // Validation messages
     'title_required' => '캠페인 제목은 필수입니다',
     'title_max' => '캠페인 제목은 255자를 초과할 수 없습니다',

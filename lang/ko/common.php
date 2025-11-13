@@ -38,4 +38,8 @@ return [
   'from_donation' => '기부에서',
   'hours' => '시간',
   'minutes' => '분',
+
+  'download' => '다운로드',
+  'system_information' => '시스템 정보',
+  'created_by' => '생성자',
 ];

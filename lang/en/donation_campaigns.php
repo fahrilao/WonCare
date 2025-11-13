@@ -76,6 +76,13 @@ return [
     'manage_tags_link' => 'Manage tags here',
     'images_note_create' => 'You can add images after creating the campaign.',
 
+    // Reports tab
+    'donation_reports' => 'Donation Reports',
+    'add_new_report' => 'Add New Report',
+    'no_reports' => 'No Reports Yet',
+    'no_reports_description' => 'No donation reports have been submitted for this campaign yet.',
+    'add_first_report' => 'Add First Report',
+
     // Validation messages
     'title_required' => 'Campaign title is required',
     'title_max' => 'Campaign title may not be greater than 255 characters',

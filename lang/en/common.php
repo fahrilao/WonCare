@@ -38,4 +38,8 @@ return [
   'from_donation' => 'From Donation',
   'hours' => 'Hours',
   'minutes' => 'minutes',
+
+  'download' => 'Download',
+  'system_information' => 'System Information',
+  'created_by' => 'Created By',
 ];

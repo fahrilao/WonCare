@@ -38,4 +38,8 @@ return [
   'from_donation' => 'Dari Donasi',
   'hours' => 'Jam',
   'minutes' => 'menit',
+
+  'download' => 'Unduh',
+  'system_information' => 'Informasi Sistem',
+  'created_by' => 'Dibuat Oleh',
 ];

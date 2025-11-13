@@ -2,6 +2,12 @@
 
 @section('title', __('donation_tags.manage_donation_tags'))
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}">
+@endpush
+
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Main Content -->
@@ -43,13 +49,6 @@
         </div>
     </div>
 @endsection
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}">
-@endpush
-
 
 @push('vendor_scripts')
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
@@ -122,19 +121,24 @@
                     [1, 'asc']
                 ], // Sort by sort_order, then name
                 language: {
-                    processing: '{{ __('datatable.processing') }}',
-                    search: '{{ __('datatable.search') }}',
-                    lengthMenu: '{{ __('datatable.show') }} _MENU_ {{ __('datatable.entries') }}',
-                    info: '{{ __('datatable.showing') }} _START_ {{ __('datatable.to') }} _END_ {{ __('datatable.of') }} _TOTAL_ {{ __('datatable.entries') }}',
-                    infoEmpty: '{{ __('datatable.showing') }} 0 {{ __('datatable.to') }} 0 {{ __('datatable.of') }} 0 {{ __('datatable.entries') }}',
-                    infoFiltered: '({{ __('datatable.filtered') }} {{ __('datatable.from') }} _MAX_ {{ __('datatable.total_entries') }})',
-                    zeroRecords: '{{ __('donation_tags.no_tags_found') }}',
-                    emptyTable: '{{ __('donation_tags.no_tags_found') }}',
+                    processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">{{ __('datatable.loadingRecords') }}</span></div>',
+                    search: "{{ __('datatable.search') }}",
+                    lengthMenu: "{{ __('datatable.lengthMenu') }}",
+                    info: "{{ __('datatable.info') }}",
+                    infoEmpty: "{{ __('datatable.infoEmpty') }}",
+                    infoFiltered: "{{ __('datatable.infoFiltered') }}",
+                    loadingRecords: "{{ __('datatable.loadingRecords') }}",
+                    zeroRecords: "{{ __('datatable.categories.zeroRecords') }}",
+                    emptyTable: "{{ __('datatable.categories.emptyTable') }}",
                     paginate: {
-                        first: '{{ __('datatable.first') }}',
-                        previous: '{{ __('datatable.previous') }}',
-                        next: '{{ __('datatable.next') }}',
-                        last: '{{ __('datatable.last') }}'
+                        first: "{{ __('datatable.paginate.first') }}",
+                        previous: "{{ __('datatable.paginate.previous') }}",
+                        next: "{{ __('datatable.paginate.next') }}",
+                        last: "{{ __('datatable.paginate.last') }}"
+                    },
+                    aria: {
+                        sortAscending: "{{ __('datatable.aria.sortAscending') }}",
+                        sortDescending: "{{ __('datatable.aria.sortDescending') }}"
                     }
                 }
             });
@@ -150,7 +154,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: '{{ __('common.yes_delete') }}',
+                    confirmButtonText: '{{ __('common.delete_confirmation_text') }}',
                     cancelButtonText: '{{ __('common.cancel') }}'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -163,7 +167,7 @@
                             success: function(response) {
                                 if (response.success) {
                                     Swal.fire({
-                                        title: '{{ __('common.deleted') }}',
+                                        title: '{{ __('common.success') }}',
                                         text: response.message,
                                         icon: 'success',
                                         timer: 2000,
@@ -181,7 +185,6 @@
                             error: function() {
                                 Swal.fire({
                                     title: '{{ __('common.error') }}',
-                                    text: '{{ __('common.error_occurred') }}',
                                     icon: 'error'
                                 });
                             }

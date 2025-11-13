@@ -80,6 +80,15 @@
                                     <span class="badge bg-primary ms-1">{{ $donationCampaign->images->count() }}</span>
                                 </button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reports"
+                                    type="button" role="tab">
+                                    <i class="ti tabler-file-report me-1"></i>
+                                    {{ __('donation_campaigns.donation_reports') }}
+                                    <span
+                                        class="badge bg-info ms-1">{{ $donationCampaign->donationReports->count() }}</span>
+                                </button>
+                            </li>
                         </ul>
 
                         <!-- Tab Content -->
@@ -201,7 +210,8 @@
 
                                         <div class="row mb-3">
                                             <div class="col-md-3">
-                                                <strong>{{ __('donation_campaigns.start_date') }}:</strong></div>
+                                                <strong>{{ __('donation_campaigns.start_date') }}:</strong>
+                                            </div>
                                             <div class="col-md-9">
                                                 {{ $donationCampaign->start_date ? $donationCampaign->start_date->format('M d, Y H:i') : '-' }}
                                             </div>
@@ -209,7 +219,8 @@
 
                                         <div class="row mb-3">
                                             <div class="col-md-3">
-                                                <strong>{{ __('donation_campaigns.end_date') }}:</strong></div>
+                                                <strong>{{ __('donation_campaigns.end_date') }}:</strong>
+                                            </div>
                                             <div class="col-md-9">
                                                 {{ $donationCampaign->end_date ? $donationCampaign->end_date->format('M d, Y H:i') : __('donation_campaigns.unlimited_duration') }}
                                             </div>
@@ -227,7 +238,8 @@
                                         @if ($donationCampaign->tags->count() > 0)
                                             <div class="row mb-3">
                                                 <div class="col-md-3">
-                                                    <strong>{{ __('donation_campaigns.tags') }}:</strong></div>
+                                                    <strong>{{ __('donation_campaigns.tags') }}:</strong>
+                                                </div>
                                                 <div class="col-md-9">
                                                     @foreach ($donationCampaign->tags as $tag)
                                                         <span class="badge rounded-pill me-1 mb-1"
@@ -263,15 +275,15 @@
                                     </div>
                                 @endif
                             </div>
-                        </div>
 
-                        <!-- Images Management Tab -->
-                        <div class="tab-pane fade" id="images" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <h5 class="mb-3">{{ __('donation_campaigns.current_images') }}</h5>
 
-                                    @if ($donationCampaign->images->count() > 0)
+
+                            <!-- Images Management Tab -->
+                            <div class="tab-pane fade" id="images" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h5 class="mb-3">{{ __('donation_campaigns.current_images') }}</h5>
+
                                         <div class="row" id="existing-images">
                                             @foreach ($donationCampaign->images as $image)
                                                 <div class="col-md-4 mb-3 existing-image"
@@ -298,7 +310,8 @@
                                                         </div>
                                                         <div class="card-body p-2">
                                                             @if ($image->alt_text)
-                                                                <small class="text-muted">{{ $image->alt_text }}</small>
+                                                                <small
+                                                                    class="text-muted">{{ $image->alt_text }}</small>
                                                             @else
                                                                 <small
                                                                     class="text-muted">{{ __('donation_campaigns.no_alt_text') }}</small>
@@ -316,42 +329,152 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                    @else
-                                        <div class="text-center py-4">
-                                            <i class="ti tabler-photo-off text-muted" style="font-size: 3rem;"></i>
-                                            <p class="text-muted mt-2">{{ __('donation_campaigns.no_images') }}</p>
+
+                                        @if ($donationCampaign->images->count() === 0)
+                                            <div class="text-center py-4" id="no-images-message">
+                                                <i class="ti tabler-photo-off text-muted" style="font-size: 3rem;"></i>
+                                                <p class="text-muted mt-2">{{ __('donation_campaigns.no_images') }}</p>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h6 class="mb-0">{{ __('donation_campaigns.add_new_images') }}</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <form id="upload-images-form" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden" name="campaign_id"
+                                                        value="{{ $donationCampaign->id }}">
+
+                                                    <div class="mb-3">
+                                                        <label for="new_images"
+                                                            class="form-label">{{ __('donation_campaigns.select_images') }}</label>
+                                                        <input type="file" class="form-control" id="new_images"
+                                                            name="images[]" accept="image/*" multiple required>
+                                                        <small
+                                                            class="form-text text-muted">{{ __('donation_campaigns.images_help') }}</small>
+                                                    </div>
+
+                                                    <div id="new-image-preview-container" class="mb-3"></div>
+
+                                                    <button type="submit" class="btn btn-primary w-100">
+                                                        <i class="ti tabler-upload me-1"></i>
+                                                        {{ __('donation_campaigns.upload_images') }}
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
-                                    @endif
+                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h6 class="mb-0">{{ __('donation_campaigns.add_new_images') }}</h6>
+                            <!-- Donation Reports Tab -->
+                            <div class="tab-pane fade" id="reports" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="mb-0">{{ __('donation_campaigns.donation_reports') }}</h5>
+                                            <a href="{{ route('admin.donation-reports.create', ['campaign_id' => $donationCampaign->id]) }}"
+                                                class="btn btn-primary">
+                                                <i
+                                                    class="ti tabler-plus me-1"></i>{{ __('donation_campaigns.add_new_report') }}
+                                            </a>
                                         </div>
-                                        <div class="card-body">
-                                            <form id="upload-images-form" enctype="multipart/form-data">
-                                                @csrf
-                                                <input type="hidden" name="campaign_id"
-                                                    value="{{ $donationCampaign->id }}">
 
-                                                <div class="mb-3">
-                                                    <label for="new_images"
-                                                        class="form-label">{{ __('donation_campaigns.select_images') }}</label>
-                                                    <input type="file" class="form-control" id="new_images"
-                                                        name="images[]" accept="image/*" multiple required>
-                                                    <small
-                                                        class="form-text text-muted">{{ __('donation_campaigns.images_help') }}</small>
-                                                </div>
+                                        @if ($donationCampaign->donationReports->count() > 0)
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th>{{ __('donation_reports.report_title') }}</th>
+                                                            <th>{{ __('donation_reports.distributed_amount') }}</th>
+                                                            <th>{{ __('donation_reports.distribution_date') }}</th>
+                                                            <th>{{ __('donation_reports.status') }}</th>
+                                                            <th>{{ __('common.actions') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($donationCampaign->donationReports as $report)
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div>
+                                                                            <h6 class="mb-0">
+                                                                                Report #{{ $report->id }}
+                                                                            </h6>
+                                                                            <small class="text-muted">{{ $report->created_at->format('M d, Y') }}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="fw-bold text-success">
+                                                                        Rp.{{ $report->formatted_distributed_amount }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>{{ $report->formatted_distribution_date }}</td>
+                                                                <td>{!! $report->status_badge !!}</td>
+                                                                <td>
+                                                                    <div class="btn-group" role="group">
+                                                                        <a href="{{ route('admin.donation-reports.show', $report) }}"
+                                                                            class="btn btn-info btn-sm"
+                                                                            title="{{ __('common.view') }}">
+                                                                            <i class="ti tabler-eye"></i>
+                                                                        </a>
 
-                                                <div id="new-image-preview-container" class="mb-3"></div>
+                                                                        @if ($report->canBeEdited())
+                                                                            <a href="{{ route('admin.donation-reports.edit', $report) }}"
+                                                                                class="btn btn-warning btn-sm"
+                                                                                title="{{ __('common.edit') }}">
+                                                                                <i class="ti tabler-edit"></i>
+                                                                            </a>
+                                                                        @endif
 
-                                                <button type="submit" class="btn btn-primary w-100">
-                                                    <i class="ti tabler-upload me-1"></i>
-                                                    {{ __('donation_campaigns.upload_images') }}
-                                                </button>
-                                            </form>
-                                        </div>
+                                                                        @if ($report->canBeVerified())
+                                                                            <button type="button"
+                                                                                class="btn btn-success btn-sm verify-report-btn"
+                                                                                data-id="{{ $report->id }}"
+                                                                                title="{{ __('donation_reports.verify') }}">
+                                                                                <i class="ti tabler-check"></i>
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary btn-sm reject-report-btn"
+                                                                                data-id="{{ $report->id }}"
+                                                                                title="{{ __('donation_reports.reject') }}">
+                                                                                <i class="ti tabler-x"></i>
+                                                                            </button>
+                                                                        @endif
+
+                                                                        <button type="button"
+                                                                            class="btn btn-danger btn-sm delete-report-btn"
+                                                                            data-id="{{ $report->id }}"
+                                                                            data-name="Report #{{ $report->id }}"
+                                                                            title="{{ __('common.delete') }}">
+                                                                            <i class="ti tabler-trash"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @else
+                                            <div class="text-center py-5">
+                                                <i class="ti tabler-file-report text-muted" style="font-size: 4rem;"></i>
+                                                <h5 class="mt-3 text-muted">{{ __('donation_campaigns.no_reports') }}</h5>
+                                                <p class="text-muted">
+                                                    {{ __('donation_campaigns.no_reports_description') }}
+                                                </p>
+                                                <a href="{{ route('admin.donation-reports.create', ['campaign_id' => $donationCampaign->id]) }}"
+                                                    class="btn btn-primary">
+                                                    <i
+                                                        class="ti tabler-plus me-1"></i>{{ __('donation_campaigns.add_first_report') }}
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -441,16 +564,14 @@
                             // Clear the form and preview
                             $('#new_images').val('');
                             $('#new-image-preview-container').empty();
-                            
+
                             // Add new images to the grid
                             if (response.images && response.images.length > 0) {
                                 const existingImagesContainer = $('#existing-images');
-                                
-                                // If no images existed before, remove the "no images" message
-                                if (existingImagesContainer.siblings('.text-center').length > 0) {
-                                    existingImagesContainer.siblings('.text-center').remove();
-                                }
-                                
+
+                                // Remove the "no images" message if it exists
+                                $('#no-images-message').remove();
+
                                 // Add each new image to the grid
                                 response.images.forEach(function(image) {
                                     const imageHtml = `
@@ -481,14 +602,14 @@
                                     `;
                                     existingImagesContainer.append(imageHtml);
                                 });
-                                
+
                                 // Re-bind event handlers for new elements
                                 bindImageEventHandlers();
-                                
+
                                 // Update image count badge
                                 updateImageCount();
                             }
-                            
+
                             showNotification('success', response.message);
                         }
                     },
@@ -529,11 +650,12 @@
                                     imageContainer.fadeOut(300, function() {
                                         $(this).remove();
                                         updateImageCount();
-                                        
+
                                         // Check if no images left and show "no images" message
-                                        if ($('#existing-images .existing-image').length === 0) {
+                                        if ($('#existing-images .existing-image')
+                                            .length === 0) {
                                             $('#existing-images').after(`
-                                                <div class="text-center py-4">
+                                                <div class="text-center py-4" id="no-images-message">
                                                     <i class="ti tabler-photo-off text-muted" style="font-size: 3rem;"></i>
                                                     <p class="text-muted mt-2">{{ __('donation_campaigns.no_images') }}</p>
                                                 </div>
@@ -617,6 +739,140 @@
                     });
                 }
             }
+
+            // Reports tab functionality
+            // Delete report functionality
+            $(document).on('click', '.delete-report-btn', function() {
+                const reportId = $(this).data('id');
+                const reportName = $(this).data('name');
+
+                Swal.fire({
+                    title: '{{ __('common.delete_confirmation_text') }}',
+                    text: '{{ __('donation_reports.confirm_delete_text') }}' + ' "' + reportName +
+                        '"?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: '{{ __('common.delete') }}',
+                    cancelButtonText: '{{ __('common.cancel') }}'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('admin.donation-reports.destroy', ':id') }}'
+                                .replace(':id', reportId),
+                            type: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    showNotification('success', response.message);
+                                    // Reload the page to update the reports tab
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1500);
+                                }
+                            },
+                            error: function(xhr) {
+                                showNotification('error',
+                                    '{{ __('common.error') }}');
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Verify report functionality
+            $(document).on('click', '.verify-report-btn', function() {
+                const reportId = $(this).data('id');
+
+                Swal.fire({
+                    title: '{{ __('donation_reports.confirm_verify') }}',
+                    text: '{{ __('donation_reports.confirm_verify_text') }}',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: '{{ __('donation_reports.verify') }}',
+                    cancelButtonText: '{{ __('common.cancel') }}'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('admin.donation-reports.verify', ':id') }}'
+                                .replace(':id', reportId),
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    showNotification('success', response.message);
+                                    // Reload the page to update the reports tab
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1500);
+                                }
+                            },
+                            error: function(xhr) {
+                                const response = xhr.responseJSON;
+                                showNotification('error', response.message ||
+                                    '{{ __('common.error') }}');
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Reject report functionality
+            $(document).on('click', '.reject-report-btn', function() {
+                const reportId = $(this).data('id');
+
+                Swal.fire({
+                    title: '{{ __('donation_reports.confirm_reject') }}',
+                    text: '{{ __('donation_reports.confirm_reject_text') }}',
+                    input: 'textarea',
+                    inputLabel: '{{ __('donation_reports.rejection_notes') }}',
+                    inputPlaceholder: '{{ __('donation_reports.rejection_notes_placeholder') }}',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: '{{ __('donation_reports.reject') }}',
+                    cancelButtonText: '{{ __('common.cancel') }}',
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return '{{ __('donation_reports.rejection_notes_required') }}';
+                        }
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('admin.donation-reports.reject', ':id') }}'
+                                .replace(':id', reportId),
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                notes: result.value
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    showNotification('success', response.message);
+                                    // Reload the page to update the reports tab
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1500);
+                                }
+                            },
+                            error: function(xhr) {
+                                const response = xhr.responseJSON;
+                                showNotification('error', response.message ||
+                                    '{{ __('common.error') }}');
+                            }
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endpush

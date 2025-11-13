@@ -55,6 +55,12 @@
                             <div data-i18n="Donation Tags">{{ __('navigation.donation_tags') }}</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.donation-reports.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.donation-reports.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-file-report"></i>
+                            <div data-i18n="Donation Reports">{{ __('navigation.donation_reports') }}</div>
+                        </a>
+                    </li>
 
                     <!-- Settings Section -->
                     <li class="menu-header small text-uppercase">

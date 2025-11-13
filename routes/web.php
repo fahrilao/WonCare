@@ -11,6 +11,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PaymentGatewayController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DonationTagController;
+use App\Http\Controllers\DonationReportController;
 use App\Http\Controllers\Member\Auth\LoginController as MemberLoginController;
 use App\Http\Controllers\Member\Auth\RegisterController as MemberRegisterController;
 use App\Http\Controllers\Member\Auth\GoogleController as MemberGoogleController;
@@ -99,6 +100,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   // Donation Tag routes
   Route::get('donation-tags/search', [DonationTagController::class, 'search'])->name('donation-tags.search');
   Route::resource('donation-tags', DonationTagController::class);
+
+  // Donation Report routes
+  Route::get('donation-reports/search', [DonationReportController::class, 'search'])->name('donation-reports.search');
+  Route::post('donation-reports/{donationReport}/verify', [DonationReportController::class, 'verify'])->name('donation-reports.verify');
+  Route::post('donation-reports/{donationReport}/reject', [DonationReportController::class, 'reject'])->name('donation-reports.reject');
+  Route::post('donation-reports/{donationReport}/upload-images', [DonationReportController::class, 'uploadImages'])->name('donation-reports.upload-images');
+  Route::delete('donation-reports/{donationReport}/images/{image}', [DonationReportController::class, 'deleteImage'])->name('donation-reports.delete-image');
+  Route::post('donation-reports/{donationReport}/images/{image}/set-primary', [DonationReportController::class, 'setPrimaryImage'])->name('donation-reports.set-primary-image');
+  Route::resource('donation-reports', DonationReportController::class);
 
   Route::get('logout', [AuthAdminController::class, 'logout'])->name('logout');
 });

@@ -74,6 +74,14 @@ return [
     'tags_note' => 'Manajemen Tag',
     'tags_note_text' => 'Tag sekarang dikelola secara terpisah untuk organisasi yang lebih baik.',
     'manage_tags_link' => 'Kelola tag di sini',
+    'images_note_create' => 'Anda dapat menambahkan gambar setelah membuat kampanye.',
+
+    // Reports tab
+    'donation_reports' => 'Laporan Donasi',
+    'add_new_report' => 'Tambah Laporan Baru',
+    'no_reports' => 'Belum Ada Laporan',
+    'no_reports_description' => 'Belum ada laporan donasi yang disubmit untuk kampanye ini.',
+    'add_first_report' => 'Tambah Laporan Pertama',
 
     // Validation messages
     'title_required' => 'Judul kampanye wajib diisi',

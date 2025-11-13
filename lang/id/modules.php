@@ -4,6 +4,7 @@ return [
   'create_title' => 'Buat Modul',
   'edit_title' => 'Edit Modul',
   'view_title' => 'Detail Modul',
+  'list_description' => 'Daftar semua modul',
 
   'title' => 'Judul',
   'class' => 'Kelas',
