@@ -10,6 +10,7 @@ return [
   'lessons' => 'Lessons',
   'donation' => 'Donation',
   'donation_campaigns' => 'Donation Campaigns',
+  'donation_tags' => 'Donation Tags',
   'donate' => 'Donate',
   'settings' => 'Settings',
   'payment_gateways' => 'Payment Gateways',
