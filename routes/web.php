@@ -84,6 +84,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
   // Donation Campaign routes
   Route::get('donation-campaigns/search', [DonationCampaignController::class, 'search'])->name('donation-campaigns.search');
+  Route::post('donation-campaigns/{donationCampaign}/upload-images', [DonationCampaignController::class, 'uploadImages'])->name('donation-campaigns.upload-images');
+  Route::delete('donation-campaigns/{donationCampaign}/delete-image', [DonationCampaignController::class, 'deleteImage'])->name('donation-campaigns.delete-image');
+  Route::post('donation-campaigns/{donationCampaign}/set-primary-image', [DonationCampaignController::class, 'setPrimaryImage'])->name('donation-campaigns.set-primary-image');
+  Route::post('donation-campaigns/{donationCampaign}/update-tags', [DonationCampaignController::class, 'updateTags'])->name('donation-campaigns.update-tags');
+  Route::delete('donation-campaigns/{donationCampaign}/remove-tag', [DonationCampaignController::class, 'removeTag'])->name('donation-campaigns.remove-tag');
   Route::resource('donation-campaigns', DonationCampaignController::class);
 
   // Payment Gateway routes

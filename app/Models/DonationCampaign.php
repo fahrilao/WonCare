@@ -50,6 +50,33 @@ class DonationCampaign extends Model
     }
 
     /**
+     * Get the images for the campaign.
+     */
+    public function images()
+    {
+        return $this->hasMany(DonationCampaignImage::class)->ordered();
+    }
+
+    /**
+     * Get the primary image for the campaign.
+     */
+    public function primaryImage()
+    {
+        return $this->hasOne(DonationCampaignImage::class)->primary();
+    }
+
+    /**
+     * Get the tags associated with the campaign.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(DonationTag::class, 'donation_campaign_tag')
+                    ->withTimestamps()
+                    ->orderBy('sort_order')
+                    ->orderBy('name');
+    }
+
+    /**
      * Get the progress percentage of the campaign.
      */
     public function getProgressPercentageAttribute()

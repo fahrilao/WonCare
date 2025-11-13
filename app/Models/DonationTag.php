@@ -52,6 +52,12 @@ class DonationTag extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function donationCampaigns()
+    {
+        return $this->belongsToMany(DonationCampaign::class, 'donation_campaign_tag')
+                    ->withTimestamps();
+    }
+
     // Scopes
     public function scopeActive($query)
     {

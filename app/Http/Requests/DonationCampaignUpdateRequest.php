@@ -28,7 +28,14 @@ class DonationCampaignUpdateRequest extends FormRequest
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
             'status' => 'required|in:draft,active,completed,cancelled',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|array|max:5',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_alt' => 'nullable|array',
+            'image_alt.*' => 'nullable|string|max:255',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:donation_tags,id',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'exists:donation_campaign_images,id',
         ];
     }
 

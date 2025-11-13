@@ -83,17 +83,6 @@
                                     <small
                                         class="form-text text-muted">{{ __('donation_campaigns.goal_amount_help') }}</small>
                                 </div>
-
-                                <!-- Campaign Image -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="image" class="form-label">{{ __('donation_campaigns.image') }}</label>
-                                    <input type="file" class="form-control @error('image') is-invalid @enderror"
-                                        id="image" name="image" accept="image/*">
-                                    <small class="form-text text-muted">{{ __('donation_campaigns.image_help') }}</small>
-                                    @error('image')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
                             </div>
 
                             <div class="row">
@@ -140,6 +129,25 @@
                                 @enderror
                             </div>
 
+                            <!-- Tags -->
+                            <div class="mb-3">
+                                <label for="tags" class="form-label">{{ __('donation_campaigns.tags') }}</label>
+                                <select class="form-select @error('tags') is-invalid @enderror" id="tags"
+                                    name="tags[]" multiple>
+                                    @foreach ($tags as $tag)
+                                        <option value="{{ $tag->id }}"
+                                            {{ in_array($tag->id, old('tags', [])) ? 'selected' : '' }}
+                                            data-color="{{ $tag->color }}">
+                                            {{ $tag->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">{{ __('donation_campaigns.tags_help') }}</small>
+                                @error('tags')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="d-flex justify-content-end gap-2">
                                 <a href="{{ route('admin.donation-campaigns.index') }}" class="btn btn-secondary">
                                     {{ __('common.cancel') }}
@@ -156,9 +164,97 @@
     </div>
 @endsection
 
+@push('vendor_scripts')
+    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+@endpush
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}">
+    <style>
+        .image-preview {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .image-preview img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+
+        .image-preview .remove-image {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .select2-selection__choice {
+            background-color: var(--bs-primary) !important;
+            border: 1px solid var(--bs-primary) !important;
+            color: white !important;
+        }
+    </style>
+@endpush
+
 @push('scripts')
     <script>
         $(document).ready(function() {
+            // Initialize Select2 for tags
+            $('#tags').select2({
+                placeholder: '{{ __('donation_campaigns.select_tags') }}',
+                allowClear: true,
+                templateResult: function(tag) {
+                    if (!tag.id) return tag.text;
+                    const color = $(tag.element).data('color');
+                    return $('<span style="color: ' + color + '; font-weight: bold;">' + tag.text +
+                        '</span>');
+                },
+                templateSelection: function(tag) {
+                    if (!tag.id) return tag.text;
+                    const color = $(tag.element).data('color');
+                    return $('<span style="background-color: ' + color +
+                        '; color: white; padding: 2px 6px; border-radius: 3px;">' + tag.text +
+                        '</span>');
+                }
+            });
+
+            // Image preview functionality
+            $('#images').on('change', function() {
+                const files = this.files;
+                const container = $('#image-preview-container');
+                container.empty();
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        const preview = $(`
+                            <div class="image-preview" data-index="${i}">
+                                <img src="${e.target.result}" alt="Preview">
+                                <button type="button" class="remove-image" onclick="removeImagePreview(${i})">&times;</button>
+                                <input type="text" class="form-control form-control-sm mt-1" 
+                                       name="image_alt[${i}]" placeholder="Alt text (optional)">
+                            </div>
+                        `);
+                        container.append(preview);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
             // Set minimum date to today for start_date
             const today = new Date();
             const todayString = today.toISOString().slice(0, 16);
@@ -172,5 +268,30 @@
                 }
             });
         });
+
+        // Remove image preview function
+        function removeImagePreview(index) {
+            $(`.image-preview[data-index="${index}"]`).remove();
+
+            // Reset file input to trigger change event properly
+            const fileInput = document.getElementById('images');
+            const dt = new DataTransfer();
+            const files = fileInput.files;
+
+            for (let i = 0; i < files.length; i++) {
+                if (i !== index) {
+                    dt.items.add(files[i]);
+                }
+            }
+
+            fileInput.files = dt.files;
+
+            // Re-index remaining previews
+            $('.image-preview').each(function(newIndex) {
+                $(this).attr('data-index', newIndex);
+                $(this).find('input[name^="image_alt"]').attr('name', `image_alt[${newIndex}]`);
+                $(this).find('.remove-image').attr('onclick', `removeImagePreview(${newIndex})`);
+            });
+        }
     </script>
 @endpush
