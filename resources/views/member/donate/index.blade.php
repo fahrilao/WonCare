@@ -36,12 +36,12 @@
 
                                     <div class="mb-2">
                                         <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <small class="text-muted">₩
+                                            <small class="text-muted">Rp
                                                 {{ number_format($campaign->collected_amount, 0, ',', '.') }}</small>
                                             <small class="text-muted">{{ $campaign->progress_percentage }}%</small>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <small class="text-muted">₩
+                                            <small class="text-muted">Rp
                                                 {{ number_format($campaign->goal_amount, 0, ',', '.') }}</small>
                                             @if ($campaign->end_date)
                                                 <small class="text-muted">
@@ -101,12 +101,12 @@
 
                                     <div class="mb-2">
                                         <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <small class="text-muted">₩
+                                            <small class="text-muted">Rp
                                                 {{ number_format($campaign->collected_amount, 0, ',', '.') }}</small>
                                             <small class="text-muted">{{ $campaign->progress_percentage }}%</small>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <small class="text-muted">₩
+                                            <small class="text-muted">Rp
                                                 {{ number_format($campaign->goal_amount, 0, ',', '.') }}</small>
                                             @if ($campaign->end_date)
                                                 <small class="text-muted"><i class="ti tabler-clock me-1"></i>
@@ -172,7 +172,7 @@
 
                                     <div class="mb-2">
                                         <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <small class="text-muted">₩
+                                            <small class="text-muted">Rp
                                                 {{ number_format($campaign->collected_amount, 0, ',', '.') }}</small>
                                             <small class="text-muted">{{ $campaign->progress_percentage }}%</small>
                                         </div>

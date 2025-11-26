@@ -74,7 +74,8 @@
                                     </div>
                                     <div class="flex-grow-1 ms-3">
                                         <h6 class="text-muted mb-1">Total Amount</h6>
-                                        <h4 class="mb-0">₩ {{ number_format($totalAmount, 0, ',', '.') }}</h4>
+                                        <h4 class="mb-0">Mixed Currencies</h4>
+                                        <small class="text-muted">See individual donations</small>
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +141,8 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <strong>₩ {{ number_format($donation->amount, 0, ',', '.') }}</strong>
+                                                    <strong>{{ $donation->formatted_amount }}</strong>
+                                                    <div class="small text-muted">{{ $donation->currency_name }}</div>
                                                 </td>
                                                 <td>
                                                     @if ($donation->payment_provider)

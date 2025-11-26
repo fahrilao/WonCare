@@ -36,12 +36,10 @@ class PaymentCallbackController extends Controller
     // Update payment status based on Midtrans status
     if ($transactionStatus === 'capture') {
       if ($fraudStatus === 'accept') {
-        $donation->status = 'paid';
         $donation->payment_status = 'success';
         $donation->paid_at = now();
       }
     } elseif ($transactionStatus === 'settlement') {
-      $donation->status = 'paid';
       $donation->payment_status = 'success';
       $donation->paid_at = now();
 
@@ -52,7 +50,6 @@ class PaymentCallbackController extends Controller
         $campaign->save();
       }
     } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {
-      $donation->status = 'failed';
       $donation->payment_status = 'failed';
     } elseif ($transactionStatus === 'pending') {
       $donation->payment_status = 'pending';
@@ -83,9 +80,9 @@ class PaymentCallbackController extends Controller
         ->with('error', 'Donation not found');
     }
 
-    if ($donation->status === 'paid') {
+    if ($donation->payment_status === 'success') {
       return redirect()->route('member.donate.history')
-        ->with('success', 'Payment successful! Thank you for your donation of ₩ ' . number_format($donation->amount, 0, ',', '.') . ' to ' . ($donation->campaign->title ?? 'the campaign') . '.');
+        ->with('success', 'Payment successful! Thank you for your donation of ' . $donation->formatted_amount . ' to ' . ($donation->campaign->title ?? 'the campaign') . '.');
     }
 
     return redirect()->route('member.donate.history')
@@ -117,7 +114,6 @@ class PaymentCallbackController extends Controller
         return response()->json(['message' => 'Donation not found'], 404);
       }
 
-      $donation->status = 'paid';
       $donation->payment_status = 'success';
       $donation->paid_at = now();
       $donation->payment_response = json_encode($payload);
@@ -157,9 +153,9 @@ class PaymentCallbackController extends Controller
         ->with('error', 'Donation not found');
     }
 
-    if ($donation->status === 'paid') {
+    if ($donation->payment_status === 'success') {
       return redirect()->route('member.donate.history')
-        ->with('success', 'Payment successful! Thank you for your donation of ₩ ' . number_format($donation->amount, 0, ',', '.') . ' to ' . ($donation->campaign->title ?? 'the campaign') . '.');
+        ->with('success', 'Payment successful! Thank you for your donation of ' . $donation->formatted_amount . ' to ' . ($donation->campaign->title ?? 'the campaign') . '.');
     }
 
     return redirect()->route('member.donate.history')
@@ -177,7 +173,6 @@ class PaymentCallbackController extends Controller
       $donation = Donation::where('snap_token', $sessionId)->first();
 
       if ($donation) {
-        $donation->status = 'cancelled';
         $donation->payment_status = 'cancelled';
         $donation->save();
 
@@ -215,7 +210,6 @@ class PaymentCallbackController extends Controller
     }
 
     if ($status === 'DONE') {
-      $donation->status = 'paid';
       $donation->payment_status = 'success';
       $donation->paid_at = now();
       $donation->payment_response = json_encode($payload);
@@ -228,7 +222,6 @@ class PaymentCallbackController extends Controller
         $campaign->save();
       }
     } elseif (in_array($status, ['CANCELED', 'FAILED'])) {
-      $donation->status = 'failed';
       $donation->payment_status = 'failed';
       $donation->payment_response = json_encode($payload);
       $donation->save();
@@ -257,7 +250,7 @@ class PaymentCallbackController extends Controller
     }
 
     return redirect()->route('member.donate.history')
-      ->with('success', 'Payment successful! Thank you for your donation of ₩ ' . number_format($donation->amount, 0, ',', '.') . ' to ' . ($donation->campaign->title ?? 'the campaign') . '.');
+      ->with('success', 'Payment successful! Thank you for your donation of ' . $donation->formatted_amount . ' to ' . ($donation->campaign->title ?? 'the campaign') . '.');
   }
 
   /**
@@ -271,7 +264,6 @@ class PaymentCallbackController extends Controller
       $donation = Donation::where('order_id', $orderId)->first();
 
       if ($donation) {
-        $donation->status = 'failed';
         $donation->payment_status = 'failed';
         $donation->save();
 

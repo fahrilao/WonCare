@@ -110,6 +110,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
   // Zakat Settings routes
   Route::resource('zakat-settings', \App\Http\Controllers\Admin\ZakatSettingController::class)->only(['index', 'edit', 'update']);
+
+  // Currency Settings routes
+  Route::resource('currency-settings', \App\Http\Controllers\Admin\CurrencySettingController::class)->only(['index', 'edit', 'update']);
   Route::post('donation-reports/{donationReport}/upload-images', [DonationReportController::class, 'uploadImages'])->name('donation-reports.upload-images');
   Route::delete('donation-reports/{donationReport}/images/{image}', [DonationReportController::class, 'deleteImage'])->name('donation-reports.delete-image');
   Route::post('donation-reports/{donationReport}/images/{image}/set-primary', [DonationReportController::class, 'setPrimaryImage'])->name('donation-reports.set-primary-image');

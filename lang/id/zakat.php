@@ -16,10 +16,10 @@ return [
   'gold_owned' => 'Emas yang Dimiliki',
   'grams' => 'gram',
   'silver_owned' => 'Perak yang Dimiliki',
-  'cash_savings' => 'Uang Tunai & Tabungan (₩)',
+  'cash_savings' => 'Uang Tunai & Tabungan',
   'other_assets' => 'Aset Lainnya',
-  'business_assets' => 'Aset Bisnis (₩)',
-  'debts' => 'Hutang (₩)',
+  'business_assets' => 'Aset Bisnis',
+  'debts' => 'Hutang',
   'short_term_debts' => 'Hutang jangka pendek yang dikurangkan',
   'calculate' => 'Hitung Zakat',
   'enter_amount' => 'Masukkan jumlah',
@@ -43,7 +43,7 @@ return [
   'period' => 'Periode',
   'monthly' => 'Bulanan',
   'annual' => 'Tahunan',
-  'income' => 'Penghasilan (₩)',
+  'income' => 'Pendapatan',
   'monthly_income' => 'Penghasilan Bulanan',
   'other_income' => 'Penghasilan Lain',
   'bonus_allowance' => 'Bonus, tunjangan, dll.',
@@ -103,4 +103,7 @@ return [
   'silver' => 'Perak',
   'rice' => 'Beras',
   'general' => 'Umum',
+
+  // Currency
+  'select_currency' => 'Pilih Mata Uang',
 ];

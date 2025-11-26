@@ -47,6 +47,35 @@
                         <form method="POST" action="{{ route('member.donate.store', $campaign) }}" id="donationForm">
                             @csrf
 
+                            <!-- Currency Selection -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="ti tabler-currency me-1"></i>
+                                    Currency
+                                </label>
+                                <div class="d-flex gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="currency" id="currencyIDR"
+                                            value="IDR" {{ old('currency', 'IDR') === 'IDR' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="currencyIDR">
+                                            <strong>Rupiah (Rp)</strong> - Indonesian
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="currency" id="currencyKRW"
+                                            value="KRW" {{ old('currency') === 'KRW' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="currencyKRW">
+                                            <strong>Won (₩)</strong> - Korean
+                                        </label>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Payment gateway will be automatically selected based on your
+                                    currency choice.</small>
+                                @error('currency')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <!-- Donation Amount -->
                             <div class="mb-4">
                                 <label class="form-label fw-bold">
@@ -54,8 +83,37 @@
                                     Donation Amount
                                 </label>
 
-                                <!-- Quick Amount Buttons -->
-                                <div class="d-flex flex-wrap mb-3" style="gap: 0.5rem;">
+                                <!-- Quick Amount Buttons (IDR) -->
+                                <div class="d-flex flex-wrap mb-3 quick-amounts-idr" style="gap: 0.5rem;">
+                                    <button type="button" class="btn btn-outline-primary quick-amount" data-amount="10000">
+                                        Rp 10,000
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary quick-amount" data-amount="25000">
+                                        Rp 25,000
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary quick-amount" data-amount="50000">
+                                        Rp 50,000
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary quick-amount"
+                                        data-amount="100000">
+                                        Rp 100,000
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary quick-amount"
+                                        data-amount="250000">
+                                        Rp 250,000
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary quick-amount"
+                                        data-amount="500000">
+                                        Rp 500,000
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary quick-amount"
+                                        data-amount="1000000">
+                                        Rp 1,000,000
+                                    </button>
+                                </div>
+
+                                <!-- Quick Amount Buttons (KRW) -->
+                                <div class="d-none flex-wrap mb-3 quick-amounts-krw" style="gap: 0.5rem;">
                                     <button type="button" class="btn btn-outline-primary quick-amount" data-amount="1000">
                                         ₩ 1,000
                                     </button>
@@ -82,12 +140,12 @@
 
                                 <!-- Custom Amount Input -->
                                 <div class="input-group input-group-lg">
-                                    <span class="input-group-text">₩</span>
+                                    <span class="input-group-text" id="currencySymbol">Rp</span>
                                     <input type="number" name="amount" id="amountInput" class="form-control"
                                         min="1000" step="1000" value="{{ old('amount', $prefilledAmount ?? 50000) }}"
                                         placeholder="Enter custom amount" required>
                                 </div>
-                                <small class="text-muted">Minimum donation: ₩ 1,000</small>
+                                <small class="text-muted" id="minAmountText">Minimum donation: Rp 1,000</small>
                                 @error('amount')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
@@ -107,56 +165,12 @@
                                 @enderror
                             </div>
 
-                            <!-- Payment Method Selection -->
-                            @if ($paymentGateways->isNotEmpty())
-                                <div class="mb-4">
-                                    <label class="form-label fw-bold">
-                                        <i class="ti tabler-credit-card me-1"></i>
-                                        Payment Method
-                                    </label>
-                                    <div class="d-flex flex-column" style="gap: 0.75rem;">
-                                        @foreach ($paymentGateways as $gateway)
-                                            <label class="payment-option border rounded p-3 d-flex align-items-start"
-                                                style="cursor: pointer;">
-                                                <input type="radio" name="payment_provider"
-                                                    value="{{ $gateway->provider }}" {{ $loop->first ? 'checked' : '' }}
-                                                    class="form-check-input mt-1 me-3">
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        @if ($gateway->provider === 'midtrans')
-                                                            <i class="ti tabler-building-bank text-primary me-2"
-                                                                style="font-size: 1.25rem;"></i>
-                                                        @elseif($gateway->provider === 'stripe')
-                                                            <i class="ti tabler-credit-card text-primary me-2"
-                                                                style="font-size: 1.25rem;"></i>
-                                                        @elseif($gateway->provider === 'toss')
-                                                            <i class="ti tabler-wallet text-primary me-2"
-                                                                style="font-size: 1.25rem;"></i>
-                                                        @endif
-                                                        <span class="fw-bold">{{ $gateway->provider_name }}</span>
-                                                        @if ($gateway->is_sandbox)
-                                                            <span class="badge bg-warning text-dark ms-2"
-                                                                style="font-size: 0.7rem;">Test Mode</span>
-                                                        @endif
-                                                    </div>
-                                                    @if ($gateway->description)
-                                                        <div class="text-muted" style="font-size: 0.85rem;">
-                                                            {{ Str::limit($gateway->description, 80) }}</div>
-                                                    @endif
-                                                </div>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                    @error('payment_provider')
-                                        <div class="text-danger small mt-1">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            @else
-                                <div class="alert alert-warning">
-                                    <i class="ti tabler-info-circle me-2"></i>
-                                    Payment gateway is not configured. Your donation will be recorded as pending.
-                                </div>
-                            @endif
+                            <!-- Payment Gateway Info -->
+                            <div class="alert alert-info">
+                                <i class="ti tabler-info-circle me-2"></i>
+                                <strong>Payment Gateway:</strong>
+                                <span id="gatewayInfo">Midtrans (for Rupiah)</span>
+                            </div>
 
                             <!-- Submit Button -->
                             <div class="d-grid gap-2">
@@ -169,13 +183,10 @@
                                 </a>
                             </div>
 
-                            @if ($paymentGateways->isNotEmpty())
-                                <p class="text-muted text-center mt-3 mb-0" style="font-size: 0.85rem;">
-                                    <i class="ti tabler-lock me-1"></i>
-                                    Secure payment powered by
-                                    {{ $paymentGateways->pluck('provider_name')->join(', ', ' and ') }}
-                                </p>
-                            @endif
+                            <p class="text-muted text-center mt-3 mb-0" style="font-size: 0.85rem;">
+                                <i class="ti tabler-lock me-1"></i>
+                                Secure payment processing
+                            </p>
                         </form>
                     </div>
                 </div>
@@ -209,10 +220,10 @@
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <small class="text-muted">
-                                        <strong>₩ {{ number_format($campaign->collected_amount, 0, ',', '.') }}</strong>
+                                        <strong>Rp {{ number_format($campaign->collected_amount, 0, ',', '.') }}</strong>
                                     </small>
                                     <small class="text-muted">
-                                        of ₩ {{ number_format($campaign->goal_amount, 0, ',', '.') }}
+                                        of Rp {{ number_format($campaign->goal_amount, 0, ',', '.') }}
                                     </small>
                                 </div>
                                 <div class="progress" style="height: 8px;">
@@ -251,21 +262,59 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const amountInput = document.getElementById('amountInput');
-            const quickAmountButtons = document.querySelectorAll('.quick-amount');
+            const currencySymbol = document.getElementById('currencySymbol');
+            const minAmountText = document.getElementById('minAmountText');
+            const gatewayInfo = document.getElementById('gatewayInfo');
+            const currencyIDR = document.getElementById('currencyIDR');
+            const currencyKRW = document.getElementById('currencyKRW');
+            const quickAmountsIDR = document.querySelector('.quick-amounts-idr');
+            const quickAmountsKRW = document.querySelector('.quick-amounts-krw');
+
+            // Handle currency change
+            function updateCurrency() {
+                const isIDR = currencyIDR.checked;
+
+                if (isIDR) {
+                    // Switch to Rupiah
+                    currencySymbol.textContent = 'Rp';
+                    minAmountText.textContent = 'Minimum donation: Rp 1,000';
+                    gatewayInfo.textContent = 'Midtrans (for Rupiah)';
+                    quickAmountsIDR.classList.remove('d-none');
+                    quickAmountsIDR.classList.add('d-flex');
+                    quickAmountsKRW.classList.remove('d-flex');
+                    quickAmountsKRW.classList.add('d-none');
+                    amountInput.value = 50000;
+                } else {
+                    // Switch to Won
+                    currencySymbol.textContent = '₩';
+                    minAmountText.textContent = 'Minimum donation: ₩ 1,000';
+                    gatewayInfo.textContent = 'Toss Payments (for Korean Won)';
+                    quickAmountsKRW.classList.remove('d-none');
+                    quickAmountsKRW.classList.add('d-flex');
+                    quickAmountsIDR.classList.remove('d-flex');
+                    quickAmountsIDR.classList.add('d-none');
+                    amountInput.value = 10000;
+                }
+            }
+
+            // Listen to currency radio changes
+            currencyIDR.addEventListener('change', updateCurrency);
+            currencyKRW.addEventListener('change', updateCurrency);
 
             // Handle quick amount button clicks
-            quickAmountButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const amount = this.getAttribute('data-amount');
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('quick-amount')) {
+                    const amount = e.target.getAttribute('data-amount');
                     amountInput.value = amount;
 
                     // Update active state
-                    quickAmountButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                });
+                    document.querySelectorAll('.quick-amount').forEach(btn => btn.classList.remove(
+                        'active'));
+                    e.target.classList.add('active');
+                }
             });
 
-            // Format number input with thousand separators (optional)
+            // Format number input with thousand separators
             amountInput.addEventListener('blur', function() {
                 const value = parseInt(this.value);
                 if (!isNaN(value)) {
@@ -274,6 +323,9 @@
                     this.value = rounded;
                 }
             });
+
+            // Initialize on page load
+            updateCurrency();
         });
     </script>
 @endpush

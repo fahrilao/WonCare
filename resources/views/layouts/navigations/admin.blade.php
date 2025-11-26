@@ -78,3 +78,9 @@
                             <div data-i18n="Zakat Settings">{{ __('zakat.settings') }}</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.currency-settings.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.currency-settings.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-currency"></i>
+                            <div data-i18n="Currency Settings">Currency Settings</div>
+                        </a>
+                    </li>

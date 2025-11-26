@@ -36,7 +36,12 @@
                                         <strong>Type:</strong> {{ $type ?? 'Zakat' }}
                                     </div>
                                     <div class="col-md-6">
-                                        <strong>Amount:</strong> ₩ {{ number_format($amount ?? 0, 0, ',', '.') }}
+                                        <strong>Amount:</strong>
+                                        @php
+                                            $currency = request('currency', 'IDR');
+                                            $symbol = $currency === 'KRW' ? '₩' : 'Rp';
+                                        @endphp
+                                        {{ $symbol }} {{ number_format($amount ?? 0, 0, ',', '.') }}
                                     </div>
                                 </div>
                                 @if ($note)
@@ -44,11 +49,18 @@
                                         <strong>Details:</strong> {{ $note }}
                                     </div>
                                 @endif
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="ti tabler-info-circle me-1"></i>
+                                        Currency: {{ $currency === 'KRW' ? 'Korean Won (₩)' : 'Indonesian Rupiah (Rp)' }}
+                                    </small>
+                                </div>
                             </div>
 
-                            <!-- Hidden Amount Field -->
+                            <!-- Hidden Fields -->
                             <input type="hidden" name="amount" value="{{ $amount }}">
                             <input type="hidden" name="note" value="{{ $note }}">
+                            <input type="hidden" name="currency" value="{{ request('currency', 'IDR') }}">
 
                             <!-- Payment Method Selection -->
                             @if ($paymentGateways->isNotEmpty())
@@ -61,7 +73,8 @@
                                         @foreach ($paymentGateways as $gateway)
                                             <label class="border rounded p-3 cursor-pointer payment-option">
                                                 <input type="radio" name="payment_provider"
-                                                    value="{{ $gateway->provider }}" class="form-check-input me-2" required>
+                                                    value="{{ $gateway->provider }}" class="form-check-input me-2"
+                                                    required>
                                                 <div class="d-inline-flex align-items-center">
                                                     <div class="flex-grow-1">
                                                         <div class="d-flex align-items-center mb-1">
@@ -100,7 +113,7 @@
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-success btn-lg">
                                     <i class="ti tabler-heart me-2"></i>
-                                    Pay Zakat - ₩ {{ number_format($amount ?? 0, 0, ',', '.') }}
+                                    Pay Zakat - {{ $symbol }} {{ number_format($amount ?? 0, 0, ',', '.') }}
                                 </button>
                                 <a href="{{ route('member.zakat.calculator') }}" class="btn btn-outline-secondary">
                                     Back to Calculator

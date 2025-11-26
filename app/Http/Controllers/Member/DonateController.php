@@ -16,6 +16,37 @@ use Illuminate\Support\Facades\Log;
 
 class DonateController extends Controller
 {
+  /**
+   * Calculate collected amount for a campaign considering multi-currency donations
+   */
+  private function calculateCollectedAmount($campaign)
+  {
+    $paidDonations = Donation::where('donation_campaign_id', $campaign->id)
+      ->where('payment_status', 'success')
+      ->get();
+
+    $collectedAmountIDR = 0;
+    foreach ($paidDonations as $donation) {
+      try {
+        $collectedAmountIDR += $donation->getAmountInIDR();
+      } catch (\Exception $e) {
+        Log::error('Error converting donation amount to IDR', [
+          'donation_id' => $donation->id,
+          'currency' => $donation->currency,
+          'amount' => $donation->amount,
+          'error' => $e->getMessage()
+        ]);
+        // Fallback: add amount as-is if conversion fails
+        $collectedAmountIDR += (float) $donation->amount;
+      }
+    }
+
+    $campaign->collected_amount = $collectedAmountIDR;
+    $campaign->progress_percentage = $campaign->goal_amount > 0
+      ? min(100, round(($collectedAmountIDR / $campaign->goal_amount) * 100, 2))
+      : 0;
+  }
+
   public function index(Request $request)
   {
     // Check if this is a Zakat payment request
@@ -30,12 +61,22 @@ class DonateController extends Controller
       ->take(5)
       ->get();
 
+    // Calculate collected amounts for banner campaigns
+    foreach ($bannerCampaigns as $campaign) {
+      $this->calculateCollectedAmount($campaign);
+    }
+
     // Running to close: active campaigns ordered by nearest end_date
     $nearClosingCampaigns = DonationCampaign::active()
       ->whereNotNull('end_date')
       ->orderBy('end_date', 'asc')
       ->take(8)
       ->get();
+
+    // Calculate collected amounts for near closing campaigns
+    foreach ($nearClosingCampaigns as $campaign) {
+      $this->calculateCollectedAmount($campaign);
+    }
 
     // Tags: active, ordered
     $tags = DonationTag::active()->ordered()->get();
@@ -64,6 +105,11 @@ class DonateController extends Controller
         ->get();
     }
 
+    // Calculate collected amounts for random campaigns
+    foreach ($randomCampaigns as $campaign) {
+      $this->calculateCollectedAmount($campaign);
+    }
+
     return view('member.donate.index', [
       'bannerCampaigns' => $bannerCampaigns,
       'nearClosingCampaigns' => $nearClosingCampaigns,
@@ -85,11 +131,11 @@ class DonateController extends Controller
       ->paginate(15);
 
     $successfulCount = Donation::where('member_id', $member->id)
-      ->where('status', 'paid')
+      ->where('payment_status', 'success')
       ->count();
 
     $totalAmount = Donation::where('member_id', $member->id)
-      ->where('status', 'paid')
+      ->where('payment_status', 'success')
       ->sum('amount');
 
     return view('member.donate.history', [
@@ -103,12 +149,16 @@ class DonateController extends Controller
   {
     $campaign->load(['primaryImage', 'images', 'tags']);
 
+    // Get all donations (both with and without notes)
     $wishes = Donation::with('member')
       ->where('donation_campaign_id', $campaign->id)
-      ->whereNotNull('note')
+      ->where('payment_status', 'success')
       ->orderByDesc('created_at')
       ->take(20)
       ->get();
+
+    // Calculate collected amount considering different currencies
+    $this->calculateCollectedAmount($campaign);
 
     return view('member.donate.show', [
       'campaign' => $campaign,
@@ -143,17 +193,18 @@ class DonateController extends Controller
     $validated = $request->validate([
       'amount' => ['required', 'numeric', 'min:1'],
       'note' => ['nullable', 'string', 'max:1000'],
-      'payment_provider' => ['nullable', 'string', 'in:midtrans,stripe,toss'],
+      'currency' => ['required', 'string', 'in:IDR,KRW'],
     ]);
 
     $member = Auth::guard('member')->user();
 
-    // Create donation record
+    // Create donation record with currency
     $donation = Donation::create([
       'member_id' => $member->id,
       'donation_campaign_id' => $campaign->id,
       'amount' => $validated['amount'],
-      'status' => 'pending',
+      'currency' => $validated['currency'],
+      'payment_status' => 'pending',
       'note' => $validated['note'] ?? null,
     ]);
 
@@ -162,32 +213,25 @@ class DonateController extends Controller
     $donation->order_id = $orderId;
     $donation->save();
 
-    // Get preferred payment provider or find any active gateway
-    $preferredProvider = $validated['payment_provider'] ?? null;
-
-    if ($preferredProvider) {
-      $gateway = \App\Models\PaymentGateway::active()
-        ->byProvider($preferredProvider)
-        ->first();
-    } else {
-      // Try to find any active configured gateway in order: midtrans, stripe, toss
-      $gateway = \App\Models\PaymentGateway::active()
-        ->whereIn('provider', ['midtrans', 'stripe', 'toss'])
-        ->get()
-        ->first(fn($g) => $g->isConfigured());
-    }
+    // Automatically select gateway based on currency
+    // IDR (Rupiah) → Midtrans
+    // KRW (Won) → Toss Payments
+    $gateway = Donation::getGatewayForCurrency($validated['currency']);
 
     if (!$gateway || !$gateway->isConfigured()) {
+      $currencyName = $validated['currency'] === 'KRW' ? 'Won' : 'Rupiah';
+      $providerName = $validated['currency'] === 'KRW' ? 'Toss Payments' : 'Midtrans';
+
       return redirect()
         ->route('member.donate.show', $campaign)
-        ->with('info', 'Donation recorded as pending. Payment gateway is not configured yet.');
+        ->with('error', "Payment gateway for {$currencyName} ({$providerName}) is not configured. Please contact administrator.");
     }
 
     try {
       $redirectUrl = $this->processPayment($donation, $gateway, $campaign, $member);
 
       if ($redirectUrl) {
-        // Redirect to payment gateway (Midtrans Snap, Stripe Checkout, or Toss)
+        // Redirect to payment gateway (Midtrans Snap or Toss)
         return redirect()->away($redirectUrl);
       }
 
@@ -198,6 +242,7 @@ class DonateController extends Controller
     } catch (\Throwable $e) {
       Log::error('Payment creation failed: ' . $e->getMessage(), [
         'donation_id' => $donation->id,
+        'currency' => $donation->currency,
         'provider' => $gateway->provider,
         'error' => $e->getTraceAsString(),
       ]);
@@ -230,6 +275,7 @@ class DonateController extends Controller
 
   protected function processMidtransPayment(Donation $donation, $gateway, DonationCampaign $campaign, $member): ?string
   {
+    // Midtrans uses IDR (Rupiah) - amount should be in whole numbers
     $payload = [
       'transaction_details' => [
         'order_id' => $donation->order_id,
@@ -290,6 +336,7 @@ class DonateController extends Controller
 
   protected function processTossPayment(Donation $donation, $gateway, DonationCampaign $campaign, $member): ?string
   {
+    // Toss Payments uses KRW (Korean Won) - amount should be in whole numbers
     $payload = [
       'order_id' => $donation->order_id,
       'amount' => (int) $donation->amount,

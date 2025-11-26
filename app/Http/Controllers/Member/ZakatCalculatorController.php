@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use App\Models\ZakatSetting;
+use App\Models\CurrencySetting;
 use Illuminate\Http\Request;
 
 class ZakatCalculatorController extends Controller
@@ -22,6 +23,9 @@ class ZakatCalculatorController extends Controller
         $ricePrice = $settings->get('rice_price_per_kg')?->value ?? 15000;
         $fitrahAmount = $settings->get('fitrah_amount_kg')?->value ?? 2.5;
 
+        // Get active currencies for selection
+        $currencies = CurrencySetting::active()->get();
+
         return view('member.zakat.calculator', compact(
             'goldPrice',
             'silverPrice',
@@ -29,7 +33,8 @@ class ZakatCalculatorController extends Controller
             'silverNisab',
             'zakatPercentage',
             'ricePrice',
-            'fitrahAmount'
+            'fitrahAmount',
+            'currencies'
         ));
     }
 }

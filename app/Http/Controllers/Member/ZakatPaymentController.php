@@ -39,7 +39,7 @@ class ZakatPaymentController extends Controller
         $validated = $request->validate([
             'amount' => ['required', 'numeric', 'min:1'],
             'note' => ['nullable', 'string', 'max:1000'],
-            'payment_provider' => ['nullable', 'string', 'in:midtrans,stripe,toss'],
+            'currency' => ['required', 'string', 'in:IDR,KRW'],
         ]);
 
         $member = Auth::guard('member')->user();
@@ -49,45 +49,49 @@ class ZakatPaymentController extends Controller
             'member_id' => $member->id,
             'donation_campaign_id' => null, // No campaign for Zakat
             'amount' => $validated['amount'],
+            'currency' => $validated['currency'],
             'note' => $validated['note'] ?? 'Zakat Payment',
-            'status' => 'pending',
             'payment_status' => 'pending',
-            'payment_provider' => $validated['payment_provider'] ?? null,
             'order_id' => 'ZKT-' . date('y') . '-' . time(),
         ]);
 
-        // If no payment provider selected, just save as pending
-        if (!$validated['payment_provider']) {
-            return redirect()->route('member.donate.history')
-                ->with('success', 'Zakat payment recorded. Please complete payment.');
-        }
-
-        // Process payment based on provider
-        $paymentProvider = $validated['payment_provider'];
-        $gateway = PaymentGateway::active()
-            ->where('provider', $paymentProvider)
-            ->first();
+        // Automatically select gateway based on currency
+        // IDR (Rupiah) → Midtrans
+        // KRW (Won) → Toss Payments
+        $gateway = Donation::getGatewayForCurrency($validated['currency']);
 
         if (!$gateway || !$gateway->isConfigured()) {
-            return back()->with('error', 'Payment gateway not configured.');
+            $currencyName = $validated['currency'] === 'KRW' ? 'Won' : 'Rupiah';
+            $providerName = $validated['currency'] === 'KRW' ? 'Toss Payments' : 'Midtrans';
+
+            return back()->with('error', "Payment gateway for {$currencyName} ({$providerName}) is not configured. Please contact administrator.");
         }
 
+        $donation->payment_gateway_id = $gateway->id;
+        $donation->payment_provider = $gateway->provider;
+        $donation->save();
+
         try {
-            if ($paymentProvider === 'midtrans') {
+            if ($gateway->provider === 'midtrans') {
                 $service = new MidtransSnapService($gateway);
                 $result = $service->createTransaction([
-                    'order_id' => $donation->order_id,
-                    'amount' => $donation->amount,
-                    'customer' => [
-                        'name' => $member->name,
+                    'transaction_details' => [
+                        'order_id' => $donation->order_id,
+                        'gross_amount' => (int) $donation->amount,
+                    ],
+                    'customer_details' => [
+                        'first_name' => $member->name,
                         'email' => $member->email,
                     ],
                     'item_details' => [[
                         'id' => 'zakat',
                         'name' => 'Zakat Payment',
-                        'price' => $donation->amount,
+                        'price' => (int) $donation->amount,
                         'quantity' => 1,
                     ]],
+                    'callbacks' => [
+                        'finish' => route('payment.callback.midtrans.finish', ['order_id' => $donation->order_id]),
+                    ],
                 ]);
 
                 $donation->update([
@@ -96,28 +100,16 @@ class ZakatPaymentController extends Controller
                 ]);
 
                 return redirect($result['redirect_url']);
-            } elseif ($paymentProvider === 'stripe') {
-                $service = new StripeCheckoutService($gateway);
-                $result = $service->createCheckoutSession([
-                    'order_id' => $donation->order_id,
-                    'amount' => $donation->amount,
-                    'customer_email' => $member->email,
-                    'description' => 'Zakat Payment',
-                ]);
-
-                $donation->update([
-                    'snap_token' => $result['session_id'] ?? null,
-                    'snap_redirect_url' => $result['url'] ?? null,
-                ]);
-
-                return redirect($result['url']);
-            } elseif ($paymentProvider === 'toss') {
+            } elseif ($gateway->provider === 'toss') {
                 $service = new TossPaymentService($gateway);
                 $result = $service->createPayment([
                     'order_id' => $donation->order_id,
-                    'amount' => $donation->amount,
+                    'amount' => (int) $donation->amount,
+                    'order_name' => 'Zakat Payment',
+                    'customer_email' => $member->email,
                     'customer_name' => $member->name,
-                    'description' => 'Zakat Payment',
+                    'success_url' => route('payment.callback.toss.success') . '?orderId=' . $donation->order_id,
+                    'fail_url' => route('payment.callback.toss.fail') . '?orderId=' . $donation->order_id,
                 ]);
 
                 $donation->update([
@@ -128,7 +120,11 @@ class ZakatPaymentController extends Controller
                 return redirect($result['checkout_url']);
             }
         } catch (\Exception $e) {
-            Log::error('Zakat payment error: ' . $e->getMessage());
+            Log::error('Zakat payment error: ' . $e->getMessage(), [
+                'donation_id' => $donation->id,
+                'currency' => $donation->currency,
+                'provider' => $gateway->provider,
+            ]);
             return back()->with('error', 'Payment processing error: ' . $e->getMessage());
         }
 

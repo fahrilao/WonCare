@@ -16,10 +16,10 @@ return [
   'gold_owned' => '보유 금',
   'grams' => '그램',
   'silver_owned' => '보유 은',
-  'cash_savings' => '현금 및 저축 (₩)',
+  'cash_savings' => '현금 및 저축',
   'other_assets' => '기타 자산',
-  'business_assets' => '사업 자산 (₩)',
-  'debts' => '부채 (₩)',
+  'business_assets' => '비즈니스 자산',
+  'debts' => '부채',
   'short_term_debts' => '차감할 단기 부채',
   'calculate' => '자카트 계산',
   'enter_amount' => '금액 입력',
@@ -43,7 +43,7 @@ return [
   'period' => '기간',
   'monthly' => '월별',
   'annual' => '연간',
-  'income' => '소득 (₩)',
+  'income' => '소듍',
   'monthly_income' => '월 소득',
   'other_income' => '기타 소득',
   'bonus_allowance' => '보너스, 수당 등',
@@ -103,4 +103,7 @@ return [
   'silver' => '은',
   'rice' => '쌀',
   'general' => '일반',
+
+  // Currency
+  'select_currency' => '통화 선택',
 ];

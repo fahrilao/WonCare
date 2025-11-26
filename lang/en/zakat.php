@@ -16,10 +16,10 @@ return [
   'gold_owned' => 'Gold Owned',
   'grams' => 'grams',
   'silver_owned' => 'Silver Owned',
-  'cash_savings' => 'Cash & Savings (₩)',
+  'cash_savings' => 'Cash & Savings',
   'other_assets' => 'Other Assets',
-  'business_assets' => 'Business Assets (₩)',
-  'debts' => 'Debts (₩)',
+  'business_assets' => 'Business Assets',
+  'debts' => 'Debts',
   'short_term_debts' => 'Short-term debts to be deducted',
   'calculate' => 'Calculate Zakat',
   'enter_amount' => 'Enter amount',
@@ -43,7 +43,7 @@ return [
   'period' => 'Period',
   'monthly' => 'Monthly',
   'annual' => 'Annual',
-  'income' => 'Income (₩)',
+  'income' => 'Income',
   'monthly_income' => 'Monthly Income',
   'other_income' => 'Other Income',
   'bonus_allowance' => 'Bonus, allowance, etc.',
@@ -103,4 +103,7 @@ return [
   'silver' => 'Silver',
   'rice' => 'Rice',
   'general' => 'General',
+
+  // Currency
+  'select_currency' => 'Select Currency',
 ];

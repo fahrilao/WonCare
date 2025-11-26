@@ -27,9 +27,10 @@
 
                         <div class="mb-5">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <small class="text-muted">₩
-                                    {{ number_format($campaign->collected_amount, 0, ',', '.') }} / ₩
-                                    {{ number_format($campaign->goal_amount, 0, ',', '.') }}</small>
+                                <small class="text-muted">
+                                    Rp {{ number_format($campaign->collected_amount, 0, ',', '.') }} /
+                                    Rp {{ number_format($campaign->goal_amount, 0, ',', '.') }}
+                                </small>
                                 @if ($campaign->end_date)
                                     <small class="text-muted">
                                         <i class="ti tabler-clock me-1"></i>
@@ -51,11 +52,11 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="mb-3">Wishes</h5>
+                        <h5 class="mb-3">Recent Donations</h5>
 
                         @if ($wishes->isEmpty())
                             <p class="text-muted mb-0" style="font-size: 0.9rem;">
-                                No wishes yet. Be the first to send your support message.
+                                No donations yet. Be the first to support this campaign.
                             </p>
                         @else
                             <div class="list-group list-group-flush">
@@ -65,16 +66,18 @@
                                             <div>
                                                 <strong>{{ $wish->member->name ?? 'Member' }}</strong>
                                                 <span class="text-muted" style="font-size: 0.8rem;">
-                                                    – ₩ {{ number_format($wish->amount, 0, ',', '.') }}
+                                                    – {{ $wish->formatted_amount }}
                                                 </span>
                                             </div>
                                             <small class="text-muted" style="font-size: 0.75rem;">
                                                 {{ $wish->created_at->diffForHumans() }}
                                             </small>
                                         </div>
-                                        <p class="mb-0" style="font-size: 0.9rem;">
-                                            {{ $wish->note }}
-                                        </p>
+                                        @if ($wish->note)
+                                            <p class="mb-0" style="font-size: 0.9rem;">
+                                                {{ $wish->note }}
+                                            </p>
+                                        @endif
                                     </div>
                                 @endforeach
                             </div>
@@ -92,11 +95,11 @@
                         <div class="mb-4">
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted">Raised</span>
-                                <strong>₩ {{ number_format($campaign->collected_amount, 0, ',', '.') }}</strong>
+                                <strong>Rp {{ number_format($campaign->collected_amount, 0, ',', '.') }}</strong>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted">Goal</span>
-                                <span>₩ {{ number_format($campaign->goal_amount, 0, ',', '.') }}</span>
+                                <span>Rp {{ number_format($campaign->goal_amount, 0, ',', '.') }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-3">
                                 <span class="text-muted">Progress</span>
