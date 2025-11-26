@@ -13,6 +13,8 @@ return [
   'donation_tags' => 'Tag Donasi',
   'donation_reports' => 'Laporan Donasi',
   'donate' => 'Donasi',
+  'donation_history' => 'Riwayat Donasi',
+  'zakat_calculator' => 'Kalkulator Zakat',
   'settings' => 'Pengaturan',
   'payment_gateways' => 'Gateway Pembayaran',
 ];

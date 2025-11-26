@@ -72,3 +72,9 @@
                             <div data-i18n="Payment Gateways">{{ __('navigation.payment_gateways') }}</div>
                         </a>
                     </li>
+                    <li class="menu-item {{ request()->routeIs('admin.zakat-settings.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.zakat-settings.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-calculator"></i>
+                            <div data-i18n="Zakat Settings">{{ __('zakat.settings') }}</div>
+                        </a>
+                    </li>

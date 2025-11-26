@@ -13,6 +13,8 @@ return [
   'donation_tags' => 'Donation Tags',
   'donation_reports' => 'Donation Reports',
   'donate' => 'Donate',
+  'donation_history' => 'My Donations',
+  'zakat_calculator' => 'Zakat Calculator',
   'settings' => 'Settings',
   'payment_gateways' => 'Payment Gateways',
 ];

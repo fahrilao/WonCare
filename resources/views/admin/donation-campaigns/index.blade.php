@@ -16,8 +16,8 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="donation-campaigns-table">
-                                <thead class="table-dark">
+                            <table class="table table-hover" id="donation-campaigns-table">
+                                <thead>
                                     <tr>
                                         <th>{{ __('common.no') }}</th>
                                         <th>{{ __('donation_campaigns.dt_title') }}</th>

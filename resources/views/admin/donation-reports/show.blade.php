@@ -79,7 +79,7 @@
                                         </div>
                                         <div class="col-sm-8">
                                             <span
-                                                class="h5 text-success">Rp.{{ $donationReport->formatted_distributed_amount }}</span>
+                                                class="h5 text-success">₩{{ $donationReport->formatted_distributed_amount }}</span>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
@@ -607,7 +607,7 @@
                                             // Check if no images left and show "no images" message
                                             if ($(
                                                     '#existing-images .existing-image'
-                                                    )
+                                                )
                                                 .length === 0) {
                                                 $('#existing-images').after(`
                                                     <div class="text-center py-4" id="no-images-message">

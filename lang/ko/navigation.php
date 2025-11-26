@@ -13,6 +13,8 @@ return [
   'donation_tags' => '기부 태그',
   'donation_reports' => '기부 보고서',
   'donate' => '기부하기',
+  'donation_history' => '기부 내역',
+  'zakat_calculator' => '자카트 계산기',
   'settings' => '설정',
   'payment_gateways' => '결제 게이트웨이',
 ];

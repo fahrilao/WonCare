@@ -44,7 +44,7 @@
                                         class="form-label">{{ __('donation_reports.distributed_amount') }} <span
                                             class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <span class="input-group-text">Rp.</span>
+                                        <span class="input-group-text">₩</span>
                                         <input type="number"
                                             class="form-control @error('distributed_amount') is-invalid @enderror"
                                             id="distributed_amount" name="distributed_amount"

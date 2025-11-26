@@ -10,9 +10,22 @@
                                         <div>{{ __('ecourse.course_catalog') }}</div>
                                     </a>
                                 </li>
-                                <li class="menu-item">
-                                    <a href="#" class="menu-link">
+                                <li class="menu-item {{ request()->routeIs('member.donate.index') ? 'active' : '' }}">
+                                    <a href="{{ route('member.donate.index') }}" class="menu-link">
                                         <i class="menu-icon icon-base ti tabler-heart"></i>
                                         <div>{{ __('navigation.donate') }}</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item {{ request()->routeIs('member.zakat.*') ? 'active' : '' }}">
+                                    <a href="{{ route('member.zakat.calculator') }}" class="menu-link">
+                                        <i class="menu-icon icon-base ti tabler-calculator"></i>
+                                        <div>{{ __('navigation.zakat_calculator') }}</div>
+                                    </a>
+                                </li>
+                                <li
+                                    class="menu-item {{ request()->routeIs('member.donate.history') ? 'active' : '' }}">
+                                    <a href="{{ route('member.donate.history') }}" class="menu-link">
+                                        <i class="menu-icon icon-base ti tabler-history"></i>
+                                        <div>{{ __('navigation.donation_history') }}</div>
                                     </a>
                                 </li>

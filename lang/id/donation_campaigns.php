@@ -83,6 +83,11 @@ return [
     'no_reports_description' => 'Belum ada laporan donasi yang disubmit untuk kampanye ini.',
     'add_first_report' => 'Tambah Laporan Pertama',
 
+    // Frontend sections
+    'newest_campaigns' => 'Kampanye Terbaru',
+    'near_closing_campaigns' => 'Kampanye Segera Berakhir',
+    'random_campaigns' => 'Kampanye Lainnya',
+
     // Validation messages
     'title_required' => 'Judul kampanye wajib diisi',
     'title_max' => 'Judul kampanye tidak boleh lebih dari 255 karakter',

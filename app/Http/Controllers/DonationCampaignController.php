@@ -28,10 +28,10 @@ class DonationCampaignController extends Controller
                     return $campaign->creator ? $campaign->creator->name : '-';
                 })
                 ->addColumn('formatted_goal_amount', function ($campaign) {
-                    return 'Rp.' . $campaign->formatted_goal_amount;
+                    return '₩ ' . $campaign->formatted_goal_amount;
                 })
                 ->addColumn('formatted_collected_amount', function ($campaign) {
-                    return 'Rp.' . $campaign->formatted_collected_amount;
+                    return '₩ ' . $campaign->formatted_collected_amount;
                 })
                 ->addColumn('progress_percentage', function ($campaign) {
                     return $campaign->progress_percentage . '%';
@@ -101,7 +101,7 @@ class DonationCampaignController extends Controller
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $image) {
                     $imagePath = $image->store('donation-campaigns', 'public');
-                    
+
                     DonationCampaignImage::create([
                         'donation_campaign_id' => $campaign->id,
                         'image_url' => $imagePath,
@@ -156,7 +156,7 @@ class DonationCampaignController extends Controller
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $image) {
                     $imagePath = $image->store('donation-campaigns', 'public');
-                    
+
                     DonationCampaignImage::create([
                         'donation_campaign_id' => $donationCampaign->id,
                         'image_url' => $imagePath,
@@ -171,7 +171,7 @@ class DonationCampaignController extends Controller
             if ($request->has('delete_images')) {
                 $deleteIds = $request->input('delete_images', []);
                 $imagesToDelete = $donationCampaign->images()->whereIn('id', $deleteIds)->get();
-                
+
                 foreach ($imagesToDelete as $image) {
                     Storage::disk('public')->delete($image->image_url);
                     $image->delete();
@@ -256,20 +256,20 @@ class DonationCampaignController extends Controller
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         $uploadedImages = collect();
-        
+
         DB::transaction(function () use ($request, $donationCampaign, &$uploadedImages) {
             $currentImageCount = $donationCampaign->images()->count();
-            
+
             foreach ($request->file('images') as $index => $file) {
                 $imagePath = $file->store('donation-campaigns', 'public');
-                
+
                 $image = $donationCampaign->images()->create([
                     'image_url' => $imagePath,
                     'alt_text' => $request->input("image_alt.{$index}"),
                     'sort_order' => $currentImageCount + $index,
                     'is_primary' => $currentImageCount === 0 && $index === 0,
                 ]);
-                
+
                 $uploadedImages->push($image);
             }
         });
@@ -277,7 +277,7 @@ class DonationCampaignController extends Controller
         return response()->json([
             'success' => true,
             'message' => __('donation_campaigns.images_uploaded_successfully'),
-            'images' => $uploadedImages->map(function($image) {
+            'images' => $uploadedImages->map(function ($image) {
                 return [
                     'id' => $image->id,
                     'image_url' => $image->image_url,
@@ -298,10 +298,10 @@ class DonationCampaignController extends Controller
         ]);
 
         $image = $donationCampaign->images()->findOrFail($request->image_id);
-        
+
         // Delete the file
         Storage::disk('public')->delete($image->image_url);
-        
+
         // Delete the record
         $image->delete();
 
@@ -323,7 +323,7 @@ class DonationCampaignController extends Controller
         DB::transaction(function () use ($request, $donationCampaign) {
             // Remove primary flag from all images
             $donationCampaign->images()->update(['is_primary' => false]);
-            
+
             // Set new primary image
             $donationCampaign->images()
                 ->where('id', $request->image_id)

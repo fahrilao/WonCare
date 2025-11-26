@@ -82,6 +82,11 @@ return [
     'no_reports_description' => '이 캠페인에 대한 기부 보고서가 아직 제출되지 않았습니다.',
     'add_first_report' => '첫 번째 보고서 추가',
 
+    // Frontend sections
+    'newest_campaigns' => '최신 캠페인',
+    'near_closing_campaigns' => '마감 임박 캠페인',
+    'random_campaigns' => '다른 캠페인 살펴보기',
+
     // Validation messages
     'title_required' => '캠페인 제목은 필수입니다',
     'title_max' => '캠페인 제목은 255자를 초과할 수 없습니다',

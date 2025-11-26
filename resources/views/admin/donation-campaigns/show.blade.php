@@ -38,8 +38,8 @@
                                         {{ $donationCampaign->progress_percentage }}%
                                     </div>
                                     <p class="mb-0">
-                                        Rp. {{ $donationCampaign->formatted_collected_amount }} of
-                                        Rp. {{ $donationCampaign->formatted_goal_amount }}
+                                        ₩ {{ $donationCampaign->formatted_collected_amount }} of
+                                        ₩ {{ $donationCampaign->formatted_goal_amount }}
                                     </p>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@
                                                 <strong>{{ __('donation_campaigns.goal_amount') }}:</strong>
                                             </div>
                                             <div class="col-md-9">
-                                                <span class="h5 text-primary">Rp.
+                                                <span class="h5 text-primary">₩
                                                     {{ $donationCampaign->formatted_goal_amount }}</span>
                                             </div>
                                         </div>
@@ -193,7 +193,7 @@
                                                 <strong>{{ __('donation_campaigns.collected_amount') }}:</strong>
                                             </div>
                                             <div class="col-md-9">
-                                                <span class="h5 text-success">Rp.
+                                                <span class="h5 text-success">₩
                                                     {{ $donationCampaign->formatted_collected_amount }}</span>
                                             </div>
                                         </div>
@@ -203,7 +203,7 @@
                                                 <strong>{{ __('donation_campaigns.remaining_amount') }}:</strong>
                                             </div>
                                             <div class="col-md-9">
-                                                <span class="h5 text-info">Rp.
+                                                <span class="h5 text-info">₩
                                                     {{ $donationCampaign->formatted_remaining_amount }}</span>
                                             </div>
                                         </div>
@@ -310,8 +310,7 @@
                                                         </div>
                                                         <div class="card-body p-2">
                                                             @if ($image->alt_text)
-                                                                <small
-                                                                    class="text-muted">{{ $image->alt_text }}</small>
+                                                                <small class="text-muted">{{ $image->alt_text }}</small>
                                                             @else
                                                                 <small
                                                                     class="text-muted">{{ __('donation_campaigns.no_alt_text') }}</small>
@@ -405,13 +404,14 @@
                                                                             <h6 class="mb-0">
                                                                                 Report #{{ $report->id }}
                                                                             </h6>
-                                                                            <small class="text-muted">{{ $report->created_at->format('M d, Y') }}</small>
+                                                                            <small
+                                                                                class="text-muted">{{ $report->created_at->format('M d, Y') }}</small>
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <span class="fw-bold text-success">
-                                                                        Rp.{{ $report->formatted_distributed_amount }}
+                                                                        ₩{{ $report->formatted_distributed_amount }}
                                                                     </span>
                                                                 </td>
                                                                 <td>{{ $report->formatted_distribution_date }}</td>

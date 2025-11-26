@@ -19,6 +19,8 @@ use App\Http\Controllers\Member\Auth\EmailVerificationController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\ProfileController as MemberProfileController;
 use App\Http\Controllers\Member\LessonProgressController;
+use App\Http\Controllers\Member\DonateController;
+use App\Http\Controllers\Member\PaymentCallbackController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,7 +35,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('', function () {
-  return redirect()->route('auth.admin.login');
+  return redirect()->route('auth.login');
 });
 
 Route::get('language/{locale}', LanguageController::class)->name('language.change');
@@ -105,6 +107,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::get('donation-reports/search', [DonationReportController::class, 'search'])->name('donation-reports.search');
   Route::post('donation-reports/{donationReport}/verify', [DonationReportController::class, 'verify'])->name('donation-reports.verify');
   Route::post('donation-reports/{donationReport}/reject', [DonationReportController::class, 'reject'])->name('donation-reports.reject');
+
+  // Zakat Settings routes
+  Route::resource('zakat-settings', \App\Http\Controllers\Admin\ZakatSettingController::class)->only(['index', 'edit', 'update']);
   Route::post('donation-reports/{donationReport}/upload-images', [DonationReportController::class, 'uploadImages'])->name('donation-reports.upload-images');
   Route::delete('donation-reports/{donationReport}/images/{image}', [DonationReportController::class, 'deleteImage'])->name('donation-reports.delete-image');
   Route::post('donation-reports/{donationReport}/images/{image}/set-primary', [DonationReportController::class, 'setPrimaryImage'])->name('donation-reports.set-primary-image');
@@ -134,5 +139,39 @@ Route::group(['middleware' => ['auth:member', 'member.verified']], function () {
     Route::post('/{class}/{module}/{lesson}/complete', [LessonProgressController::class, 'completeLesson'])->name('lesson.complete');
   });
 
+  // Member donate page
+  Route::prefix('donate')->name('member.donate.')->group(function () {
+    Route::get('/', [DonateController::class, 'index'])->name('index');
+    Route::get('/history', [DonateController::class, 'history'])->name('history');
+    Route::get('/{campaign}', [DonateController::class, 'show'])->name('show');
+    Route::get('/{campaign}/checkout', [DonateController::class, 'checkout'])->name('checkout');
+    Route::post('/{campaign}', [DonateController::class, 'store'])->name('store');
+  });
+
+  // Member zakat calculator and payment
+  Route::prefix('zakat')->name('member.zakat.')->group(function () {
+    Route::get('/calculator', [\App\Http\Controllers\Member\ZakatCalculatorController::class, 'index'])->name('calculator');
+    Route::get('/checkout', [\App\Http\Controllers\Member\ZakatPaymentController::class, 'checkout'])->name('checkout');
+    Route::post('/process', [\App\Http\Controllers\Member\ZakatPaymentController::class, 'process'])->name('process');
+  });
+
   Route::get('logout', [MemberLoginController::class, 'logout'])->name('logout');
+});
+
+// Payment Webhooks (no auth required)
+Route::prefix('payment/callback')->name('payment.callback.')->group(function () {
+  // Midtrans
+  Route::post('midtrans/webhook', [PaymentCallbackController::class, 'midtransWebhook'])->name('midtrans.webhook');
+  Route::get('midtrans/webhook-test', [PaymentCallbackController::class, 'midtransWebhook'])->name('midtrans.webhook.test'); // For testing
+  Route::get('midtrans/finish', [PaymentCallbackController::class, 'midtransFinish'])->name('midtrans.finish');
+
+  // Stripe
+  Route::post('stripe/webhook', [PaymentCallbackController::class, 'stripeWebhook'])->name('stripe.webhook');
+  Route::get('stripe/success', [PaymentCallbackController::class, 'stripeSuccess'])->name('stripe.success');
+  Route::get('stripe/cancel', [PaymentCallbackController::class, 'stripeCancel'])->name('stripe.cancel');
+
+  // Toss
+  Route::post('toss/webhook', [PaymentCallbackController::class, 'tossWebhook'])->name('toss.webhook');
+  Route::get('toss/success', [PaymentCallbackController::class, 'tossSuccess'])->name('toss.success');
+  Route::get('toss/fail', [PaymentCallbackController::class, 'tossFail'])->name('toss.fail');
 });

@@ -70,7 +70,7 @@
                                         <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <span class="input-group-text">Rp.</span>
+                                        <span class="input-group-text">₩</span>
                                         <input type="number"
                                             class="form-control @error('goal_amount') is-invalid @enderror" id="goal_amount"
                                             name="goal_amount" value="{{ old('goal_amount') }}"

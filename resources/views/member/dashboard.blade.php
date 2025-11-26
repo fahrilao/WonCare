@@ -44,7 +44,7 @@
                 <div class="card-body d-flex">
                     <div>
                         <h6 class="mb-1">{{ __('dashboard.total_invested') }}</h6>
-                        <h4 class="text-muted mb-0">Rp. 100.000,-</h4>
+                        <h4 class="text-muted mb-0">₩ 100.000,-</h4>
                     </div>
                     <div class="avatar avatar-md mb-3 ms-auto">
                         <span class="avatar-initial rounded-circle bg-label-info">
@@ -358,7 +358,7 @@
                             <div class="progress-bar bg-success" role="progressbar" style="width: 75%"
                                 aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small class="text-muted">Rp 750,000 of Rp 1,000,000 raised</small>
+                        <small class="text-muted">₩ 750,000 of ₩ 1,000,000 raised</small>
                     </div>
 
                     <!-- Donate Button -->
@@ -396,7 +396,7 @@
                             <div class="progress-bar bg-info" role="progressbar" style="width: 45%" aria-valuenow="45"
                                 aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small class="text-muted">Rp 2,250,000 of Rp 5,000,000 raised</small>
+                        <small class="text-muted">₩ 2,250,000 of ₩ 5,000,000 raised</small>
                     </div>
 
                     <!-- Donate Button -->
@@ -434,7 +434,7 @@
                             <div class="progress-bar bg-warning" role="progressbar" style="width: 90%"
                                 aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small class="text-muted">Rp 2,700,000 of Rp 3,000,000 raised</small>
+                        <small class="text-muted">₩ 2,700,000 of ₩ 3,000,000 raised</small>
                     </div>
 
                     <!-- Donate Button -->
@@ -472,7 +472,7 @@
                             <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25"
                                 aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <small class="text-muted">Rp 1,250,000 of Rp 5,000,000 raised</small>
+                        <small class="text-muted">₩ 1,250,000 of ₩ 5,000,000 raised</small>
                     </div>
 
                     <!-- Donate Button -->

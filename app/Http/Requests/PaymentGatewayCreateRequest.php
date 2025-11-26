@@ -29,7 +29,7 @@ class PaymentGatewayCreateRequest extends FormRequest
             'api_key' => ['nullable', 'string', 'max:1000'],
             'secret_key' => ['nullable', 'string', 'max:1000'],
             'webhook_secret' => ['nullable', 'string', 'max:1000'],
-            'additional_config' => ['nullable', 'array'],
+            'additional_config' => ['nullable', 'string'],
             'is_active' => ['boolean'],
             'is_sandbox' => ['boolean'],
             'description' => ['nullable', 'string', 'max:1000'],

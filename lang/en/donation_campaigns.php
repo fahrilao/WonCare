@@ -83,6 +83,11 @@ return [
     'no_reports_description' => 'No donation reports have been submitted for this campaign yet.',
     'add_first_report' => 'Add First Report',
 
+    // Frontend sections
+    'newest_campaigns' => 'Newest Campaigns',
+    'near_closing_campaigns' => 'Running to Close Campaigns',
+    'random_campaigns' => 'Discover More Campaigns',
+
     // Validation messages
     'title_required' => 'Campaign title is required',
     'title_max' => 'Campaign title may not be greater than 255 characters',

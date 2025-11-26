@@ -31,7 +31,7 @@ class DonationReportController extends Controller
                     return 'Report #' . $report->id;
                 })
                 ->addColumn('formatted_distributed_amount', function ($report) {
-                    return 'Rp.' . $report->formatted_distributed_amount;
+                    return '₩ ' . $report->formatted_distributed_amount;
                 })
                 ->addColumn('formatted_distribution_date', function ($report) {
                     return $report->formatted_distribution_date;
@@ -45,16 +45,16 @@ class DonationReportController extends Controller
                 ->addColumn('actions', function ($report) {
                     $actions = '<div class="btn-group" role="group">';
                     $actions .= '<a href="' . route('admin.donation-reports.show', $report) . '" class="btn btn-info btn-sm" title="' . __('common.view') . '">' . __('common.view') . '</a>';
-                    
+
                     if ($report->canBeEdited()) {
                         $actions .= '<a href="' . route('admin.donation-reports.edit', $report) . '" class="btn btn-warning btn-sm" title="' . __('common.edit') . '">' . __('common.edit') . '</a>';
                     }
-                    
+
                     if ($report->canBeVerified()) {
                         $actions .= '<button type="button" class="btn btn-success btn-sm verify-btn" data-id="' . $report->id . '" title="Verify">Verify</button>';
                         $actions .= '<button type="button" class="btn btn-secondary btn-sm reject-btn" data-id="' . $report->id . '" title="Reject">Reject</button>';
                     }
-                    
+
                     $actions .= '<button type="button" class="btn btn-danger btn-sm delete-btn" data-id="' . $report->id . '" data-name="Report #' . $report->id . '" title="' . __('common.delete') . '">' . __('common.delete') . '</button>';
                     $actions .= '</div>';
                     return $actions;
@@ -76,11 +76,11 @@ class DonationReportController extends Controller
     {
         $campaigns = DonationCampaign::where('status', 'active')->orderBy('title')->get();
         $selectedCampaign = null;
-        
+
         if ($request->has('campaign_id')) {
             $selectedCampaign = DonationCampaign::find($request->campaign_id);
         }
-        
+
         return view('admin.donation-reports.create', compact('campaigns', 'selectedCampaign'));
     }
 
@@ -271,7 +271,7 @@ class DonationReportController extends Controller
 
         foreach ($request->file('images') as $index => $image) {
             $path = $image->store('donation-reports/' . $donationReport->id, 'public');
-            
+
             $donationReportImage = $donationReport->images()->create([
                 'image_url' => $path,
                 'alt_text' => $request->input('alt_text.' . $index, ''),
@@ -314,7 +314,7 @@ class DonationReportController extends Controller
                 ->where('id', '!=', $image->id)
                 ->orderBy('sort_order')
                 ->first();
-            
+
             if ($nextPrimaryImage) {
                 $nextPrimaryImage->update(['is_primary' => true]);
             }
