@@ -21,6 +21,7 @@ class ClassModel extends Model
         'description',
         'thumbnail',
         'status',
+        'required_points',
     ];
 
     /**
@@ -117,18 +118,59 @@ class ClassModel extends Model
     public function getFormattedDurationAttribute()
     {
         $minutes = $this->estimated_duration;
-        
+
         if ($minutes <= 0) {
             return '0 min';
         }
-        
+
         $hours = floor($minutes / 60);
         $remainingMinutes = $minutes % 60;
-        
+
         if ($hours > 0) {
             return $remainingMinutes > 0 ? "{$hours}h {$remainingMinutes}m" : "{$hours}h";
         }
-        
+
         return "{$remainingMinutes}m";
+    }
+
+    /**
+     * Get formatted required points.
+     */
+    public function getFormattedRequiredPointsAttribute()
+    {
+        return number_format($this->required_points, 0, ',', '.');
+    }
+
+    /**
+     * Check if class requires points.
+     */
+    public function requiresPoints()
+    {
+        return $this->required_points > 0;
+    }
+
+    /**
+     * Check if member has enough points to access this class.
+     */
+    public function memberCanAccess(Member $member)
+    {
+        if (!$this->requiresPoints()) {
+            return true;
+        }
+
+        return $member->current_points >= $this->required_points;
+    }
+
+    /**
+     * Get points needed for member to access this class.
+     */
+    public function pointsNeededFor(Member $member)
+    {
+        if (!$this->requiresPoints()) {
+            return 0;
+        }
+
+        $needed = $this->required_points - $member->current_points;
+        return max(0, $needed);
     }
 }

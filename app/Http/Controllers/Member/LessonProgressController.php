@@ -199,6 +199,17 @@ class LessonProgressController extends Controller
     {
         $member = Auth::guard('member')->user();
 
+        // Check if member has enough points
+        if (!$class->memberCanAccess($member)) {
+            $pointsNeeded = $class->pointsNeededFor($member);
+            return redirect()->route('member.courses.show', $class)
+                ->with('error', __('ecourse.insufficient_points', [
+                    'required' => number_format($class->required_points, 0, ',', '.'),
+                    'current' => number_format($member->current_points, 0, ',', '.'),
+                    'needed' => number_format($pointsNeeded, 0, ',', '.')
+                ]));
+        }
+
         DB::beginTransaction();
 
         try {

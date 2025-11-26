@@ -72,7 +72,7 @@ class Member extends Authenticatable implements MustVerifyEmail
         if ($provider === 'google') {
             return $query->whereNotNull('google_id');
         }
-        
+
         return $query->whereNull('google_id');
     }
 
@@ -105,7 +105,7 @@ class Member extends Authenticatable implements MustVerifyEmail
             // If it's a local file, return storage URL
             return asset('storage/avatars/' . $this->avatar);
         }
-        
+
         // Default avatar based on name
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->display_name) . '&color=7F9CF5&background=EBF4FF';
     }
@@ -118,7 +118,7 @@ class Member extends Authenticatable implements MustVerifyEmail
         if (!$this->date_of_birth) {
             return null;
         }
-        
+
         return $this->date_of_birth->age;
     }
 
@@ -173,7 +173,7 @@ class Member extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get total points earned by the member.
+     * Get total points earned by the member (from enrollments).
      */
     public function getTotalPointsAttribute()
     {
@@ -186,5 +186,37 @@ class Member extends Authenticatable implements MustVerifyEmail
     public function isEnrolledIn($classId)
     {
         return $this->activeEnrollments()->where('class_id', $classId)->exists();
+    }
+
+    /**
+     * Get member's point balance record
+     */
+    public function pointBalance()
+    {
+        return $this->hasOne(MemberPoint::class);
+    }
+
+    /**
+     * Get member's point transactions
+     */
+    public function pointTransactions()
+    {
+        return $this->hasMany(PointTransaction::class);
+    }
+
+    /**
+     * Get current point balance
+     */
+    public function getCurrentPointsAttribute()
+    {
+        return $this->pointBalance ? $this->pointBalance->points : 0;
+    }
+
+    /**
+     * Get formatted current points
+     */
+    public function getFormattedCurrentPointsAttribute()
+    {
+        return number_format($this->current_points, 0, ',', '.');
     }
 }

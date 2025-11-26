@@ -3,7 +3,8 @@
 return [
   'create_title' => '클래스 생성',
   'edit_title' => '클래스 편집',
-  'view_title' => '클래스 상세정보',
+  'view_title' => '클래스 세부정보',
+  'list_title' => '클래스',
 
   'title' => '제목',
   'description' => '설명',
@@ -16,4 +17,7 @@ return [
   'status' => '상태',
   'status_draft' => '초안',
   'status_published' => '게시됨',
+  'required_points' => '필요한 포인트',
+  'required_points_help' => '회원이 이 코스에 액세스하는 데 필요한 최소 포인트 (0 = 무료 액세스)',
+  'create_description' => '새 클래스를 생성하려면 아래 양식을 작성하세요',
 ];

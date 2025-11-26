@@ -19,6 +19,11 @@ return [
     'enrollment_reactivated' => 'Your enrollment has been reactivated!',
     'already_enrolled' => 'You are already enrolled in this course.',
     'not_enrolled' => 'You are not enrolled in this course.',
+    'insufficient_points' => 'Insufficient points! This course requires :required points. You have :current points. You need :needed more points.',
+    'required_points' => 'Required Points',
+    'your_points' => 'Your Points',
+    'points_needed' => 'Points Needed',
+    'free_course' => 'Free Course',
 
     // Lessons
     'lesson_completed' => 'Lesson completed successfully!',
@@ -64,7 +69,7 @@ return [
     'view_lesson' => 'View Lesson',
     'download_certificate' => 'Download Certificate',
     'share_progress' => 'Share Progress',
-    
+
     // Video Controls
     'swipe_up_next' => 'Swipe up for next lesson',
     'swipe_down_previous' => 'Swipe down for previous lesson',

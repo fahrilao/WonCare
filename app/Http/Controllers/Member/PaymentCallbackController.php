@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Donation;
 use App\Models\DonationCampaign;
+use App\Services\PointService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -49,6 +50,9 @@ class PaymentCallbackController extends Controller
         $campaign->collected_amount += $donation->amount;
         $campaign->save();
       }
+
+      // Award points to member
+      $this->awardPointsForDonation($donation);
     } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {
       $donation->payment_status = 'failed';
     } elseif ($transactionStatus === 'pending') {
@@ -125,6 +129,9 @@ class PaymentCallbackController extends Controller
         $campaign->collected_amount += $donation->amount;
         $campaign->save();
       }
+
+      // Award points to member
+      $this->awardPointsForDonation($donation);
     }
 
     return response()->json(['message' => 'OK'], 200);
@@ -221,6 +228,9 @@ class PaymentCallbackController extends Controller
         $campaign->collected_amount += $donation->amount;
         $campaign->save();
       }
+
+      // Award points to member
+      $this->awardPointsForDonation($donation);
     } elseif (in_array($status, ['CANCELED', 'FAILED'])) {
       $donation->payment_status = 'failed';
       $donation->payment_response = json_encode($payload);
@@ -276,5 +286,43 @@ class PaymentCallbackController extends Controller
 
     return redirect()->route('dashboard')
       ->with('error', 'Payment failed.');
+  }
+
+  /**
+   * Award points to member for donation/zakat payment
+   */
+  private function awardPointsForDonation(Donation $donation)
+  {
+    try {
+      $pointService = app(PointService::class);
+
+      // Determine source type
+      $source = $donation->donation_campaign_id ? 'donation' : 'zakat';
+      $sourceType = Donation::class;
+
+      // Award points
+      $pointService->awardPointsForPayment(
+        $donation->member,
+        $donation->amount,
+        $donation->currency,
+        $source,
+        $donation->id,
+        $sourceType,
+        "Earned points from {$source} payment"
+      );
+
+      Log::info("Points awarded for donation", [
+        'donation_id' => $donation->id,
+        'member_id' => $donation->member_id,
+        'amount' => $donation->amount,
+        'currency' => $donation->currency,
+      ]);
+    } catch (\Exception $e) {
+      Log::error("Failed to award points for donation", [
+        'donation_id' => $donation->id,
+        'error' => $e->getMessage(),
+      ]);
+      // Don't throw exception - points failure shouldn't block payment
+    }
   }
 }

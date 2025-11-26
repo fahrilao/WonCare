@@ -34,9 +34,8 @@
 
                             <div class="mb-3">
                                 <label for="description" class="form-label">{{ __('classes.description') }}</label>
-                                <textarea class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}"
-                                    id="description" name="description" rows="4"
-                                    placeholder="Enter class description">{{ old('description') }}</textarea>
+                                <textarea class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" id="description"
+                                    name="description" rows="4" placeholder="Enter class description">{{ old('description') }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -44,10 +43,10 @@
 
                             <div class="mb-3">
                                 <label for="categories" class="form-label">{{ __('classes.categories') }}</label>
-                                <select class="form-select{{ $errors->has('categories') ? ' is-invalid' : '' }}" 
+                                <select class="form-select{{ $errors->has('categories') ? ' is-invalid' : '' }}"
                                     id="categories" name="categories[]" multiple required>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" 
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
                                             {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>
                                             {{ $category->name }}
                                         </option>
@@ -61,8 +60,9 @@
 
                             <div class="mb-3">
                                 <label for="thumbnail" class="form-label">{{ __('classes.thumbnail') }}</label>
-                                <input type="file" class="form-control{{ $errors->has('thumbnail') ? ' is-invalid' : '' }}"
-                                    id="thumbnail" name="thumbnail" accept="image/*">
+                                <input type="file"
+                                    class="form-control{{ $errors->has('thumbnail') ? ' is-invalid' : '' }}" id="thumbnail"
+                                    name="thumbnail" accept="image/*">
                                 @error('thumbnail')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -71,8 +71,8 @@
 
                             <div class="mb-3">
                                 <label for="status" class="form-label">{{ __('classes.status') }}</label>
-                                <select class="form-select{{ $errors->has('status') ? ' is-invalid' : '' }}" 
-                                    id="status" name="status" required>
+                                <select class="form-select{{ $errors->has('status') ? ' is-invalid' : '' }}" id="status"
+                                    name="status" required>
                                     <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>
                                         {{ __('classes.status_draft') }}
                                     </option>
@@ -83,6 +83,18 @@
                                 @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="required_points" class="form-label">{{ __('classes.required_points') }}</label>
+                                <input type="number"
+                                    class="form-control{{ $errors->has('required_points') ? ' is-invalid' : '' }}"
+                                    id="required_points" name="required_points" value="{{ old('required_points', 0) }}"
+                                    min="0" step="1" placeholder="0">
+                                @error('required_points')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">{{ __('classes.required_points_help') }}</small>
                             </div>
                             <br>
                             <div class="d-flex justify-content-between">
@@ -119,9 +131,12 @@
                     reader.onload = function(e) {
                         // Remove existing preview
                         $('#thumbnail-preview').remove();
-                        
+
                         // Add new preview
-                        const preview = $('<div id="thumbnail-preview" class="mt-2"><img src="' + e.target.result + '" class="img-thumbnail" style="max-width: 200px; max-height: 200px;"></div>');
+                        const preview = $('<div id="thumbnail-preview" class="mt-2"><img src="' + e
+                            .target.result +
+                            '" class="img-thumbnail" style="max-width: 200px; max-height: 200px;"></div>'
+                            );
                         $('#thumbnail').parent().append(preview);
                     };
                     reader.readAsDataURL(file);
