@@ -19,27 +19,27 @@ return [
   'feature_4_title' => 'Belajar & Berkembang',
   'feature_4_desc' => 'Akses kursus dan sumber daya edukasi',
 
-  'step1_title' => 'Informasi Keuangan',
-  'step1_subtitle' => 'Beritahu kami tentang pemasukan dan pengeluaran bulanan Anda',
-  'monthly_income' => 'Pemasukan Bulanan',
-  'monthly_income_help' => 'Masukkan total pemasukan bulanan Anda',
-  'monthly_expense' => 'Pengeluaran Bulanan',
-  'monthly_expense_help' => 'Masukkan total pengeluaran bulanan Anda',
+  'step1_title' => 'Selamat Datang di WonCare',
+  'step1_subtitle' => 'Mari atur profil keuangan Anda',
 
-  'step2_title' => 'Pekerjaan Anda',
-  'step2_subtitle' => 'Apa pekerjaan Anda?',
+  'step2_title' => 'Pendapatan & Potongan',
+  'step2_subtitle' => 'Beritahu kami tentang gaji dan potongan Anda',
+
+  'step3_title' => 'Pengeluaran Bulanan',
+  'step3_subtitle' => 'Rincikan pengeluaran bulanan Anda per kategori',
+  'expense_help' => 'Masukkan rata-rata pengeluaran bulanan untuk setiap kategori. Kosongkan jika tidak ada.',
+
+  'step4_title' => 'Tujuan & Impian',
+  'step4_subtitle' => 'Bagikan pekerjaan, tujuan keuangan, dan aset impian Anda',
   'occupation' => 'Pekerjaan',
   'occupation_placeholder' => 'contoh: Software Engineer, Guru, Pengusaha',
-  'occupation_help' => 'Masukkan pekerjaan atau profesi Anda saat ini',
-
-  'step3_title' => 'Tujuan Keuangan',
-  'step3_subtitle' => 'Apa tujuan keuangan Anda?',
-  'financial_goal' => 'Tujuan Keuangan Anda',
+  'financial_goal' => 'Tujuan Keuangan',
   'financial_goal_placeholder' => 'contoh: Menabung untuk DP rumah, Membangun dana darurat, Investasi untuk pensiun...',
-  'financial_goal_help' => 'Bagikan tujuan keuangan jangka pendek dan jangka panjang Anda',
+  'optional' => 'Opsional',
+  'savings_target_help' => 'Tetapkan target tabungan Anda untuk tahun ini',
+  'dream_assets_help' => 'Daftar barang yang ingin Anda miliki (contoh: mobil, rumah, gadget)',
+  'add_dream_asset' => 'Tambah Aset Lainnya',
 
-  'step4_title' => 'Semua Sudah Siap!',
-  'step4_subtitle' => 'Terima kasih telah melengkapi profil Anda. Kami siap membantu Anda mencapai tujuan keuangan.',
   'step5_title' => 'Semua Sudah Siap!',
   'step5_subtitle' => 'Terima kasih telah melengkapi profil Anda. Kami siap membantu Anda mencapai tujuan keuangan.',
   'we_can_help' => 'Bagaimana Kami Dapat Membantu Anda',
@@ -49,4 +49,12 @@ return [
   'help_4' => 'Belajar melalui kursus dan sumber daya edukasi kami',
 
   'completed_success' => 'Selamat datang! Profil Anda telah berhasil diatur.',
+
+  // Legacy keys for backward compatibility
+  'monthly_income' => 'Pemasukan Bulanan',
+  'monthly_income_help' => 'Masukkan total pemasukan bulanan Anda',
+  'monthly_expense' => 'Pengeluaran Bulanan',
+  'monthly_expense_help' => 'Masukkan total pengeluaran bulanan Anda',
+  'occupation_help' => 'Masukkan pekerjaan atau profesi Anda saat ini',
+  'financial_goal_help' => 'Bagikan tujuan keuangan jangka pendek dan jangka panjang Anda',
 ];

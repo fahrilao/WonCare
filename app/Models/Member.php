@@ -227,4 +227,44 @@ class Member extends Authenticatable implements MustVerifyEmail
     {
         return number_format($this->current_points, 0, ',', '.');
     }
+
+    /**
+     * Get member's financial incomes
+     */
+    public function financialIncomes()
+    {
+        return $this->hasMany(FinancialIncome::class);
+    }
+
+    /**
+     * Get member's financial expenses
+     */
+    public function financialExpenses()
+    {
+        return $this->hasMany(FinancialExpense::class);
+    }
+
+    /**
+     * Get member's savings targets
+     */
+    public function savingsTargets()
+    {
+        return $this->hasMany(SavingsTarget::class);
+    }
+
+    /**
+     * Get member's dream assets
+     */
+    public function dreamAssets()
+    {
+        return $this->hasMany(DreamAsset::class);
+    }
+
+    /**
+     * Get current active savings target
+     */
+    public function currentSavingsTarget()
+    {
+        return $this->hasOne(SavingsTarget::class)->where('target_year', date('Y'));
+    }
 }

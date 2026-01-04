@@ -25,6 +25,13 @@
          <span>{{ __('navigation.zakat_calculator') }}</span>
      </a>
  </li>
+ <li class="nav-item {{ request()->routeIs('member.financial-tools.*') ? 'active' : '' }}">
+     <a href="{{ route('member.financial-tools.index') }}"
+         class="nav-link {{ request()->routeIs('member.financial-tools.*') ? 'active' : '' }}">
+         <i class="icon-base ti tabler-wallet me-2"></i>
+         <span>{{ __('financial.title') }}</span>
+     </a>
+ </li>
  <li class="nav-item {{ request()->routeIs('member.donate.history') ? 'active' : '' }}">
      <a href="{{ route('member.donate.history') }}"
          class="nav-link {{ request()->routeIs('member.donate.history') ? 'active' : '' }}">

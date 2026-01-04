@@ -29,6 +29,7 @@ use App\Http\Controllers\Member\LessonProgressController;
 use App\Http\Controllers\Member\DonateController;
 use App\Http\Controllers\Member\PaymentCallbackController;
 use App\Http\Controllers\Member\OnboardingController;
+use App\Http\Controllers\Member\FinancialToolsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -199,6 +200,17 @@ Route::group(['middleware' => ['auth:member', 'member.verified']], function () {
     Route::get('/calculator', [\App\Http\Controllers\Member\ZakatCalculatorController::class, 'index'])->name('calculator');
     Route::get('/checkout', [\App\Http\Controllers\Member\ZakatPaymentController::class, 'checkout'])->name('checkout');
     Route::post('/process', [\App\Http\Controllers\Member\ZakatPaymentController::class, 'process'])->name('process');
+  });
+
+  // Financial Tools routes
+  Route::prefix('financial-tools')->name('member.financial-tools.')->group(function () {
+    Route::get('/', [FinancialToolsController::class, 'index'])->name('index');
+    Route::post('/income', [FinancialToolsController::class, 'storeIncome'])->name('store-income');
+    Route::post('/expense', [FinancialToolsController::class, 'storeExpense'])->name('store-expense');
+    Route::post('/savings-target', [FinancialToolsController::class, 'storeSavingsTarget'])->name('store-savings-target');
+    Route::post('/dream-asset', [FinancialToolsController::class, 'storeDreamAsset'])->name('store-dream-asset');
+    Route::get('/calculate-zakat', [FinancialToolsController::class, 'calculateZakatAuto'])->name('calculate-zakat');
+    Route::get('/download-report', [FinancialToolsController::class, 'downloadReport'])->name('download-report');
   });
 
   Route::get('logout', [MemberLoginController::class, 'logout'])->name('logout');

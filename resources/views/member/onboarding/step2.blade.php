@@ -9,8 +9,8 @@
             <div class="card-body">
                 <div class="text-center mb-4">
                     <div class="onboarding-step mb-3">{{ __('onboarding.step') }} 2/5</div>
-                    <h2 class="onboarding-title mb-2">{{ __('onboarding.step1_title') }}</h2>
-                    <p class="onboarding-subtitle mb-0">{{ __('onboarding.step1_subtitle') }}</p>
+                    <h2 class="onboarding-title mb-2">{{ __('onboarding.step2_title') }}</h2>
+                    <p class="onboarding-subtitle mb-0">{{ __('onboarding.step2_subtitle') }}</p>
                     <div class="onboarding-progress" aria-hidden="true">
                         <span class="is-done"></span>
                         <span class="is-active"></span>
@@ -24,33 +24,61 @@
                     @csrf
 
                     <div class="mb-4">
-                        <label for="monthly_income" class="form-label">{{ __('onboarding.monthly_income') }}</label>
+                        <label for="gross_salary" class="form-label">{{ __('financial.gross_salary') }} *</label>
                         <div class="input-group">
                             <span class="input-group-text">Rp</span>
-                            <input type="number" class="form-control @error('monthly_income') is-invalid @enderror"
-                                id="monthly_income" name="monthly_income"
-                                value="{{ old('monthly_income', $member->monthly_income) }}" placeholder="0" step="0.01"
-                                required>
-                        </div>
-                        @error('monthly_income')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                        <small class="text-muted">{{ __('onboarding.monthly_income_help') }}</small>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="monthly_expense" class="form-label">{{ __('onboarding.monthly_expense') }}</label>
-                        <div class="input-group">
-                            <span class="input-group-text">Rp</span>
-                            <input type="number" class="form-control @error('monthly_expense') is-invalid @enderror"
-                                id="monthly_expense" name="monthly_expense"
-                                value="{{ old('monthly_expense', $member->monthly_expense) }}" placeholder="0"
+                            <input type="number" class="form-control @error('gross_salary') is-invalid @enderror"
+                                id="gross_salary" name="gross_salary" value="{{ old('gross_salary') }}" placeholder="0"
                                 step="0.01" required>
                         </div>
-                        @error('monthly_expense')
+                        @error('gross_salary')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                        <small class="text-muted">{{ __('onboarding.monthly_expense_help') }}</small>
+                    </div>
+
+                    <h6 class="mb-3">{{ __('financial.total_deductions') }}</h6>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="kookmin_yeongeum" class="form-label">{{ __('financial.kookmin_yeongeum') }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="number" class="form-control" id="kookmin_yeongeum" name="kookmin_yeongeum"
+                                    value="{{ old('kookmin_yeongeum', 0) }}" placeholder="0" step="0.01">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="twejigeum" class="form-label">{{ __('financial.twejigeum') }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="number" class="form-control" id="twejigeum" name="twejigeum"
+                                    value="{{ old('twejigeum', 0) }}" placeholder="0" step="0.01">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="insurance" class="form-label">{{ __('financial.insurance') }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="number" class="form-control" id="insurance" name="insurance"
+                                    value="{{ old('insurance', 0) }}" placeholder="0" step="0.01">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="tax" class="form-label">{{ __('financial.tax') }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="number" class="form-control" id="tax" name="tax"
+                                    value="{{ old('tax', 0) }}" placeholder="0" step="0.01">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="other_deductions" class="form-label">{{ __('financial.other_deductions') }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp</span>
+                                <input type="number" class="form-control" id="other_deductions" name="other_deductions"
+                                    value="{{ old('other_deductions', 0) }}" placeholder="0" step="0.01">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="d-flex gap-2 onboarding-actions">
