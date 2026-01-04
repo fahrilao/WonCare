@@ -80,9 +80,9 @@ class LessonController extends Controller
     {
         $validated = $request->validated();
 
-        // Handle video file upload
-        if ($request->hasFile('video_file') && $validated['video_source'] === 'upload') {
-            $validated['video_file'] = $request->file('video_file')->store('lessons/videos', 'public');
+        // Handle video path from chunked upload
+        if ($request->filled('video_path') && $validated['video_source'] === 'upload') {
+            $validated['video_file'] = $request->input('video_path');
         }
 
         // Clear video fields based on source
@@ -147,13 +147,13 @@ class LessonController extends Controller
     {
         $validated = $request->validated();
 
-        // Handle video file upload
-        if ($request->hasFile('video_file') && $validated['video_source'] === 'upload') {
+        // Handle video path from chunked upload
+        if ($request->filled('video_path') && $validated['video_source'] === 'upload') {
             // Delete old video file if exists
             if ($lesson->video_file) {
                 Storage::disk('public')->delete($lesson->video_file);
             }
-            $validated['video_file'] = $request->file('video_file')->store('lessons/videos', 'public');
+            $validated['video_file'] = $request->input('video_path');
         }
 
         // Clear video fields based on source
@@ -307,7 +307,7 @@ class LessonController extends Controller
         ]);
 
         $maxPosition = Question::where('lesson_id', $lesson->id)->max('position');
-        
+
         $question = Question::create([
             'lesson_id' => $lesson->id,
             'question' => $request->question,
@@ -348,7 +348,7 @@ class LessonController extends Controller
     {
         $lessonId = $question->lesson_id;
         $position = $question->position;
-        
+
         $question->delete();
 
         // Shift remaining questions up to fill the gap
@@ -373,7 +373,7 @@ class LessonController extends Controller
         ]);
 
         $maxPosition = QuestionOption::where('question_id', $question->id)->max('position');
-        
+
         $option = QuestionOption::create([
             'question_id' => $question->id,
             'option_text' => $request->option_text,
@@ -417,7 +417,7 @@ class LessonController extends Controller
     {
         $questionId = $option->question_id;
         $position = $option->position;
-        
+
         $option->delete();
 
         // Shift remaining options up to fill the gap

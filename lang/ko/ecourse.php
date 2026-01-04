@@ -5,6 +5,13 @@ return [
     'my_courses' => '내 코스',
     'browse_courses' => '코스 둘러보기',
     'course_catalog' => '코스 카탈로그',
+    'search_courses' => '코스 검색...',
+    'filters' => '필터',
+    'all_categories' => '모든 카테고리',
+    'courses_found' => '코스 발견',
+    'back_to_courses' => '코스 목록으로',
+    'continue_learning' => '학습 계속하기',
+    'course_content' => '코스 콘텐츠',
 
     // Course Management
     'join_now' => '지금 참여',
@@ -19,6 +26,13 @@ return [
     'enrollment_reactivated' => '등록이 다시 활성화되었습니다!',
     'already_enrolled' => '이미 이 코스에 등록되어 있습니다.',
     'not_enrolled' => '이 코스에 등록되어 있지 않습니다.',
+    'insufficient_points' => '포인트가 부족합니다! 이 코스는 :required 포인트가 필요합니다. 현재 :current 포인트를 보유하고 있습니다. :needed 포인트가 더 필요합니다.',
+    'required_points' => '필요 포인트',
+    'points_required' => '포인트 필요',
+    'need_more_points' => ':points 포인트 더 필요',
+    'your_points' => '내 포인트',
+    'points_needed' => '필요 포인트',
+    'free_course' => '무료 코스',
 
     // Lessons
     'lesson_completed' => '레슨이 성공적으로 완료되었습니다!',
@@ -41,12 +55,19 @@ return [
     // Course Information
     'course_duration' => '코스 기간',
     'total_lessons' => '총 레슨 수',
+    'lessons' => '레슨',
     'enrolled_students' => '등록 학생 수',
+    'students' => '학생',
+    'of' => '/',
+    'lessons_completed' => '레슨 완료',
     'course_description' => '코스 설명',
     'course_modules' => '코스 모듈',
     'module_lessons' => '모듈 레슨',
+    'modules' => '모듈',
 
     // Status
+    'available' => '이용 가능',
+    'locked' => '잠금',
     'enrolled_on' => '등록일',
     'completed_on' => '완료일',
     'last_accessed' => '마지막 접근',
@@ -55,6 +76,11 @@ return [
     // Messages
     'no_courses_enrolled' => '아직 등록된 코스가 없습니다.',
     'no_courses_available' => '현재 이용 가능한 코스가 없습니다.',
+    'no_courses_message' => '새로운 코스가 추가될 때까지 기다려 주세요.',
+    'no_results' => '코스를 찾을 수 없습니다',
+    'try_different_search' => '다른 검색어나 카테고리를 시도해 보세요.',
+    'no_modules' => '모듈이 없습니다',
+    'no_modules_message' => '이 코스에는 아직 모듈이 추가되지 않았습니다.',
     'course_not_found' => '코스를 찾을 수 없습니다.',
     'module_not_found' => '모듈을 찾을 수 없습니다.',
     'lesson_not_found' => '레슨을 찾을 수 없습니다.',
@@ -64,7 +90,7 @@ return [
     'view_lesson' => '레슨 보기',
     'download_certificate' => '수료증 다운로드',
     'share_progress' => '진행률 공유',
-    
+
     // Video Controls
     'swipe_up_next' => '다음 레슨으로 위로 스와이프',
     'swipe_down_previous' => '이전 레슨으로 아래로 스와이프',

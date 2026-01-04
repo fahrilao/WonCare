@@ -106,4 +106,21 @@ return [
 
   // Currency
   'select_currency' => 'Pilih Mata Uang',
+
+  // Checkout page
+  'back_to_calculator' => 'Kembali ke Kalkulator',
+  'complete_payment' => 'Selesaikan Pembayaran Zakat Anda',
+  'payment_summary' => 'Ringkasan Pembayaran Zakat',
+  'pay_zakat' => 'Bayar Zakat',
+  'secure_payment' => 'Pembayaran aman dan terpercaya',
+  'about_payment' => 'Tentang Pembayaran Zakat',
+  'payment_info_1' => 'Pembayaran Zakat Anda akan tercatat dalam riwayat donasi',
+  'payment_info_2' => 'Anda akan menerima konfirmasi setelah pembayaran berhasil',
+  'payment_info_3' => 'Semua pembayaran diproses secara aman melalui mitra pembayaran kami',
+  'payment_info_4' => 'Untuk pertanyaan, silakan hubungi tim dukungan kami',
+  'zakat_type' => 'Jenis Zakat',
+  'calculated_amount' => 'Jumlah Terhitung',
+  'details' => 'Detail',
+  'currency_gateway_note' => 'Gateway pembayaran akan dipilih otomatis berdasarkan pilihan mata uang Anda.',
+  'payment_gateway' => 'Gateway Pembayaran',
 ];

@@ -3,6 +3,8 @@
 @section('title', $lesson->title)
 
 @push('styles')
+    <!-- Plyr.js for YouTube-like video player -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         .lesson-container {
             height: 100vh;
@@ -28,7 +30,59 @@
         .video-player {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            background: #000;
+        }
+
+        /* Plyr player styling - full screen like YouTube */
+        #plyrContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #plyrContainer .plyr {
+            width: 100%;
+            height: 100%;
+        }
+
+        #plyrContainer .plyr__video-wrapper {
+            height: 100%;
+        }
+
+        #plyrContainer .plyr video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Plyr controls styling */
+        .plyr--video .plyr__controls {
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+            padding: 20px 10px 10px;
+        }
+
+        .plyr__control--overlaid {
+            background: rgba(255, 0, 0, 0.8);
+        }
+
+        .plyr__control--overlaid:hover {
+            background: rgba(255, 0, 0, 1);
+        }
+
+        .plyr--full-ui input[type=range] {
+            color: #ff0000;
+        }
+
+        .plyr__menu__container .plyr__control[role=menuitemradio][aria-checked=true]::before {
+            background: #ff0000;
+        }
+
+        /* YouTube iframe styling */
+        iframe.video-player {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .video-overlay {
@@ -63,7 +117,8 @@
             position: absolute;
             top: 0;
             width: 30%;
-            height: 100%;
+            height: calc(100% - 80px);
+            /* Leave space for video controls */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -490,17 +545,27 @@
                 </div>
             </div>
         @elseif ($lesson->video_file)
-            <!-- Use video tag for direct video files -->
-            <div class="video-container">
-                <video class="video-player" id="videoPlayer" controls autoplay muted playsinline>
-                    <source src="{{ asset('storage/' . $lesson->video_file) }}" type="video/mp4">
+            <!-- Use Plyr.js for YouTube-like video player -->
+            <div class="video-container" id="plyrContainer">
+                @php
+                    $videoPath = $lesson->video_file;
+                    $extension = pathinfo($videoPath, PATHINFO_EXTENSION);
+                    $mimeTypes = [
+                        'mp4' => 'video/mp4',
+                        'webm' => 'video/webm',
+                        'ogg' => 'video/ogg',
+                        'mov' => 'video/quicktime',
+                        'avi' => 'video/x-msvideo',
+                        'wmv' => 'video/x-ms-wmv',
+                        'flv' => 'video/x-flv',
+                        'mkv' => 'video/x-matroska',
+                    ];
+                    $mimeType = $mimeTypes[strtolower($extension)] ?? 'video/mp4';
+                @endphp
+                <video class="video-player" id="videoPlayer" playsinline>
+                    <source src="{{ asset('storage/' . $lesson->video_file) }}" type="{{ $mimeType }}">
                     Your browser does not support the video tag.
                 </video>
-                <!-- Tap zones for lesson navigation -->
-                <div class="video-tap-zones">
-                    <div class="tap-zone tap-zone-left" id="tapZoneLeftVideo"></div>
-                    <div class="tap-zone tap-zone-right" id="tapZoneRightVideo"></div>
-                </div>
             </div>
         @elseif ($lesson->youtube_url)
             <!-- Use iframe for YouTube URLs -->
@@ -571,12 +636,51 @@
 @endsection
 
 @push('scripts')
+    <!-- Plyr.js for YouTube-like video player -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('lessonContainer');
-            const videoPlayer = document.getElementById('videoPlayer'); // HTML5 video element
+            const videoPlayerElement = document.getElementById('videoPlayer'); // HTML5 video element
             const videoPlayerIframe = document.getElementById('videoPlayerIframe'); // YouTube iframe
             const videoOverlay = document.getElementById('videoOverlay');
+
+            // Initialize Plyr for uploaded videos
+            let plyrPlayer = null;
+            if (videoPlayerElement) {
+                plyrPlayer = new Plyr(videoPlayerElement, {
+                    controls: [
+                        'play-large',
+                        'play',
+                        'progress',
+                        'current-time',
+                        'duration',
+                        'mute',
+                        'volume',
+                        'settings',
+                        'fullscreen'
+                    ],
+                    settings: ['quality', 'speed'],
+                    speed: {
+                        selected: 1,
+                        options: [0.5, 0.75, 1, 1.25, 1.5, 2]
+                    },
+                    keyboard: {
+                        focused: true,
+                        global: true
+                    },
+                    tooltips: {
+                        controls: true,
+                        seek: true
+                    },
+                    hideControls: true,
+                    clickToPlay: true,
+                    disableContextMenu: true
+                });
+            }
+
+            // Reference for keyboard controls
+            const videoPlayer = plyrPlayer ? plyrPlayer : null;
             let startY = 0;
             let currentY = 0;
             let isScrolling = false;

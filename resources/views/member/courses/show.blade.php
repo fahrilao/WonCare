@@ -2,220 +2,436 @@
 
 @section('title', $class->title)
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/member-course.css') }}" />
+    <style>
+        .course-detail-hero {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            border-radius: 0.5rem 0.5rem 0 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 100%);
+        }
+
+        .course-detail-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .course-detail-hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+        }
+
+        .btn-continue-learning {
+            background: #1e8e74;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-continue-learning:hover {
+            background: #166a57;
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .course-stats-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .course-stats-row .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .course-progress-section {
+            margin-top: 1rem;
+        }
+
+        .course-progress-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .course-progress-bar {
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .course-progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e8e74 0%, #38a88f 100%);
+            border-radius: 6px;
+        }
+
+        .course-progress-percent {
+            color: #1e8e74;
+            font-weight: 600;
+        }
+
+        .module-accordion {
+            border: none;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .module-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(30, 142, 116, 0.15);
+            color: #1e8e74;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.15rem;
+        }
+
+        .module-meta {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .module-toggle {
+            color: #6c757d;
+            transition: transform 0.2s ease;
+        }
+
+        .module-header[aria-expanded="true"] .module-toggle {
+            transform: rotate(180deg);
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 0;
+            padding-left: 3.25rem;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .lesson-item:last-child {
+            border-bottom: none;
+        }
+
+        .lesson-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .lesson-status.completed {
+            background: rgba(30, 142, 116, 0.15);
+            color: #1e8e74;
+        }
+
+        .lesson-status.pending {
+            background: #f0f0f0;
+            color: #aaa;
+        }
+
+        .lesson-type-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .lesson-type-icon.video {
+            background: rgba(255, 152, 0, 0.15);
+            color: #ff9800;
+        }
+
+        .lesson-type-icon.quiz {
+            background: rgba(156, 39, 176, 0.15);
+            color: #9c27b0;
+        }
+
+        .lesson-type-icon.text {
+            background: rgba(33, 150, 243, 0.15);
+            color: #2196f3;
+        }
+
+        .lesson-info {
+            flex: 1;
+        }
+
+        .lesson-title {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .lesson-duration {
+            font-size: 0.8rem;
+            color: #999;
+        }
+    </style>
+@endpush
+
 @section('content')
+    @php
+        $thumbnailUrl = $class->thumbnail ? asset('storage/' . $class->thumbnail) : null;
+        $totalLessons = (int) ($class->total_lessons ?? 0);
+        $minutes = (int) ($class->estimated_duration ?? 0);
+        $hours = $minutes > 0 ? (int) floor($minutes / 60) : 0;
+        $remainingMinutes = $minutes > 0 ? (int) ($minutes % 60) : 0;
+        $completedLessonsCount = $enrollment ? $lessonProgress->where('completed', true)->count() : 0;
+        $progressPercent = $enrollment ? (int) round($enrollment->completion_percentage) : 0;
+        $enrolledStudents = $class->enrollments()->count();
+    @endphp
+
     <div class="row">
         <div class="col-12">
-            <!-- Course Header -->
+            <a href="{{ route('member.courses.index') }}"
+                class="text-decoration-none d-inline-flex align-items-center gap-2 mb-4" style="color: #1e8e74;">
+                <i class="icon-base ti tabler-arrow-left"></i>
+                {{ __('ecourse.back_to_courses') }}
+            </a>
+
             <div class="card mb-4">
-                <div class="card-header p-0">
-                    <div class="bg-gradient-primary text-white px-4 py-4 rounded-top">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h4 class="text-white mb-2">{{ $class->title }}</h4>
-                                <p class="text-white-75 mb-2">{{ $class->description }}</p>
-                                <div class="d-flex flex-wrap gap-2">
-                                    @foreach ($class->categories as $category)
-                                        <span class="badge bg-white text-primary">{{ $category->name }}</span>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="text-end">
-                                @if ($enrollment)
-                                    <div class="text-white-75 mb-1">{{ __('ecourse.course_progress') }}</div>
-                                    <div class="h5 text-white mb-0">
-                                        {{ number_format($enrollment->completion_percentage, 1) }}%</div>
-                                @endif
-                            </div>
-                        </div>
+                <div class="course-detail-hero">
+                    @if ($thumbnailUrl)
+                        <img src="{{ $thumbnailUrl }}" alt="{{ $class->title }}">
+                    @endif
+                    <div class="course-detail-hero-overlay">
+                        @if ($enrollment)
+                            @php
+                                $firstIncompleteLesson = null;
+                                foreach ($modules as $module) {
+                                    foreach ($module->lessons as $lesson) {
+                                        $progress = $lessonProgress->where('lesson_id', $lesson->id)->first();
+                                        if (!$progress || !$progress->completed) {
+                                            $firstIncompleteLesson = ['module' => $module, 'lesson' => $lesson];
+                                            break 2;
+                                        }
+                                    }
+                                }
+                            @endphp
+                            @if ($firstIncompleteLesson)
+                                <a href="{{ route('member.courses.lesson', [$class, $firstIncompleteLesson['module'], $firstIncompleteLesson['lesson']]) }}"
+                                    class="btn-continue-learning">
+                                    <i class="icon-base ti tabler-player-play"></i>
+                                    {{ __('ecourse.continue_learning') }}
+                                </a>
+                            @else
+                                <span class="btn-continue-learning">
+                                    <i class="icon-base ti tabler-check"></i>
+                                    {{ __('ecourse.course_completed') }}
+                                </span>
+                            @endif
+                        @else
+                            <form action="{{ route('member.courses.join', $class) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn-continue-learning">
+                                    <i class="icon-base ti tabler-plus"></i>
+                                    {{ __('ecourse.join_now') }}
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
-                <div class="card-body pt-4">
-                    <div class="row">
-                        <div class="col-md-3 col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="avatar avatar-sm me-3">
-                                    <span class="avatar-initial rounded bg-label-primary">
-                                        <i class="ti tabler-book"></i>
-                                    </span>
-                                </div>
-                                <div>
-                                    <small class="text-muted">{{ __('ecourse.total_lessons') }}</small>
-                                    <div class="fw-bold">{{ $class->total_lessons }}</div>
-                                </div>
-                            </div>
+                <div class="card-body">
+                    <h4 class="fw-bold mb-2">{{ $class->title }}</h4>
+                    @if ($class->description)
+                        <p class="text-muted mb-3">{{ $class->description }}</p>
+                    @endif
+
+                    <div class="course-stats-row">
+                        <div class="stat-item">
+                            <i class="icon-base ti tabler-book-2"></i>
+                            <span>{{ $totalLessons }} {{ __('ecourse.lessons') }}</span>
                         </div>
-                        <div class="col-md-3 col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="avatar avatar-sm me-3">
-                                    <span class="avatar-initial rounded bg-label-info">
-                                        <i class="ti tabler-clock"></i>
-                                    </span>
-                                </div>
-                                <div>
-                                    <small class="text-muted">{{ __('ecourse.course_duration') }}</small>
-                                    <div class="fw-bold">{{ $class->formatted_duration }}</div>
-                                </div>
-                            </div>
+                        <div class="stat-item">
+                            <i class="icon-base ti tabler-clock"></i>
+                            <span>{{ $hours }}h {{ $remainingMinutes }}m</span>
                         </div>
-                        <div class="col-md-3 col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="avatar avatar-sm me-3">
-                                    <span class="avatar-initial rounded bg-label-success">
-                                        <i class="ti tabler-trophy"></i>
-                                    </span>
-                                </div>
-                                <div>
-                                    <small class="text-muted">{{ __('ecourse.points_earned') }}</small>
-                                    <div class="fw-bold">{{ $enrollment ? $enrollment->total_points : 0 }}</div>
-                                </div>
-                            </div>
+                        <div class="stat-item">
+                            <i class="icon-base ti tabler-folder"></i>
+                            <span>{{ $modules->count() }} {{ __('ecourse.modules') }}</span>
                         </div>
-                        <div class="col-md-3 col-6">
-                            <div class="d-flex align-items-center">
-                                <div class="avatar avatar-sm me-3">
-                                    <span class="avatar-initial rounded bg-label-warning">
-                                        <i class="ti tabler-folder"></i>
-                                    </span>
-                                </div>
-                                <div>
-                                    <small class="text-muted">{{ __('ecourse.course_modules') }}</small>
-                                    <div class="fw-bold">{{ $modules->count() }}</div>
-                                </div>
-                            </div>
+                        <div class="stat-item">
+                            <i class="icon-base ti tabler-users"></i>
+                            <span>{{ number_format($enrolledStudents) }} {{ __('ecourse.students') }}</span>
                         </div>
                     </div>
 
                     @if ($enrollment)
-                        <!-- Progress Bar -->
-                        <div class="mt-4">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted">{{ __('ecourse.course_progress') }}</span>
-                                <span class="fw-bold">{{ number_format($enrollment->completion_percentage, 1) }}%</span>
+                        <div class="course-progress-section">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="course-progress-label">
+                                    {{ $completedLessonsCount }} {{ __('ecourse.of') }} {{ $totalLessons }}
+                                    {{ __('ecourse.lessons_completed') }}
+                                </span>
+                                <span class="course-progress-percent">{{ $progressPercent }}%</span>
                             </div>
-                            <div class="progress" style="height: 10px;">
-                                <div class="progress-bar" role="progressbar"
-                                    style="width: {{ $enrollment->completion_percentage }}%"
-                                    aria-valuenow="{{ $enrollment->completion_percentage }}" aria-valuemin="0"
-                                    aria-valuemax="100"></div>
+                            <div class="course-progress-bar">
+                                <div class="progress-fill" style="width: {{ $progressPercent }}%"></div>
                             </div>
                         </div>
                     @endif
                 </div>
             </div>
 
-            <!-- Course Modules -->
             <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">{{ __('ecourse.course_modules') }}</h5>
-                </div>
                 <div class="card-body">
-                    @forelse ($modules as $moduleIndex => $module)
-                        <div class="mb-5">
-                            <div>
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="grow">
-                                        <h6 class="mb-2">
-                                            <span class="badge bg-primary me-2">{{ $moduleIndex + 1 }}</span>
-                                            {{ $module->title }}
-                                        </h6>
-                                        @if ($module->description)
-                                            <p class="text-muted mb-3">{{ $module->description }}</p>
-                                        @endif
-                                    </div>
-                                    @if ($enrollment)
-                                        <div class="text-end">
-                                            @php
-                                                $moduleProgress = $lessonProgress->where(
-                                                    'lesson.module_id',
-                                                    $module->id,
-                                                );
-                                                $completedLessons = $moduleProgress->where('completed', true)->count();
-                                                $totalLessons = $module->lessons->count();
-                                                $modulePercentage =
-                                                    $totalLessons > 0 ? ($completedLessons / $totalLessons) * 100 : 0;
-                                            @endphp
-                                            <small class="text-muted">{{ $completedLessons }}/{{ $totalLessons }}
-                                                {{ __('ecourse.completed') }}</small>
-                                            <div class="progress mt-1" style="width: 100px; height: 6px;">
-                                                <div class="progress-bar" style="width: {{ $modulePercentage }}%">
-                                                </div>
-                                            </div>
+                    <h5 class="fw-bold mb-4">{{ __('ecourse.course_content') }}</h5>
+
+                    <div class="accordion module-accordion" id="moduleAccordion">
+                        @forelse ($modules as $moduleIndex => $module)
+                            @php
+                                $moduleLessonsCount = $module->lessons->count();
+                                $moduleCompletedCount = 0;
+                                $moduleDuration = 0;
+                                if ($enrollment) {
+                                    foreach ($module->lessons as $lesson) {
+                                        $progress = $lessonProgress->where('lesson_id', $lesson->id)->first();
+                                        if ($progress && $progress->completed) {
+                                            $moduleCompletedCount++;
+                                        }
+                                    }
+                                }
+                                foreach ($module->lessons as $lesson) {
+                                    $moduleDuration += (int) ($lesson->duration ?? 0);
+                                }
+                                $moduleHours = $moduleDuration > 0 ? (int) floor($moduleDuration / 60) : 0;
+                                $moduleMinutes = $moduleDuration > 0 ? (int) ($moduleDuration % 60) : 0;
+                            @endphp
+
+                            <div class="accordion-item border-0">
+                                <div class="module-header" data-bs-toggle="collapse"
+                                    data-bs-target="#module{{ $moduleIndex }}"
+                                    aria-expanded="{{ $moduleIndex === 0 ? 'true' : 'false' }}">
+                                    <div class="module-number">{{ $moduleIndex + 1 }}</div>
+                                    <div class="module-info">
+                                        <div class="module-title">{{ $module->title }}</div>
+                                        <div class="module-meta">
+                                            @if ($enrollment)
+                                                {{ $moduleCompletedCount }}/{{ $moduleLessonsCount }}
+                                                {{ __('ecourse.lessons') }}
+                                            @else
+                                                {{ $moduleLessonsCount }} {{ __('ecourse.lessons') }}
+                                            @endif
+                                            @if ($moduleDuration > 0)
+                                                • {{ $moduleHours > 0 ? $moduleHours . 'h ' : '' }}{{ $moduleMinutes }}m
+                                            @endif
                                         </div>
-                                    @endif
+                                    </div>
+                                    <i class="icon-base ti tabler-chevron-up module-toggle"></i>
                                 </div>
 
-                                <!-- Module Lessons -->
-                                @if ($module->lessons->count() > 0)
-                                    <div class="mt-3">
-                                        @foreach ($module->lessons as $lessonIndex => $lesson)
+                                <div id="module{{ $moduleIndex }}"
+                                    class="accordion-collapse collapse {{ $moduleIndex === 0 ? 'show' : '' }}"
+                                    data-bs-parent="#moduleAccordion">
+                                    <div class="accordion-body p-0">
+                                        @foreach ($module->lessons as $lesson)
                                             @php
-                                                $progress = null;
+                                                $lessonProgressItem = null;
+                                                $isCompleted = false;
                                                 if ($enrollment) {
-                                                    $progress = $lessonProgress
+                                                    $lessonProgressItem = $lessonProgress
                                                         ->where('lesson_id', $lesson->id)
                                                         ->first();
+                                                    $isCompleted =
+                                                        $lessonProgressItem && $lessonProgressItem->completed;
                                                 }
+                                                $lessonType = $lesson->type ?? 'video';
                                             @endphp
-                                            <div class="d-flex align-items-center py-2 px-3 rounded border-bottom mb-2">
-                                                <div class="flex-grow-1">
-                                                    <div class="fw-medium">{{ $lesson->title }}</div>
-                                                    @if ($lesson->duration)
-                                                        <small class="text-muted">{{ $lesson->duration }}
-                                                            {{ __('common.minutes') }}</small>
-                                                    @endif
-                                                </div>
-                                                <div>
-                                                    @if ($enrollment)
-                                                        <a href="{{ route('member.courses.lesson', [$class, $module, $lesson]) }}"
-                                                            class="btn btn-sm {{ $progress && $progress->completed ? 'btn-success' : 'btn-outline-primary' }}">
-                                                            @if ($progress && $progress->completed)
-                                                                <i
-                                                                    class="ti tabler-check me-1"></i>{{ __('ecourse.completed') }}
-                                                            @else
-                                                                <i
-                                                                    class="ti tabler-play me-1"></i>{{ __('ecourse.start_course') }}
-                                                            @endif
-                                                        </a>
-                                                    @else
-                                                        <span
-                                                            class="badge bg-label-secondary">{{ __('ecourse.join_now') }}</span>
-                                                    @endif
-                                                </div>
+
+                                            @if ($enrollment)
+                                                <a href="{{ route('member.courses.lesson', [$class, $module, $lesson]) }}"
+                                                    class="lesson-item text-decoration-none">
+                                                @else
+                                                    <div class="lesson-item">
+                                            @endif
+                                            <div class="lesson-status {{ $isCompleted ? 'completed' : 'pending' }}">
+                                                @if ($isCompleted)
+                                                    <i class="icon-base ti tabler-check" style="font-size: 12px;"></i>
+                                                @else
+                                                    <i class="icon-base ti tabler-circle" style="font-size: 8px;"></i>
+                                                @endif
                                             </div>
-                                        @endforeach
+                                            <div class="lesson-type-icon {{ $lessonType }}">
+                                                @if ($lessonType === 'quiz')
+                                                    <i class="icon-base ti tabler-help-circle" style="font-size: 14px;"></i>
+                                                @elseif ($lessonType === 'text')
+                                                    <i class="icon-base ti tabler-file-text" style="font-size: 14px;"></i>
+                                                @else
+                                                    <i class="icon-base ti tabler-player-play" style="font-size: 14px;"></i>
+                                                @endif
+                                            </div>
+                                            <div class="lesson-info">
+                                                <div class="lesson-title">{{ $lesson->title }}</div>
+                                                @if ($lesson->duration)
+                                                    <div class="lesson-duration">{{ $lesson->duration }}m</div>
+                                                @endif
+                                            </div>
+                                            @if ($enrollment)
+                                                </a>
+                                            @else
                                     </div>
-                                @else
-                                    <div class="text-center py-3">
-                                        <small class="text-muted">{{ __('ecourse.no_courses_available') }}</small>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @empty
-                        <div class="text-center py-5">
-                            <div class="avatar avatar-xl mb-3">
-                                <span class="avatar-initial rounded-circle bg-label-primary">
-                                    <i class="ti tabler-folder icon-xl"></i>
-                                </span>
-                            </div>
-                            <h5 class="mb-2">{{ __('ecourse.no_courses_available') }}</h5>
-                            <p class="text-muted">No modules available for this course.</p>
-                        </div>
-                    @endforelse
+                        @endif
+                        @endforeach
+                    </div>
                 </div>
             </div>
-
-            <!-- Join Course Button (if not enrolled) -->
-            @if (!$enrollment)
-                <div class="text-center mt-4">
-                    <form action="{{ route('member.courses.join', $class) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="ti tabler-plus me-2"></i>{{ __('ecourse.join_now') }}
-                        </button>
-                    </form>
-                </div>
-            @endif
+        @empty
+            <div class="text-center py-5">
+                <i class="icon-base ti tabler-folder icon-xl text-muted mb-3"></i>
+                <h5 class="mb-2">{{ __('ecourse.no_modules') }}</h5>
+                <p class="text-muted mb-0">{{ __('ecourse.no_modules_message') }}</p>
+            </div>
+            @endforelse
         </div>
+    </div>
+    </div>
+    </div>
     </div>
 @endsection

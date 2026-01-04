@@ -22,16 +22,19 @@ return [
   'back_to_list' => '목록으로 돌아가기',
   'created_at' => '생성일',
   'updated_at' => '수정일',
-  
+
   // Delete confirmation
   'delete_confirmation_text' => '정말로 삭제하시겠습니까',
   'delete_confirm_button' => '네, 삭제합니다!',
   'delete_cancel_button' => '취소',
-  
+
   'no_content' => '사용 가능한 콘텐츠가 없습니다',
   'error' => '오류가 발생했습니다',
   'active' => '활성',
   'inactive' => '비활성',
+  'all' => '전체',
+  'load_more' => '더 보기',
+  'loading' => '로딩 중...',
 
   // Others
   'this_week' => '이번 주',
@@ -40,6 +43,7 @@ return [
   'minutes' => '분',
 
   'download' => '다운로드',
+  'remove' => '삭제',
   'system_information' => '시스템 정보',
   'created_by' => '생성자',
 ];

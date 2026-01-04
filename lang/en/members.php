@@ -3,6 +3,7 @@
 return [
     // Authentication
     'welcome_title' => 'Welcome to :app!',
+    'dashboard_search' => 'What are you looking for today?',
     'login_subtitle' => 'Please sign-in to your account and start your journey',
     'register_title' => 'Adventure starts here',
     'register_subtitle' => 'Make your app management easy and fun!',
@@ -44,6 +45,7 @@ return [
     'create_account' => 'Create an account',
 
     // Dashboard
+    'dashboard_title' => 'Dashboard',
     'welcome_back' => 'Welcome back, :name!',
     'welcome_back_name' => 'Welcome back, :name!',
     'dashboard_subtitle' => 'Track your financial journey and continue learning.',

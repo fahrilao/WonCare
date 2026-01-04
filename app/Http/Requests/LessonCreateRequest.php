@@ -33,11 +33,11 @@ class LessonCreateRequest extends FormRequest
         // Add video-specific validation when type is video
         if ($this['type'] === 'video') {
             $rules['video_source'] = 'required|in:youtube,upload';
-            
+
             if ($this['video_source'] === 'youtube') {
                 $rules['youtube_url'] = 'required|url|regex:/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/';
             } elseif ($this['video_source'] === 'upload') {
-                $rules['video_file'] = 'required|file|mimes:mp4,avi,mov,wmv,flv,webm|max:102400'; // 100MB max
+                $rules['video_path'] = 'required|string'; // From chunked upload
             }
         }
 
@@ -58,9 +58,7 @@ class LessonCreateRequest extends FormRequest
             'video_source.required' => 'Please select a video source when lesson type is video.',
             'youtube_url.required' => 'YouTube URL is required when using YouTube as video source.',
             'youtube_url.regex' => 'Please enter a valid YouTube URL.',
-            'video_file.required' => 'Video file is required when uploading video directly.',
-            'video_file.mimes' => 'Video file must be: mp4, avi, mov, wmv, flv, or webm.',
-            'video_file.max' => 'Video file size must not exceed 100MB.',
+            'video_path.required' => 'Please upload a video file first.',
         ];
     }
 }

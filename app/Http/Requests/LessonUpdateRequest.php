@@ -37,7 +37,7 @@ class LessonUpdateRequest extends FormRequest
             if ($this['video_source'] === 'youtube') {
                 $rules['youtube_url'] = ['required', 'url', 'regex:/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/'];
             } elseif ($this['video_source'] === 'upload') {
-                $rules['video_file'] = 'nullable|file|mimes:mp4,avi,mov,wmv,flv,webm|max:102400'; // Optional on update
+                $rules['video_path'] = 'nullable|string'; // Optional on update (keep existing if not provided)
             }
         }
 
@@ -58,8 +58,7 @@ class LessonUpdateRequest extends FormRequest
             'video_source.required' => 'Please select a video source when lesson type is video.',
             'youtube_url.required' => 'YouTube URL is required when using YouTube as video source.',
             'youtube_url.regex' => 'Please enter a valid YouTube URL.',
-            'video_file.mimes' => 'Video file must be: mp4, avi, mov, wmv, flv, or webm.',
-            'video_file.max' => 'Video file size must not exceed 100MB.',
+            'video_path.string' => 'Invalid video path.',
         ];
     }
 }

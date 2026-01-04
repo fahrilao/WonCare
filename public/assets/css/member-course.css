@@ -1,0 +1,52 @@
+.member-course-card {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.member-course-thumb {
+    width: 140px;
+    min-width: 140px;
+    border-radius: 0.75rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.08) 0%,
+        rgba(0, 0, 0, 0.02) 100%
+    );
+    transition: transform 0.3s ease;
+}
+
+.member-course-thumb::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease;
+}
+
+.member-course-thumb:hover {
+    transform: scale(1.02);
+}
+
+.member-course-play {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(30, 142, 116, 0.95);
+    color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.member-course-play:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(30, 142, 116, 0.4);
+}

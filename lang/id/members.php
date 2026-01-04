@@ -16,17 +16,17 @@ return [
     'address' => 'Alamat',
     'remember_me' => 'Ingat Saya',
     'or' => 'atau',
-    
+
     // Placeholders
     'email_placeholder' => 'Masukkan email Anda',
     'name_placeholder' => 'Masukkan nama lengkap Anda',
-    
+
     // Gender options
     'select_gender' => 'Pilih Jenis Kelamin',
     'male' => 'Laki-laki',
     'female' => 'Perempuan',
     'other' => 'Lainnya',
-    
+
     // Google OAuth
     'login_with_google' => 'Lanjutkan dengan Google',
     'google_account' => 'Akun Google',
@@ -38,17 +38,18 @@ return [
     'google_only_no_password' => 'Akun khusus Google tidak dapat mengubah kata sandi. Silakan atur kata sandi terlebih dahulu.',
     'google_with_password_desc' => 'Anda dapat masuk dengan Google atau kata sandi Anda.',
     'google_only_desc' => 'Anda hanya dapat masuk dengan Google.',
-    
+
     // Links
     'new_member' => 'Baru di platform kami?',
     'create_account' => 'Buat akun',
-    
+
     // Dashboard
+    'dashboard_title' => 'Dashboard',
     'welcome_back' => 'Selamat datang kembali, :name!',
     'welcome_back_name' => 'Selamat datang kembali, :name!',
     'dashboard_subtitle' => 'Lacak perjalanan keuangan Anda dan terus belajar.',
     'my_profile' => 'Profil Saya',
-    
+
     // Profile
     'edit_profile' => 'Edit Profil',
     'profile_updated' => 'Profil Anda telah berhasil diperbarui!',
@@ -56,14 +57,14 @@ return [
     'basic_information' => 'Informasi Dasar',
     'account_information' => 'Informasi Akun',
     'back_to_profile' => 'Kembali ke Profil',
-    
+
     // Account Status
     'member_since' => 'Anggota Sejak',
     'last_login' => 'Login Terakhir',
     'never' => 'Tidak Pernah',
     'years_old' => 'tahun',
     'not_provided' => 'Tidak disediakan',
-    
+
     // Password Management
     'change_password' => 'Ubah Kata Sandi',
     'current_password' => 'Kata Sandi Saat Ini',
@@ -74,7 +75,7 @@ return [
     'current_password_incorrect' => 'Kata sandi saat ini salah.',
     'change_password_form' => 'Form Ubah Kata Sandi',
     'regular_password_desc' => 'Anda dapat mengubah kata sandi kapan saja untuk keamanan.',
-    
+
     // Password Strength
     'password_min_length' => 'Minimal 8 karakter',
     'password_mixed_case' => 'Mengandung huruf besar dan kecil',
@@ -88,7 +89,7 @@ return [
     'passwords_match' => 'Kata sandi cocok',
     'passwords_no_match' => 'Kata sandi tidak cocok',
     'passwords_must_match' => 'Kata sandi harus cocok.',
-    
+
     // Messages
     'login_required' => 'Silakan masuk untuk mengakses halaman ini.',
     'account_deactivated' => 'Akun Anda telah dinonaktifkan. Silakan hubungi dukungan.',

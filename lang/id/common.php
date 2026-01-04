@@ -22,7 +22,7 @@ return [
   'back_to_list' => 'Kembali ke Daftar',
   'created_at' => 'Dibuat Pada',
   'updated_at' => 'Diperbarui Pada',
-  
+
   // Delete confirmation
   'delete_confirmation_text' => 'Apakah Anda yakin ingin menghapus',
   'delete_confirm_button' => 'Ya, hapus!',
@@ -32,6 +32,9 @@ return [
   'error' => 'Terjadi kesalahan',
   'active' => 'Aktif',
   'inactive' => 'Tidak Aktif',
+  'all' => 'Semua',
+  'load_more' => 'Muat Lebih Banyak',
+  'loading' => 'Memuat...',
 
   // Others
   'this_week' => 'Minggu Ini',
@@ -40,6 +43,7 @@ return [
   'minutes' => 'menit',
 
   'download' => 'Unduh',
+  'remove' => 'Hapus',
   'system_information' => 'Informasi Sistem',
   'created_by' => 'Dibuat Oleh',
 ];

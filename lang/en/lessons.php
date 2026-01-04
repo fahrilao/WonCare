@@ -2,6 +2,7 @@
 
 return [
   'create_title' => 'Create Lesson',
+  'create_description' => 'Fill in the form below to create a new lesson.',
   'edit_title' => 'Edit Lesson',
   'view_title' => 'Lesson Details',
 
@@ -30,10 +31,12 @@ return [
   'youtube_url' => 'YouTube URL',
   'youtube_url_help' => 'Enter a valid YouTube video URL',
   'video_file' => 'Video File',
-  'video_file_help' => 'Upload video file (MP4, AVI, MOV, WMV, FLV, WebM) max 100MB',
+  'video_file_help' => 'Supported formats: MP4, AVI, MOV, WMV, FLV, WebM. No size limit with chunked upload.',
+  'drag_drop_video' => 'Drag & drop video here or click to browse',
+  'video_uploaded' => 'Video uploaded successfully!',
   'video_file_help_edit' => 'Upload new video file to replace current one (optional)',
   'current_video' => 'Current video file',
-  
+
   // Question section
   'question' => 'Question',
   'options' => 'Options',

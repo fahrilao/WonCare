@@ -2,6 +2,7 @@
 
 return [
   'create_title' => 'Buat Pelajaran',
+  'create_description' => 'Isi formulir di bawah untuk membuat pelajaran baru.',
   'edit_title' => 'Edit Pelajaran',
   'view_title' => 'Detail Pelajaran',
 
@@ -30,10 +31,12 @@ return [
   'youtube_url' => 'URL YouTube',
   'youtube_url_help' => 'Masukkan URL video YouTube yang valid',
   'video_file' => 'File Video',
-  'video_file_help' => 'Unggah file video (MP4, AVI, MOV, WMV, FLV, WebM) maksimal 100MB',
+  'video_file_help' => 'Format didukung: MP4, AVI, MOV, WMV, FLV, WebM. Tidak ada batasan ukuran dengan unggahan bertahap.',
+  'drag_drop_video' => 'Seret & letakkan video di sini atau klik untuk memilih',
+  'video_uploaded' => 'Video berhasil diunggah!',
   'video_file_help_edit' => 'Unggah file video baru untuk mengganti yang lama (opsional)',
   'current_video' => 'File video saat ini',
-  
+
   // Question section
   'question' => 'Pertanyaan',
   'options' => 'Pilihan',

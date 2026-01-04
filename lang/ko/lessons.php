@@ -2,6 +2,7 @@
 
 return [
   'create_title' => '레슨 생성',
+  'create_description' => '아래 양식을 작성하여 새 레슨을 만드세요.',
   'edit_title' => '레슨 편집',
   'view_title' => '레슨 상세정보',
 
@@ -30,10 +31,12 @@ return [
   'youtube_url' => 'YouTube URL',
   'youtube_url_help' => '유효한 YouTube 비디오 URL을 입력하세요',
   'video_file' => '비디오 파일',
-  'video_file_help' => '비디오 파일 업로드 (MP4, AVI, MOV, WMV, FLV, WebM) 최대 100MB',
+  'video_file_help' => '지원 형식: MP4, AVI, MOV, WMV, FLV, WebM. 청크 업로드로 크기 제한 없음.',
+  'drag_drop_video' => '여기에 비디오를 드래그하거나 클릭하여 선택',
+  'video_uploaded' => '비디오가 성공적으로 업로드되었습니다!',
   'video_file_help_edit' => '현재 파일을 교체할 새 비디오 파일 업로드 (선택사항)',
   'current_video' => '현재 비디오 파일',
-  
+
   // Question section
   'question' => '질문',
   'options' => '선택지',

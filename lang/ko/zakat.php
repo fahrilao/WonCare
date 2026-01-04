@@ -106,4 +106,21 @@ return [
 
   // Currency
   'select_currency' => '통화 선택',
+
+  // Checkout page
+  'back_to_calculator' => '계산기로 돌아가기',
+  'complete_payment' => '자카트 결제 완료',
+  'payment_summary' => '자카트 결제 요약',
+  'pay_zakat' => '자카트 결제',
+  'secure_payment' => '안전하고 신뢰할 수 있는 결제',
+  'about_payment' => '자카트 결제 안내',
+  'payment_info_1' => '자카트 결제는 기부 내역에 기록됩니다',
+  'payment_info_2' => '결제 완료 후 확인 메시지를 받게 됩니다',
+  'payment_info_3' => '모든 결제는 결제 파트너를 통해 안전하게 처리됩니다',
+  'payment_info_4' => '문의 사항이 있으시면 지원팀에 문의하세요',
+  'zakat_type' => '자카트 유형',
+  'calculated_amount' => '계산된 금액',
+  'details' => '세부사항',
+  'currency_gateway_note' => '결제 게이트웨이는 선택한 통화에 따라 자동으로 선택됩니다.',
+  'payment_gateway' => '결제 게이트웨이',
 ];

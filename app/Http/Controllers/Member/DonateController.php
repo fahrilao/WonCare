@@ -58,7 +58,7 @@ class DonateController extends Controller
     $bannerCampaigns = DonationCampaign::active()
       ->with(['primaryImage', 'tags'])
       ->latest()
-      ->take(5)
+      ->take(4)
       ->get();
 
     // Calculate collected amounts for banner campaigns
@@ -68,9 +68,10 @@ class DonateController extends Controller
 
     // Running to close: active campaigns ordered by nearest end_date
     $nearClosingCampaigns = DonationCampaign::active()
+      ->with(['primaryImage', 'tags'])
       ->whereNotNull('end_date')
       ->orderBy('end_date', 'asc')
-      ->take(8)
+      ->take(4)
       ->get();
 
     // Calculate collected amounts for near closing campaigns
@@ -81,14 +82,20 @@ class DonateController extends Controller
     // Tags: active, ordered
     $tags = DonationTag::active()->ordered()->get();
 
-    // Filter campaigns for Zakat if requested
-    $randomCampaignsQuery = DonationCampaign::active()->with('primaryImage');
+    // Filter campaigns for Zakat if requested or by tag
+    $randomCampaignsQuery = DonationCampaign::active()->with(['primaryImage', 'tags']);
+    $selectedTag = $request->get('tag');
 
     if ($isZakatPayment) {
       // Try to find Zakat-related campaigns
       $randomCampaignsQuery->where(function ($query) {
         $query->where('title', 'like', '%zakat%')
           ->orWhere('description', 'like', '%zakat%');
+      });
+    } elseif ($selectedTag) {
+      // Filter by tag slug
+      $randomCampaignsQuery->whereHas('tags', function ($query) use ($selectedTag) {
+        $query->where('slug', $selectedTag);
       });
     }
 
@@ -118,6 +125,62 @@ class DonateController extends Controller
       'isZakatPayment' => $isZakatPayment,
       'zakatAmount' => $zakatAmount,
       'zakatNote' => $zakatNote,
+    ]);
+  }
+
+  /**
+   * API endpoint for AJAX filtering and infinite scroll
+   */
+  public function apiCampaigns(Request $request)
+  {
+    $tag = $request->get('tag');
+    $page = $request->get('page', 1);
+    $perPage = 8;
+
+    $query = DonationCampaign::active()->with(['primaryImage', 'tags']);
+
+    if ($tag && $tag !== 'all') {
+      $query->whereHas('tags', function ($q) use ($tag) {
+        $q->where('slug', $tag);
+      });
+    }
+
+    $campaigns = $query->inRandomOrder()->paginate($perPage, ['*'], 'page', $page);
+
+    // Calculate collected amounts
+    foreach ($campaigns as $campaign) {
+      $this->calculateCollectedAmount($campaign);
+    }
+
+    $html = '';
+    foreach ($campaigns as $campaign) {
+      $tagName = $campaign->tags->first()?->name ?? 'General';
+      $tagClass = match (true) {
+        str_contains(strtolower($tagName), 'education') => 'education',
+        str_contains(strtolower($tagName), 'food') => 'food',
+        str_contains(strtolower($tagName), 'health') => 'health',
+        str_contains(strtolower($tagName), 'emergency') => 'emergency',
+        str_contains(strtolower($tagName), 'orphan') => 'orphanage',
+        default => 'education'
+      };
+
+      $daysLeft = $campaign->end_date
+        ? $campaign->end_date->diffInDays(now()) . ' ' . __('donation_campaigns.days_left')
+        : __('donation_campaigns.no_deadline');
+
+      $html .= view('member.donate._campaign-card', [
+        'campaign' => $campaign,
+        'tagName' => $tagName,
+        'tagClass' => $tagClass,
+        'daysLeft' => $daysLeft,
+      ])->render();
+    }
+
+    return response()->json([
+      'html' => $html,
+      'hasMore' => $campaigns->hasMorePages(),
+      'nextPage' => $campaigns->currentPage() + 1,
+      'total' => $campaigns->total(),
     ]);
   }
 

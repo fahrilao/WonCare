@@ -12,6 +12,7 @@ use App\Http\Controllers\PaymentGatewayController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DonationTagController;
 use App\Http\Controllers\DonationReportController;
+use App\Http\Controllers\ChunkedUploadController;
 use App\Http\Controllers\Member\Auth\LoginController as MemberLoginController;
 use App\Http\Controllers\Member\Auth\RegisterController as MemberRegisterController;
 use App\Http\Controllers\Member\Auth\GoogleController as MemberGoogleController;
@@ -73,6 +74,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::resource('modules', ModuleController::class);
   Route::get('lessons/search', [LessonController::class, 'search'])->name('lessons.search');
   Route::resource('lessons', LessonController::class);
+
+  // Chunked upload route
+  Route::post('upload/chunked', [ChunkedUploadController::class, 'upload'])->name('upload.chunked');
 
   // Question management routes
   Route::post('lessons/{lesson}/questions', [LessonController::class, 'storeQuestion'])->name('lessons.questions.store');
@@ -145,6 +149,7 @@ Route::group(['middleware' => ['auth:member', 'member.verified']], function () {
   // Member donate page
   Route::prefix('donate')->name('member.donate.')->group(function () {
     Route::get('/', [DonateController::class, 'index'])->name('index');
+    Route::get('/api/campaigns', [DonateController::class, 'apiCampaigns'])->name('api.campaigns');
     Route::get('/history', [DonateController::class, 'history'])->name('history');
     Route::get('/{campaign}', [DonateController::class, 'show'])->name('show');
     Route::get('/{campaign}/checkout', [DonateController::class, 'checkout'])->name('checkout');

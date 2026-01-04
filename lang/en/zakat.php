@@ -106,4 +106,21 @@ return [
 
   // Currency
   'select_currency' => 'Select Currency',
+
+  // Checkout page
+  'back_to_calculator' => 'Back to Calculator',
+  'complete_payment' => 'Complete Your Zakat Payment',
+  'payment_summary' => 'Zakat Payment Summary',
+  'pay_zakat' => 'Pay Zakat',
+  'secure_payment' => 'Secure and trusted payment',
+  'about_payment' => 'About Zakat Payment',
+  'payment_info_1' => 'Your Zakat payment will be recorded in your donation history',
+  'payment_info_2' => 'You will receive a confirmation after successful payment',
+  'payment_info_3' => 'All payments are processed securely through our payment partners',
+  'payment_info_4' => 'For questions, please contact our support team',
+  'zakat_type' => 'Zakat Type',
+  'calculated_amount' => 'Calculated Amount',
+  'details' => 'Details',
+  'currency_gateway_note' => 'Payment gateway will be automatically selected based on your currency choice.',
+  'payment_gateway' => 'Payment Gateway',
 ];

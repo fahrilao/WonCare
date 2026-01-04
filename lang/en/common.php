@@ -32,6 +32,9 @@ return [
   'error' => 'An error occurred',
   'active' => 'Active',
   'inactive' => 'Inactive',
+  'all' => 'All',
+  'load_more' => 'Load More',
+  'loading' => 'Loading...',
 
   // Others
   'this_week' => 'This Week',
@@ -40,6 +43,7 @@ return [
   'minutes' => 'minutes',
 
   'download' => 'Download',
+  'remove' => 'Remove',
   'system_information' => 'System Information',
   'created_by' => 'Created By',
 ];

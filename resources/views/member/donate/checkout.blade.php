@@ -4,44 +4,192 @@
 
 @push('styles')
     <style>
-        .payment-option {
+        .back-link {
+            color: #1a6b47;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #155a3c;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .section-title i {
+            color: #1a6b47;
+            font-size: 1.25rem;
+        }
+
+        .section-title h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .quick-amount {
+            border-color: #1a6b47;
+            color: #1a6b47;
+        }
+
+        .quick-amount:hover,
+        .quick-amount.active {
+            background: #1a6b47;
+            border-color: #1a6b47;
+            color: #fff;
+        }
+
+        .btn-donate-checkout {
+            background: linear-gradient(135deg, #1a6b47, #2d8f5f);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
             transition: all 0.2s ease;
-            border: 2px solid #e9ecef !important;
         }
 
-        .payment-option:hover {
-            border-color: #0d6efd !important;
-            background-color: #f8f9fa;
+        .btn-donate-checkout:hover {
+            background: linear-gradient(135deg, #155a3c, #267a50);
+            color: #fff;
+            transform: translateY(-1px);
         }
 
-        .payment-option input[type="radio"]:checked~* {
-            color: #0d6efd;
+        .currency-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .payment-option:has(input[type="radio"]:checked) {
-            border-color: #0d6efd !important;
-            background-color: #e7f1ff;
+        .currency-option:hover {
+            border-color: #1a6b47;
+        }
+
+        .currency-option.selected {
+            border-color: #1a6b47;
+            background: rgba(26, 107, 71, 0.05);
+        }
+
+        .currency-option input[type="radio"] {
+            accent-color: #1a6b47;
+        }
+
+        .form-label {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-control:focus {
+            border-color: #1a6b47;
+            box-shadow: 0 0 0 0.2rem rgba(26, 107, 71, 0.15);
         }
 
         .campaign-summary {
             position: sticky;
             top: 20px;
         }
+
+        .campaign-summary-image {
+            height: 180px;
+            border-radius: 0.5rem 0.5rem 0 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a6b47 0%, #2d8f5f 50%, #c4a962 100%);
+        }
+
+        .campaign-summary-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .campaign-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .campaign-progress-bar {
+            height: 8px;
+            background: #e8e8e8;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .campaign-progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1a6b47 0%, #2d8f5f 100%);
+            border-radius: 4px;
+        }
+
+        .sidebar-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.875rem;
+        }
+
+        .sidebar-stat-label {
+            color: #6c757d;
+        }
+
+        .sidebar-stat-value {
+            font-weight: 600;
+            color: #1a6b47;
+        }
+
+        .gateway-info {
+            background: rgba(26, 107, 71, 0.1);
+            border: 1px solid rgba(26, 107, 71, 0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #1a6b47;
+        }
+
+        .gateway-info i {
+            color: #1a6b47;
+        }
     </style>
 @endpush
 
 @section('content')
     <div class="container py-4">
+        {{-- Back Link --}}
+        <a href="{{ route('member.donate.show', $campaign) }}" class="back-link mb-4 d-inline-block">
+            <i class="ti tabler-arrow-left"></i>
+            {{ __('donation_campaigns.back_to_campaign') }}
+        </a>
+
         <div class="row">
             <!-- Left: Donation Form -->
             <div class="col-lg-8 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex align-items-center mb-4">
-                            <a href="{{ route('member.donate.show', $campaign) }}" class="btn btn-light me-3">
-                                <i class="ti tabler-arrow-left"></i>
-                            </a>
-                            <h4 class="mb-0">Complete Your Donation</h4>
+                        <div class="section-title">
+                            <i class="ti tabler-heart-handshake"></i>
+                            <h2>{{ __('donation_campaigns.complete_donation') }}</h2>
                         </div>
 
                         <form method="POST" action="{{ route('member.donate.store', $campaign) }}" id="donationForm">
@@ -166,26 +314,26 @@
                             </div>
 
                             <!-- Payment Gateway Info -->
-                            <div class="alert alert-info">
+                            <div class="gateway-info mb-4">
                                 <i class="ti tabler-info-circle me-2"></i>
-                                <strong>Payment Gateway:</strong>
+                                <strong>{{ __('donation_campaigns.payment_gateway') }}:</strong>
                                 <span id="gatewayInfo">Midtrans (for Rupiah)</span>
                             </div>
 
                             <!-- Submit Button -->
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="ti tabler-heart me-2"></i>
-                                    Proceed to Payment
+                                <button type="submit" class="btn-donate-checkout">
+                                    <i class="ti tabler-heart"></i>
+                                    {{ __('donation_campaigns.proceed_to_payment') }}
                                 </button>
                                 <a href="{{ route('member.donate.show', $campaign) }}" class="btn btn-outline-secondary">
-                                    Cancel
+                                    {{ __('common.cancel') }}
                                 </a>
                             </div>
 
                             <p class="text-muted text-center mt-3 mb-0" style="font-size: 0.85rem;">
-                                <i class="ti tabler-lock me-1"></i>
-                                Secure payment processing
+                                <i class="ti tabler-shield-check me-1"></i>
+                                {{ __('donation_campaigns.secure_payment') }}
                             </p>
                         </form>
                     </div>
@@ -196,21 +344,25 @@
             <div class="col-lg-4">
                 <div class="campaign-summary">
                     <div class="card">
-                        <div class="card-header p-0">
+                        <div class="campaign-summary-image">
                             @php $primaryImage = $campaign->primaryImage; @endphp
                             @if ($primaryImage)
-                                <img src="{{ asset('storage/' . $primaryImage->image_url) }}" class="card-img-top"
-                                    style="max-height: 200px; object-fit: cover;" alt="{{ $campaign->title }}">
+                                <img src="{{ asset('storage/' . $primaryImage->image_url) }}"
+                                    alt="{{ $campaign->title }}">
+                            @else
+                                <div class="d-flex align-items-center justify-content-center h-100">
+                                    <i class="ti tabler-photo" style="font-size: 3rem; color: rgba(255,255,255,0.3);"></i>
+                                </div>
                             @endif
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title mb-3">{{ $campaign->title }}</h5>
+                            <h5 class="fw-bold mb-2">{{ $campaign->title }}</h5>
 
                             <!-- Tags -->
-                            <div class="d-flex flex-wrap mb-3" style="gap: 0.5rem;">
+                            <div class="d-flex flex-wrap gap-2 mb-3">
                                 @foreach ($campaign->tags as $tag)
-                                    <span class="badge text-white"
-                                        style="background-color: {{ $tag->color ?? '#6c757d' }};">
+                                    <span class="campaign-tag text-white"
+                                        style="background-color: {{ $tag->color ?? '#1a6b47' }};">
                                         {{ $tag->name }}
                                     </span>
                                 @endforeach
@@ -218,28 +370,28 @@
 
                             <!-- Progress -->
                             <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <small class="text-muted">
-                                        <strong>Rp {{ number_format($campaign->collected_amount, 0, ',', '.') }}</strong>
-                                    </small>
-                                    <small class="text-muted">
-                                        of Rp {{ number_format($campaign->goal_amount, 0, ',', '.') }}
-                                    </small>
+                                <div class="sidebar-stat">
+                                    <span class="sidebar-stat-label">{{ __('donation_campaigns.raised') }}</span>
+                                    <span class="sidebar-stat-value">Rp
+                                        {{ number_format($campaign->collected_amount, 0, ',', '.') }}</span>
                                 </div>
-                                <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar bg-primary" role="progressbar"
-                                        style="width: {{ $campaign->progress_percentage }}%"
-                                        aria-valuenow="{{ $campaign->progress_percentage }}" aria-valuemin="0"
-                                        aria-valuemax="100">
-                                    </div>
+                                <div class="campaign-progress-bar mb-2">
+                                    <div class="progress-fill"
+                                        style="width: {{ min($campaign->progress_percentage, 100) }}%"></div>
                                 </div>
-                                <small class="text-muted">{{ $campaign->progress_percentage }}% funded</small>
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">{{ number_format($campaign->progress_percentage, 1) }}%
+                                        {{ __('donation_campaigns.funded') }}</small>
+                                    <small class="text-muted">{{ __('donation_campaigns.goal_amount') }}: Rp
+                                        {{ number_format($campaign->goal_amount, 0, ',', '.') }}</small>
+                                </div>
                             </div>
 
                             @if ($campaign->end_date)
-                                <div class="d-flex align-items-center text-muted mb-2">
+                                <div class="d-flex align-items-center text-muted mb-3">
                                     <i class="ti tabler-clock me-2"></i>
-                                    <small>{{ $campaign->end_date->diffForHumans() }}</small>
+                                    <small>{{ $campaign->end_date->diffInDays(now()) }}
+                                        {{ __('donation_campaigns.days_left') }}</small>
                                 </div>
                             @endif
 
@@ -247,7 +399,8 @@
 
                             <div class="text-center">
                                 <p class="text-muted mb-0" style="font-size: 0.85rem;">
-                                    You're about to make a difference!
+                                    <i class="ti tabler-heart me-1" style="color: #1a6b47;"></i>
+                                    {{ __('donation_campaigns.make_difference_message') }}
                                 </p>
                             </div>
                         </div>

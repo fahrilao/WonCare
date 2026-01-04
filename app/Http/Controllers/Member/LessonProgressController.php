@@ -17,22 +17,53 @@ class LessonProgressController extends Controller
     /**
      * Display a listing of all available modules for the member.
      */
-    public function index()
+    public function index(Request $request)
     {
         $member = Auth::guard('member')->user();
 
-        // Get all published classes with their modules and member's enrollment data
-        $classes = ClassModel::with([
+        // Build query for published classes
+        $query = ClassModel::with([
             'categories',
             'modules.lessons',
             'enrollments' => function ($query) use ($member) {
                 $query->where('member_id', $member->id)->active();
             }
-        ])
-            ->published()
-            ->get();
+        ])->published();
 
-        return view('member.courses.index', compact('classes'));
+        // Apply search filter
+        $search = $request->get('search');
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('categories', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        // Apply category filter
+        $category = $request->get('category');
+        if ($category) {
+            $query->whereHas('categories', function ($q) use ($category) {
+                $q->where('slug', $category);
+            });
+        }
+
+        $classes = $query->get();
+
+        // Get all categories for filter dropdown
+        $categories = \App\Models\Category::orderBy('name')->get();
+
+        // For AJAX requests, return JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('member.courses._course-list', compact('classes', 'member'))->render(),
+                'count' => $classes->count(),
+            ]);
+        }
+
+        return view('member.courses.index', compact('classes', 'categories', 'member'));
     }
 
     /**
