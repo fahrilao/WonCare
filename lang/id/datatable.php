@@ -21,7 +21,7 @@ return [
         'sortAscending' => ': aktifkan untuk mengurutkan kolom naik',
         'sortDescending' => ': aktifkan untuk mengurutkan kolom turun'
     ],
-    
+
     // Custom translations for specific tables
     'users' => [
         'emptyTable' => 'Tidak ada pengguna ditemukan',
@@ -51,5 +51,25 @@ return [
         'emptyTable' => 'Tidak ada pelajaran ditemukan',
         'zeroRecords' => 'Tidak ada pelajaran yang cocok ditemukan',
         'delete_title' => 'Hapus Pelajaran',
+    ],
+    'whatsapp_groups' => [
+        'emptyTable' => 'Tidak ada grup WhatsApp ditemukan',
+        'zeroRecords' => 'Tidak ada grup WhatsApp yang cocok ditemukan',
+    ],
+    'posts' => [
+        'emptyTable' => 'Tidak ada postingan ditemukan',
+        'zeroRecords' => 'Tidak ada postingan yang cocok ditemukan',
+    ],
+    'volunteer_registrations' => [
+        'emptyTable' => 'Tidak ada pendaftaran relawan ditemukan',
+        'zeroRecords' => 'Tidak ada pendaftaran relawan yang cocok ditemukan',
+    ],
+    'volunteer_events' => [
+        'emptyTable' => 'Tidak ada acara relawan ditemukan',
+        'zeroRecords' => 'Tidak ada acara relawan yang cocok ditemukan',
+    ],
+    'mentors' => [
+        'emptyTable' => 'Tidak ada profil mentor ditemukan',
+        'zeroRecords' => 'Tidak ada profil mentor yang cocok ditemukan',
     ]
 ];

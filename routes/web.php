@@ -13,6 +13,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DonationTagController;
 use App\Http\Controllers\DonationReportController;
 use App\Http\Controllers\ChunkedUploadController;
+use App\Http\Controllers\Admin\CommunityWhatsappGroupController;
+use App\Http\Controllers\Admin\CommunityPostController;
+use App\Http\Controllers\Admin\VolunteerRegistrationController;
+use App\Http\Controllers\Admin\VolunteerEventController;
+use App\Http\Controllers\Admin\MentorProfileController;
 use App\Http\Controllers\Member\Auth\LoginController as MemberLoginController;
 use App\Http\Controllers\Member\Auth\RegisterController as MemberRegisterController;
 use App\Http\Controllers\Member\Auth\GoogleController as MemberGoogleController;
@@ -122,6 +127,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::delete('donation-reports/{donationReport}/images/{image}', [DonationReportController::class, 'deleteImage'])->name('donation-reports.delete-image');
   Route::post('donation-reports/{donationReport}/images/{image}/set-primary', [DonationReportController::class, 'setPrimaryImage'])->name('donation-reports.set-primary-image');
   Route::resource('donation-reports', DonationReportController::class);
+
+  // Community & Volunteer routes
+  Route::resource('community/whatsapp-groups', CommunityWhatsappGroupController::class)->names('community.whatsapp-groups');
+  Route::resource('community/posts', CommunityPostController::class)->names('community.posts');
+  Route::resource('community/volunteer-registrations', VolunteerRegistrationController::class)->names('community.volunteer-registrations');
+  Route::resource('community/volunteer-events', VolunteerEventController::class)->names('community.volunteer-events');
+  Route::resource('community/mentors', MentorProfileController::class)->names('community.mentors');
 
   Route::get('logout', [AuthAdminController::class, 'logout'])->name('logout');
 });

@@ -21,7 +21,7 @@ return [
         'sortAscending' => ': activate to sort column ascending',
         'sortDescending' => ': activate to sort column descending'
     ],
-    
+
     // Custom translations for specific tables
     'users' => [
         'emptyTable' => 'No users found',
@@ -51,5 +51,25 @@ return [
         'emptyTable' => 'No lessons found',
         'zeroRecords' => 'No matching lessons found',
         'delete_title' => 'Delete Lesson',
+    ],
+    'whatsapp_groups' => [
+        'emptyTable' => 'No WhatsApp groups found',
+        'zeroRecords' => 'No matching WhatsApp groups found',
+    ],
+    'posts' => [
+        'emptyTable' => 'No posts found',
+        'zeroRecords' => 'No matching posts found',
+    ],
+    'volunteer_registrations' => [
+        'emptyTable' => 'No volunteer registrations found',
+        'zeroRecords' => 'No matching volunteer registrations found',
+    ],
+    'volunteer_events' => [
+        'emptyTable' => 'No volunteer events found',
+        'zeroRecords' => 'No matching volunteer events found',
+    ],
+    'mentors' => [
+        'emptyTable' => 'No mentor profiles found',
+        'zeroRecords' => 'No matching mentor profiles found',
     ]
 ];

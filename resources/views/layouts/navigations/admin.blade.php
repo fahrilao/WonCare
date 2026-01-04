@@ -62,6 +62,45 @@
                         </a>
                     </li>
 
+                    <!-- Community & Volunteer Section -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">{{ __('community.section') }}</span>
+                    </li>
+                    <li
+                        class="menu-item {{ request()->routeIs('admin.community.whatsapp-groups.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.community.whatsapp-groups.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-brand-whatsapp"></i>
+                            <div data-i18n="WhatsApp Groups">{{ __('community.whatsapp_groups.title') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.community.posts.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.community.posts.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-message-circle"></i>
+                            <div data-i18n="Community Posts">{{ __('community.posts.title') }}</div>
+                        </a>
+                    </li>
+                    <li
+                        class="menu-item {{ request()->routeIs('admin.community.volunteer-registrations.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.community.volunteer-registrations.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-user-plus"></i>
+                            <div data-i18n="Volunteer Registrations">
+                                {{ __('community.volunteer_registrations.title') }}</div>
+                        </a>
+                    </li>
+                    <li
+                        class="menu-item {{ request()->routeIs('admin.community.volunteer-events.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.community.volunteer-events.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-calendar-event"></i>
+                            <div data-i18n="Volunteer Events">{{ __('community.volunteer_events.title') }}</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.community.mentors.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.community.mentors.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-user-star"></i>
+                            <div data-i18n="Mentors">{{ __('community.mentors.title') }}</div>
+                        </a>
+                    </li>
+
                     <!-- Settings Section -->
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">{{ __('navigation.settings') }}</span>

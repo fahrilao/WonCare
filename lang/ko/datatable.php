@@ -21,7 +21,7 @@ return [
         'sortAscending' => ': 열을 오름차순으로 정렬하려면 활성화',
         'sortDescending' => ': 열을 내림차순으로 정렬하려면 활성화'
     ],
-    
+
     // Custom translations for specific tables
     'users' => [
         'emptyTable' => '사용자를 찾을 수 없습니다',
@@ -51,5 +51,25 @@ return [
         'emptyTable' => '레슨을 찾을 수 없습니다',
         'zeroRecords' => '일치하는 레슨을 찾을 수 없습니다',
         'delete_title' => '레슨 삭제',
+    ],
+    'whatsapp_groups' => [
+        'emptyTable' => 'WhatsApp 그룹을 찾을 수 없습니다',
+        'zeroRecords' => '일치하는 WhatsApp 그룹을 찾을 수 없습니다',
+    ],
+    'posts' => [
+        'emptyTable' => '게시물을 찾을 수 없습니다',
+        'zeroRecords' => '일치하는 게시물을 찾을 수 없습니다',
+    ],
+    'volunteer_registrations' => [
+        'emptyTable' => '자원봉사자 등록을 찾을 수 없습니다',
+        'zeroRecords' => '일치하는 자원봉사자 등록을 찾을 수 없습니다',
+    ],
+    'volunteer_events' => [
+        'emptyTable' => '자원봉사 이벤트를 찾을 수 없습니다',
+        'zeroRecords' => '일치하는 자원봉사 이벤트를 찾을 수 없습니다',
+    ],
+    'mentors' => [
+        'emptyTable' => '멘토 프로필을 찾을 수 없습니다',
+        'zeroRecords' => '일치하는 멘토 프로필을 찾을 수 없습니다',
     ]
 ];
