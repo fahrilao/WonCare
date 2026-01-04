@@ -1,6 +1,7 @@
 @extends('layouts.member')
 
 @section('title', __('navigation.donate'))
+@section('body_class', 'member-modern')
 
 @push('styles')
     <style>
@@ -45,7 +46,7 @@
 
         .donate-hero p {
             color: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
+            font-size: 0.9rem;
             max-width: 500px;
             margin: 0;
         }
@@ -257,215 +258,217 @@
 @endpush
 
 @section('content')
-    <div class="container py-4">
-        {{-- Hero Section --}}
-        <div class="donate-hero">
-            <div class="donate-hero-badge">
-                <i class="ti tabler-sparkles"></i>
-                {{ __('donation_campaigns.make_difference') }}
-            </div>
-            <h1>{{ __('donation_campaigns.support_campaigns') }}</h1>
-            <p>{{ __('donation_campaigns.hero_description') }}</p>
-        </div>
-
-        {{-- Newest Campaigns --}}
-        <div class="mb-5">
-            <div class="section-title">
-                <i class="ti tabler-heart"></i>
-                <h2>{{ __('donation_campaigns.newest_campaigns') }}</h2>
-            </div>
-
-            @if ($bannerCampaigns->isEmpty())
-                <div class="text-center text-muted py-4">
-                    {{ __('common.no_content') }}
+    <div class="page-animate">
+        <div class="container py-4">
+            {{-- Hero Section --}}
+            <div class="donate-hero">
+                <div class="donate-hero-badge">
+                    <i class="ti tabler-sparkles"></i>
+                    {{ __('donation_campaigns.make_difference') }}
                 </div>
-            @else
-                <div class="row g-4">
-                    @foreach ($bannerCampaigns as $campaign)
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="campaign-card">
-                                @php
-                                    $tagName = $campaign->tags->first()?->name ?? 'General';
-                                    $tagSlug = \Illuminate\Support\Str::slug($tagName);
-                                    $tagClass = match (true) {
-                                        str_contains(strtolower($tagName), 'education') => 'education',
-                                        str_contains(strtolower($tagName), 'food') => 'food',
-                                        str_contains(strtolower($tagName), 'health') => 'health',
-                                        str_contains(strtolower($tagName), 'emergency') => 'emergency',
-                                        str_contains(strtolower($tagName), 'orphan') => 'orphanage',
-                                        default => 'education',
-                                    };
-                                @endphp
-                                <span class="campaign-tag {{ $tagClass }}">{{ $tagName }}</span>
-                                <h3>{{ $campaign->title }}</h3>
-                                <p class="description">
-                                    {{ \Illuminate\Support\Str::limit(strip_tags($campaign->description), 70) }}
-                                </p>
+                <h1>{{ __('donation_campaigns.support_campaigns') }}</h1>
+                <p>{{ __('donation_campaigns.hero_description') }}</p>
+            </div>
 
-                                <div class="campaign-stats">
-                                    <div class="amount-row">
-                                        <span class="collected">Rp
-                                            {{ number_format($campaign->collected_amount, 0, ',', '.') }}</span>
-                                        <span
-                                            class="percentage">{{ number_format($campaign->progress_percentage, 1) }}%</span>
+            {{-- Newest Campaigns --}}
+            <div class="mb-5">
+                <div class="section-title">
+                    <i class="ti tabler-heart"></i>
+                    <h2>{{ __('donation_campaigns.newest_campaigns') }}</h2>
+                </div>
+
+                @if ($bannerCampaigns->isEmpty())
+                    <div class="text-center text-muted py-4">
+                        {{ __('common.no_content') }}
+                    </div>
+                @else
+                    <div class="row g-4">
+                        @foreach ($bannerCampaigns as $campaign)
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="campaign-card">
+                                    @php
+                                        $tagName = $campaign->tags->first()?->name ?? 'General';
+                                        $tagSlug = \Illuminate\Support\Str::slug($tagName);
+                                        $tagClass = match (true) {
+                                            str_contains(strtolower($tagName), 'education') => 'education',
+                                            str_contains(strtolower($tagName), 'food') => 'food',
+                                            str_contains(strtolower($tagName), 'health') => 'health',
+                                            str_contains(strtolower($tagName), 'emergency') => 'emergency',
+                                            str_contains(strtolower($tagName), 'orphan') => 'orphanage',
+                                            default => 'education',
+                                        };
+                                    @endphp
+                                    <span class="campaign-tag {{ $tagClass }}">{{ $tagName }}</span>
+                                    <h3>{{ $campaign->title }}</h3>
+                                    <p class="description">
+                                        {{ \Illuminate\Support\Str::limit(strip_tags($campaign->description), 70) }}
+                                    </p>
+
+                                    <div class="campaign-stats">
+                                        <div class="amount-row">
+                                            <span class="collected">Rp
+                                                {{ number_format($campaign->collected_amount, 0, ',', '.') }}</span>
+                                            <span
+                                                class="percentage">{{ number_format($campaign->progress_percentage, 1) }}%</span>
+                                        </div>
+                                        <div class="campaign-progress">
+                                            <div class="campaign-progress-bar"
+                                                style="width: {{ min($campaign->progress_percentage, 100) }}%"></div>
+                                        </div>
                                     </div>
-                                    <div class="campaign-progress">
-                                        <div class="campaign-progress-bar"
-                                            style="width: {{ min($campaign->progress_percentage, 100) }}%"></div>
+
+                                    <div class="campaign-meta">
+                                        <span>
+                                            <i class="ti tabler-clock"></i>
+                                            @if ($campaign->end_date)
+                                                {{ $campaign->end_date->diffInDays(now()) }}
+                                                {{ __('donation_campaigns.days_left') }}
+                                            @else
+                                                {{ __('donation_campaigns.no_deadline') }}
+                                            @endif
+                                        </span>
+                                        <span>{{ __('donation_campaigns.from') }} Rp
+                                            {{ number_format($campaign->goal_amount, 0, ',', '.') }}</span>
                                     </div>
-                                </div>
 
-                                <div class="campaign-meta">
-                                    <span>
-                                        <i class="ti tabler-clock"></i>
-                                        @if ($campaign->end_date)
-                                            {{ $campaign->end_date->diffInDays(now()) }}
-                                            {{ __('donation_campaigns.days_left') }}
-                                        @else
-                                            {{ __('donation_campaigns.no_deadline') }}
-                                        @endif
-                                    </span>
-                                    <span>{{ __('donation_campaigns.from') }} Rp
-                                        {{ number_format($campaign->goal_amount, 0, ',', '.') }}</span>
+                                    <a href="{{ route('member.donate.show', $campaign) }}" class="btn-donate">
+                                        <i class="ti tabler-heart"></i>
+                                        {{ __('dashboard.donate_now') }}
+                                    </a>
                                 </div>
-
-                                <a href="{{ route('member.donate.show', $campaign) }}" class="btn-donate">
-                                    <i class="ti tabler-heart"></i>
-                                    {{ __('dashboard.donate_now') }}
-                                </a>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-        </div>
-
-        {{-- Running to Close Campaigns --}}
-        <div class="mb-5">
-            <div class="section-title">
-                <i class="ti tabler-heart"></i>
-                <h2>{{ __('donation_campaigns.running_to_close') }}</h2>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
-            @if ($nearClosingCampaigns->isEmpty())
-                <div class="text-center text-muted py-4">
-                    {{ __('common.no_content') }}
+            {{-- Running to Close Campaigns --}}
+            <div class="mb-5">
+                <div class="section-title">
+                    <i class="ti tabler-heart"></i>
+                    <h2>{{ __('donation_campaigns.running_to_close') }}</h2>
                 </div>
-            @else
-                <div class="row g-4">
-                    @foreach ($nearClosingCampaigns as $campaign)
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <div class="campaign-card">
-                                @php
-                                    $tagName = $campaign->tags->first()?->name ?? 'General';
-                                    $tagClass = match (true) {
-                                        str_contains(strtolower($tagName), 'education') => 'education',
-                                        str_contains(strtolower($tagName), 'food') => 'food',
-                                        str_contains(strtolower($tagName), 'health') => 'health',
-                                        str_contains(strtolower($tagName), 'emergency') => 'emergency',
-                                        str_contains(strtolower($tagName), 'orphan') => 'orphanage',
-                                        default => 'education',
-                                    };
-                                @endphp
-                                <span class="campaign-tag {{ $tagClass }}">{{ $tagName }}</span>
-                                <h3>{{ $campaign->title }}</h3>
-                                <p class="description">
-                                    {{ \Illuminate\Support\Str::limit(strip_tags($campaign->description), 70) }}
-                                </p>
 
-                                <div class="campaign-stats">
-                                    <div class="amount-row">
-                                        <span class="collected">Rp
-                                            {{ number_format($campaign->collected_amount, 0, ',', '.') }}</span>
-                                        <span
-                                            class="percentage">{{ number_format($campaign->progress_percentage, 1) }}%</span>
+                @if ($nearClosingCampaigns->isEmpty())
+                    <div class="text-center text-muted py-4">
+                        {{ __('common.no_content') }}
+                    </div>
+                @else
+                    <div class="row g-4">
+                        @foreach ($nearClosingCampaigns as $campaign)
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="campaign-card">
+                                    @php
+                                        $tagName = $campaign->tags->first()?->name ?? 'General';
+                                        $tagClass = match (true) {
+                                            str_contains(strtolower($tagName), 'education') => 'education',
+                                            str_contains(strtolower($tagName), 'food') => 'food',
+                                            str_contains(strtolower($tagName), 'health') => 'health',
+                                            str_contains(strtolower($tagName), 'emergency') => 'emergency',
+                                            str_contains(strtolower($tagName), 'orphan') => 'orphanage',
+                                            default => 'education',
+                                        };
+                                    @endphp
+                                    <span class="campaign-tag {{ $tagClass }}">{{ $tagName }}</span>
+                                    <h3>{{ $campaign->title }}</h3>
+                                    <p class="description">
+                                        {{ \Illuminate\Support\Str::limit(strip_tags($campaign->description), 70) }}
+                                    </p>
+
+                                    <div class="campaign-stats">
+                                        <div class="amount-row">
+                                            <span class="collected">Rp
+                                                {{ number_format($campaign->collected_amount, 0, ',', '.') }}</span>
+                                            <span
+                                                class="percentage">{{ number_format($campaign->progress_percentage, 1) }}%</span>
+                                        </div>
+                                        <div class="campaign-progress">
+                                            <div class="campaign-progress-bar"
+                                                style="width: {{ min($campaign->progress_percentage, 100) }}%"></div>
+                                        </div>
                                     </div>
-                                    <div class="campaign-progress">
-                                        <div class="campaign-progress-bar"
-                                            style="width: {{ min($campaign->progress_percentage, 100) }}%"></div>
+
+                                    <div class="campaign-meta">
+                                        <span>
+                                            <i class="ti tabler-clock"></i>
+                                            @if ($campaign->end_date)
+                                                {{ $campaign->end_date->diffInDays(now()) }}
+                                                {{ __('donation_campaigns.days_left') }}
+                                            @else
+                                                {{ __('donation_campaigns.no_deadline') }}
+                                            @endif
+                                        </span>
+                                        <span>{{ __('donation_campaigns.from') }} Rp
+                                            {{ number_format($campaign->goal_amount, 0, ',', '.') }}</span>
                                     </div>
-                                </div>
 
-                                <div class="campaign-meta">
-                                    <span>
-                                        <i class="ti tabler-clock"></i>
-                                        @if ($campaign->end_date)
-                                            {{ $campaign->end_date->diffInDays(now()) }}
-                                            {{ __('donation_campaigns.days_left') }}
-                                        @else
-                                            {{ __('donation_campaigns.no_deadline') }}
-                                        @endif
-                                    </span>
-                                    <span>{{ __('donation_campaigns.from') }} Rp
-                                        {{ number_format($campaign->goal_amount, 0, ',', '.') }}</span>
+                                    <a href="{{ route('member.donate.show', $campaign) }}" class="btn-donate">
+                                        <i class="ti tabler-heart"></i>
+                                        {{ __('dashboard.donate_now') }}
+                                    </a>
                                 </div>
-
-                                <a href="{{ route('member.donate.show', $campaign) }}" class="btn-donate">
-                                    <i class="ti tabler-heart"></i>
-                                    {{ __('dashboard.donate_now') }}
-                                </a>
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-        </div>
-
-        {{-- Discover More Campaigns --}}
-        <div class="mb-5">
-            <div class="section-title">
-                <h2>{{ __('donation_campaigns.discover_campaigns') }}</h2>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
-            {{-- Category Filter Tabs (AJAX) --}}
-            <div class="filter-tabs" id="filterTabs">
-                <button type="button" class="filter-tab active" data-tag="all">
-                    {{ __('common.all') }}
-                </button>
-                @foreach ($tags as $tag)
-                    <button type="button" class="filter-tab" data-tag="{{ $tag->slug }}">
-                        {{ $tag->name }}
+            {{-- Discover More Campaigns --}}
+            <div class="mb-5">
+                <div class="section-title">
+                    <h2>{{ __('donation_campaigns.discover_campaigns') }}</h2>
+                </div>
+
+                {{-- Category Filter Tabs (AJAX) --}}
+                <div class="filter-tabs" id="filterTabs">
+                    <button type="button" class="filter-tab active" data-tag="all">
+                        {{ __('common.all') }}
                     </button>
-                @endforeach
-            </div>
-
-            {{-- Campaign Grid (loaded via AJAX) --}}
-            <div class="row g-4" id="discoverCampaignsGrid">
-                @foreach ($randomCampaigns as $campaign)
-                    @php
-                        $tagName = $campaign->tags->first()?->name ?? 'General';
-                        $tagClass = match (true) {
-                            str_contains(strtolower($tagName), 'education') => 'education',
-                            str_contains(strtolower($tagName), 'food') => 'food',
-                            str_contains(strtolower($tagName), 'health') => 'health',
-                            str_contains(strtolower($tagName), 'emergency') => 'emergency',
-                            str_contains(strtolower($tagName), 'orphan') => 'orphanage',
-                            default => 'education',
-                        };
-                        $daysLeft = $campaign->end_date
-                            ? $campaign->end_date->diffInDays(now()) . ' ' . __('donation_campaigns.days_left')
-                            : __('donation_campaigns.no_deadline');
-                    @endphp
-                    @include('member.donate._campaign-card', [
-                        'campaign' => $campaign,
-                        'tagName' => $tagName,
-                        'tagClass' => $tagClass,
-                        'daysLeft' => $daysLeft,
-                    ])
-                @endforeach
-            </div>
-
-            {{-- Loading indicator --}}
-            <div class="text-center py-4 d-none" id="loadingIndicator">
-                <div class="spinner-border text-success" role="status">
-                    <span class="visually-hidden">{{ __('common.loading') }}</span>
+                    @foreach ($tags as $tag)
+                        <button type="button" class="filter-tab" data-tag="{{ $tag->slug }}">
+                            {{ $tag->name }}
+                        </button>
+                    @endforeach
                 </div>
-                <p class="mt-2 text-muted">{{ __('common.loading') }}</p>
-            </div>
 
-            {{-- No content message --}}
-            <div class="text-center text-muted py-4 d-none" id="noContentMessage">
-                {{ __('common.no_content') }}
+                {{-- Campaign Grid (loaded via AJAX) --}}
+                <div class="row g-4" id="discoverCampaignsGrid">
+                    @foreach ($randomCampaigns as $campaign)
+                        @php
+                            $tagName = $campaign->tags->first()?->name ?? 'General';
+                            $tagClass = match (true) {
+                                str_contains(strtolower($tagName), 'education') => 'education',
+                                str_contains(strtolower($tagName), 'food') => 'food',
+                                str_contains(strtolower($tagName), 'health') => 'health',
+                                str_contains(strtolower($tagName), 'emergency') => 'emergency',
+                                str_contains(strtolower($tagName), 'orphan') => 'orphanage',
+                                default => 'education',
+                            };
+                            $daysLeft = $campaign->end_date
+                                ? $campaign->end_date->diffInDays(now()) . ' ' . __('donation_campaigns.days_left')
+                                : __('donation_campaigns.no_deadline');
+                        @endphp
+                        @include('member.donate._campaign-card', [
+                            'campaign' => $campaign,
+                            'tagName' => $tagName,
+                            'tagClass' => $tagClass,
+                            'daysLeft' => $daysLeft,
+                        ])
+                    @endforeach
+                </div>
+
+                {{-- Loading indicator --}}
+                <div class="text-center py-4 d-none" id="loadingIndicator">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">{{ __('common.loading') }}</span>
+                    </div>
+                    <p class="mt-2 text-muted">{{ __('common.loading') }}</p>
+                </div>
+
+                {{-- No content message --}}
+                <div class="text-center text-muted py-4 d-none" id="noContentMessage">
+                    {{ __('common.no_content') }}
+                </div>
             </div>
         </div>
     </div>

@@ -57,9 +57,269 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
     <script src="{{ asset('assets/js/config.js') }}"></script>
+
+    <style>
+        body.member-onboarding {
+            background: #f7faf9;
+        }
+
+        body.member-onboarding .content-wrapper {
+            background: transparent;
+        }
+
+        body.member-onboarding .container-p-y {
+            padding-top: 2.5rem !important;
+            padding-bottom: 3rem !important;
+        }
+
+        body.member-onboarding .onboarding-shell {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        body.member-onboarding .onboarding-card {
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            overflow: hidden;
+            background: #fff;
+        }
+
+        body.member-onboarding .onboarding-card .card-body {
+            padding: 2.25rem !important;
+        }
+
+        body.member-onboarding .onboarding-step {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            padding: .4rem .85rem;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.10);
+            color: #0f766e;
+            font-weight: 600;
+            font-size: .85rem;
+        }
+
+        body.member-onboarding .onboarding-progress {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: .5rem;
+            margin: .75rem auto 0;
+            max-width: 260px;
+        }
+
+        body.member-onboarding .onboarding-progress span {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.08);
+        }
+
+        body.member-onboarding .onboarding-progress span.is-done {
+            background: rgba(16, 185, 129, 0.35);
+        }
+
+        body.member-onboarding .onboarding-progress span.is-active {
+            background: #10b981;
+        }
+
+        body.member-onboarding .onboarding-title {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        body.member-onboarding .onboarding-subtitle {
+            color: rgba(15, 23, 42, 0.62);
+            font-size: 1rem;
+        }
+
+        body.member-onboarding .onboarding-tile {
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            border-radius: 16px;
+            padding: 1.25rem;
+            height: 100%;
+        }
+
+        body.member-onboarding .onboarding-tile .tile-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(16, 185, 129, 0.12);
+            color: #0f766e;
+        }
+
+        body.member-onboarding .onboarding-tile.tile-primary {
+            background: rgba(16, 185, 129, 0.10);
+        }
+
+        body.member-onboarding .onboarding-tile.tile-success {
+            background: rgba(20, 184, 166, 0.10);
+        }
+
+        body.member-onboarding .onboarding-tile.tile-info {
+            background: rgba(56, 189, 248, 0.10);
+        }
+
+        body.member-onboarding .onboarding-tile.tile-warning {
+            background: rgba(251, 191, 36, 0.14);
+        }
+
+        body.member-onboarding .onboarding-actions .btn {
+            border-radius: 14px;
+            padding: .9rem 1.1rem;
+            font-weight: 700;
+        }
+
+        body.member-onboarding .onboarding-actions .btn.btn-primary {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        body.member-onboarding .onboarding-actions .btn.btn-primary:hover {
+            background: #0ea371;
+            border-color: #0ea371;
+        }
+
+        body.member-onboarding .onboarding-actions .btn.btn-label-secondary {
+            background: rgba(15, 23, 42, 0.05);
+            border-color: rgba(15, 23, 42, 0.06);
+        }
+
+        body.member-onboarding .onboarding-actions .btn.btn-label-secondary:hover {
+            background: rgba(15, 23, 42, 0.08);
+        }
+
+        body.member-onboarding .page-animate {
+            animation: onboardingFadeUp 520ms cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        body.member-onboarding .tile-animate {
+            animation: onboardingFadeUp 620ms cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        body.member-onboarding .tile-animate:nth-child(1) {
+            animation-delay: 60ms;
+        }
+
+        body.member-onboarding .tile-animate:nth-child(2) {
+            animation-delay: 120ms;
+        }
+
+        body.member-onboarding .tile-animate:nth-child(3) {
+            animation-delay: 180ms;
+        }
+
+        body.member-onboarding .tile-animate:nth-child(4) {
+            animation-delay: 240ms;
+        }
+
+        @keyframes onboardingFadeUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 12px, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            body.member-onboarding .page-animate,
+            body.member-onboarding .tile-animate {
+                animation: none !important;
+            }
+        }
+
+        body.member-modern {
+            background: #f7faf9;
+        }
+
+        body.member-modern .content-wrapper {
+            background: transparent;
+        }
+
+        body.member-modern .page-animate {
+            animation: memberFadeUp 520ms cubic-bezier(.2, .8, .2, 1) both;
+        }
+
+        body.member-modern .card {
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        body.member-modern .btn {
+            border-radius: 12px;
+        }
+
+        body.member-modern .btn.btn-success,
+        body.member-modern .btn.btn-primary {
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.18);
+        }
+
+        body.member-modern .badge {
+            border-radius: 999px;
+        }
+
+        body.member-modern #layout-navbar {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+        }
+
+        body.member-modern #layout-navbar .navbar-nav .nav-link {
+            color: rgba(15, 23, 42, 0.72);
+            font-weight: 600;
+            padding: .55rem .85rem;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        body.member-modern #layout-navbar .navbar-nav .nav-link:hover {
+            background: rgba(15, 23, 42, 0.06);
+            color: rgba(15, 23, 42, 0.86);
+        }
+
+        body.member-modern #layout-navbar .navbar-nav .nav-link.active {
+            background: rgba(16, 185, 129, 0.12);
+            color: #0f766e;
+        }
+
+        body.member-modern #layout-navbar .navbar-nav .nav-link .icon-base {
+            font-size: 1.05rem;
+        }
+
+        @keyframes memberFadeUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 12px, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body.member-modern .page-animate {
+                animation: none !important;
+            }
+        }
+    </style>
 </head>
 
-<body>
+<body class="@yield('body_class')">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
         <div class="layout-container">
@@ -86,9 +346,17 @@
                         </a>
                     </div>
 
-                    <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
+                    <div class="navbar-nav-right d-flex align-items-center w-100" id="navbar-collapse">
+                        <ul class="navbar-nav me-auto align-items-xl-center d-none d-xl-flex">
+                            @include('layouts.navigations.member')
+                        </ul>
+
                         <div class="navbar-nav align-items-center">
-                            <div class="nav-item dropdown me-2 me-xl-0">
+
+                        </div>
+
+                        <ul class="navbar-nav flex-row align-items-center ms-md-auto">
+                            <li class="nav-item dropdown me-2 me-xl-0">
                                 <a class="nav-link dropdown-toggle hide-arrow" id="nav-theme" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <i class="icon-base ti tabler-sun icon-md theme-icon-active"></i>
@@ -117,10 +385,7 @@
                                         </button>
                                     </li>
                                 </ul>
-                            </div>
-                        </div>
-
-                        <ul class="navbar-nav flex-row align-items-center ms-md-auto">
+                            </li>
                             <!-- Language -->
                             <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
@@ -202,17 +467,6 @@
             <div class="layout-page">
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
-                    <!-- Menu -->
-                    <aside id="layout-menu" class="layout-menu-horizontal menu-horizontal menu grow-0">
-                        <div class="container-xxl d-flex h-100">
-                            <ul class="menu-inner py-1">
-                                <!-- Page -->
-                                @include('layouts.navigations.member')
-                            </ul>
-                        </div>
-                    </aside>
-                    <!-- / Menu -->
-
                     <!-- Content -->
                     <div class="container-xxl grow container-p-y">
                         @yield('content')
