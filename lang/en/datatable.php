@@ -71,5 +71,9 @@ return [
     'mentors' => [
         'emptyTable' => 'No mentor profiles found',
         'zeroRecords' => 'No matching mentor profiles found',
+    ],
+    'events' => [
+        'emptyTable' => 'No events found',
+        'zeroRecords' => 'No matching events found',
     ]
 ];

@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\CommunityPostController;
 use App\Http\Controllers\Admin\VolunteerRegistrationController;
 use App\Http\Controllers\Admin\VolunteerEventController;
 use App\Http\Controllers\Admin\MentorProfileController;
+use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Member\Auth\LoginController as MemberLoginController;
 use App\Http\Controllers\Member\Auth\RegisterController as MemberRegisterController;
 use App\Http\Controllers\Member\Auth\GoogleController as MemberGoogleController;
@@ -134,6 +135,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::resource('community/volunteer-registrations', VolunteerRegistrationController::class)->names('community.volunteer-registrations');
   Route::resource('community/volunteer-events', VolunteerEventController::class)->names('community.volunteer-events');
   Route::resource('community/mentors', MentorProfileController::class)->names('community.mentors');
+
+  // Event & Activities routes
+  Route::get('events/{event}/rsvps', [EventController::class, 'rsvps'])->name('events.rsvps');
+  Route::post('events/{event}/send-reminders', [EventController::class, 'sendReminders'])->name('events.send-reminders');
+  Route::patch('event-rsvps/{rsvp}/status', [EventController::class, 'updateRsvpStatus'])->name('event-rsvps.update-status');
+  Route::post('events/{event}/documentation', [EventController::class, 'uploadDocumentation'])->name('events.upload-documentation');
+  Route::delete('event-documentation/{documentation}', [EventController::class, 'deleteDocumentation'])->name('event-documentation.destroy');
+  Route::resource('events', EventController::class);
 
   Route::get('logout', [AuthAdminController::class, 'logout'])->name('logout');
 });

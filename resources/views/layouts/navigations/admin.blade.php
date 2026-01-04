@@ -101,6 +101,17 @@
                         </a>
                     </li>
 
+                    <!-- Event & Activities Section -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">{{ __('events.title') }}</span>
+                    </li>
+                    <li class="menu-item {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.events.index') }}" class="menu-link">
+                            <i class="menu-icon icon-base ti tabler-calendar-event"></i>
+                            <div data-i18n="Events">{{ __('events.subtitle') }}</div>
+                        </a>
+                    </li>
+
                     <!-- Settings Section -->
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">{{ __('navigation.settings') }}</span>

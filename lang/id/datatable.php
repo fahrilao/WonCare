@@ -69,7 +69,11 @@ return [
         'zeroRecords' => 'Tidak ada acara relawan yang cocok ditemukan',
     ],
     'mentors' => [
-        'emptyTable' => 'Tidak ada profil mentor ditemukan',
-        'zeroRecords' => 'Tidak ada profil mentor yang cocok ditemukan',
+        'emptyTable' => 'Tidak ada profil mentor',
+        'zeroRecords' => 'Tidak ada profil mentor yang cocok',
+    ],
+    'events' => [
+        'emptyTable' => 'Tidak ada event',
+        'zeroRecords' => 'Tidak ada event yang cocok',
     ]
 ];

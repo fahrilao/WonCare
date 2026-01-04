@@ -69,7 +69,11 @@ return [
         'zeroRecords' => '일치하는 자원봉사 이벤트를 찾을 수 없습니다',
     ],
     'mentors' => [
-        'emptyTable' => '멘토 프로필을 찾을 수 없습니다',
-        'zeroRecords' => '일치하는 멘토 프로필을 찾을 수 없습니다',
+        'emptyTable' => '멘토 프로필이 없습니다',
+        'zeroRecords' => '일치하는 멘토 프로필이 없습니다',
+    ],
+    'events' => [
+        'emptyTable' => '이벤트가 없습니다',
+        'zeroRecords' => '일치하는 이벤트가 없습니다',
     ]
 ];
