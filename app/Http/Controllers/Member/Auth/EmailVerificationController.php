@@ -21,9 +21,17 @@ class EmailVerificationController extends Controller
      */
     public function notice()
     {
-        return Auth::guard('member')->user()->hasVerifiedEmail()
-            ? redirect()->intended(route('dashboard'))
-            : view('member.auth.verify-email');
+        $member = Auth::guard('member')->user();
+
+        if ($member->hasVerifiedEmail()) {
+            // Check if onboarding is completed
+            if (!$member->onboarding_completed) {
+                return redirect()->route('onboarding.step1');
+            }
+            return redirect()->intended(route('dashboard'));
+        }
+
+        return view('member.auth.verify-email');
     }
 
     /**
@@ -34,11 +42,20 @@ class EmailVerificationController extends Controller
         $member = Auth::guard('member')->user();
 
         if ($member->hasVerifiedEmail()) {
+            // Check if onboarding is completed
+            if (!$member->onboarding_completed) {
+                return redirect()->route('onboarding.step1');
+            }
             return redirect()->intended(route('dashboard') . '?verified=1');
         }
 
         if ($member->markEmailAsVerified()) {
             event(new Verified($member));
+        }
+
+        // After verification, check if onboarding is completed
+        if (!$member->onboarding_completed) {
+            return redirect()->route('onboarding.step1');
         }
 
         return redirect()->intended(route('dashboard') . '?verified=1');
@@ -52,6 +69,10 @@ class EmailVerificationController extends Controller
         $member = Auth::guard('member')->user();
 
         if ($member->hasVerifiedEmail()) {
+            // Check if onboarding is completed
+            if (!$member->onboarding_completed) {
+                return redirect()->route('onboarding.step1');
+            }
             return redirect()->intended(route('dashboard'));
         }
 

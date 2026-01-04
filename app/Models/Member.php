@@ -31,6 +31,11 @@ class Member extends Authenticatable implements MustVerifyEmail
         'language',
         'is_active',
         'last_login_at',
+        'onboarding_completed',
+        'monthly_income',
+        'monthly_expense',
+        'occupation',
+        'financial_goal',
     ];
 
     /**
@@ -54,6 +59,9 @@ class Member extends Authenticatable implements MustVerifyEmail
         'date_of_birth' => 'date',
         'last_login_at' => 'datetime',
         'is_active' => 'boolean',
+        'onboarding_completed' => 'boolean',
+        'monthly_income' => 'decimal:2',
+        'monthly_expense' => 'decimal:2',
     ];
 
     /**

@@ -22,6 +22,7 @@ use App\Http\Controllers\Member\ProfileController as MemberProfileController;
 use App\Http\Controllers\Member\LessonProgressController;
 use App\Http\Controllers\Member\DonateController;
 use App\Http\Controllers\Member\PaymentCallbackController;
+use App\Http\Controllers\Member\OnboardingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,6 +124,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
   Route::resource('donation-reports', DonationReportController::class);
 
   Route::get('logout', [AuthAdminController::class, 'logout'])->name('logout');
+});
+
+// Member Onboarding Routes (authenticated but no verification required)
+Route::group(['middleware' => 'auth:member'], function () {
+  Route::prefix('onboarding')->name('onboarding.')->group(function () {
+    Route::get('/step1', [OnboardingController::class, 'step1'])->name('step1');
+    Route::post('/step1', [OnboardingController::class, 'storeStep1'])->name('step1.store');
+    Route::get('/step2', [OnboardingController::class, 'step2'])->name('step2');
+    Route::post('/step2', [OnboardingController::class, 'storeStep2'])->name('step2.store');
+    Route::get('/step3', [OnboardingController::class, 'step3'])->name('step3');
+    Route::post('/step3', [OnboardingController::class, 'storeStep3'])->name('step3.store');
+    Route::get('/step4', [OnboardingController::class, 'step4'])->name('step4');
+    Route::post('/step4', [OnboardingController::class, 'storeStep4'])->name('step4.store');
+    Route::get('/step5', [OnboardingController::class, 'step5'])->name('step5');
+    Route::post('/complete', [OnboardingController::class, 'complete'])->name('complete');
+  });
 });
 
 // Member Authentication Routes

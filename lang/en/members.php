@@ -96,5 +96,12 @@ return [
     'account_deactivated' => 'Your account has been deactivated. Please contact support.',
     'invalid_credentials' => 'The provided credentials are incorrect.',
     'logout_success' => 'You have been logged out successfully.',
+
+    'verify_email' => 'Verify Email',
+    'verify_email_title' => 'Please Verify Your Email',
+    'verify_email_message' => 'Before continuing, please check your email for a verification link.',
+    'verify_email_sent_to' => 'Verification email sent to',
+    'resend_verification' => 'Resend Verification Email',
+    'check_spam_folder' => 'Please check your spam folder if you don\'t see the email.',
     'fix_errors_below' => 'Please fix the errors below.',
 ];

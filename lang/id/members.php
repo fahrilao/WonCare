@@ -95,5 +95,12 @@ return [
     'account_deactivated' => 'Akun Anda telah dinonaktifkan. Silakan hubungi dukungan.',
     'invalid_credentials' => 'Kredensial yang diberikan salah.',
     'logout_success' => 'Anda telah berhasil keluar.',
+
+    'verify_email' => 'Verifikasi Email',
+    'verify_email_title' => 'Silakan Verifikasi Email Anda',
+    'verify_email_message' => 'Sebelum melanjutkan, silakan periksa email Anda untuk tautan verifikasi.',
+    'verify_email_sent_to' => 'Email verifikasi dikirim ke',
+    'resend_verification' => 'Kirim Ulang Email Verifikasi',
+    'check_spam_folder' => 'Silakan periksa folder spam jika Anda tidak melihat emailnya.',
     'fix_errors_below' => 'Silakan perbaiki kesalahan di bawah ini.',
 ];

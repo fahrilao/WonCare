@@ -77,6 +77,11 @@ class LoginController extends Controller
                 'ip' => $request->ip(),
             ]);
 
+            // Check if onboarding is completed
+            if (!$member->onboarding_completed) {
+                return redirect()->route('onboarding.step1');
+            }
+
             return redirect()->intended(route('dashboard'))
                 ->with('success', __('members.welcome_back', ['name' => $member->name]));
         }

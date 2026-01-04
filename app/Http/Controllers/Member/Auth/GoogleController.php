@@ -58,6 +58,11 @@ class GoogleController extends Controller
                     'ip' => $request->ip(),
                 ]);
 
+                // Check if onboarding is completed
+                if (!$member->onboarding_completed) {
+                    return redirect()->route('onboarding.step1');
+                }
+
                 return redirect()->route('dashboard')
                     ->with('success', __('members.welcome_back', ['name' => $member->name]));
             }
@@ -81,6 +86,11 @@ class GoogleController extends Controller
                     'email' => $existingMember->email,
                     'ip' => $request->ip(),
                 ]);
+
+                // Check if onboarding is completed
+                if (!$existingMember->onboarding_completed) {
+                    return redirect()->route('onboarding.step1');
+                }
 
                 return redirect()->route('dashboard')
                     ->with('success', __('members.google_linked'));
@@ -107,8 +117,8 @@ class GoogleController extends Controller
                 'ip' => $request->ip(),
             ]);
 
-            return redirect()->route('dashboard')
-                ->with('success', __('members.google_registration_success', ['name' => $member->name]));
+            // New members always need onboarding
+            return redirect()->route('onboarding.step1');
         } catch (\Exception $e) {
             logger()->error('Google OAuth error', [
                 'error' => $e->getMessage(),

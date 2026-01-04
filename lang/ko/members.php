@@ -95,5 +95,12 @@ return [
     'account_deactivated' => '계정이 비활성화되었습니다. 지원팀에 문의해 주세요.',
     'invalid_credentials' => '제공된 자격 증명이 올바르지 않습니다.',
     'logout_success' => '성공적으로 로그아웃되었습니다.',
+
+    'verify_email' => '이메일 확인',
+    'verify_email_title' => '이메일을 확인해주세요',
+    'verify_email_message' => '계속하기 전에 이메일에서 확인 링크를 확인해주세요.',
+    'verify_email_sent_to' => '확인 이메일 전송됨',
+    'resend_verification' => '확인 이메일 재전송',
+    'check_spam_folder' => '이메일이 보이지 않으면 스팸 폴더를 확인해주세요.',
     'fix_errors_below' => '아래 오류를 수정해 주세요.',
 ];
