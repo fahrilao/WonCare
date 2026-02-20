@@ -5,412 +5,400 @@
 
 @section('content')
     <div class="page-animate">
-        <div class="container py-4">
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-header">
-                        <h3>
-                            <i class="ti tabler-calculator"></i>
-                            {{ __('zakat.calculator') }}
-                        </h3>
-                        <p class="text-muted mb-0">{{ __('zakat.calculator_description') }}</p>
+        {{-- Hero --}}
+        <div class="zakat-hero mb-4">
+            <div class="d-flex align-items-center gap-3">
+                <div class="zakat-hero-icon">
+                    <i class="icon-base ti tabler-calculator icon-lg"></i>
+                </div>
+                <div>
+                    <h4 class="mb-0 fw-bold text-white">{{ __('zakat.calculator') }}</h4>
+                    <div class="text-white" style="opacity:.8;font-size:.9rem;">{{ __('zakat.calculator_description') }}</div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Pill Tabs --}}
+        <div class="zakat-tabs mb-4">
+            <ul class="zakat-nav-pills" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button type="button" class="zakat-tab-btn active" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#mal" aria-controls="mal" aria-selected="true">
+                        <i class="icon-base ti tabler-coin"></i>
+                        <span>{{ __('zakat.zakat_mal') }}</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button type="button" class="zakat-tab-btn" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#fitrah" aria-controls="fitrah" aria-selected="false">
+                        <i class="icon-base ti tabler-users"></i>
+                        <span>{{ __('zakat.zakat_fitrah') }}</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button type="button" class="zakat-tab-btn" role="tab" data-bs-toggle="tab"
+                        data-bs-target="#profesi" aria-controls="profesi" aria-selected="false">
+                        <i class="icon-base ti tabler-briefcase"></i>
+                        <span>{{ __('zakat.zakat_profesi') }}</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        {{-- Tab Content --}}
+        <div class="tab-content">
+            {{-- Zakat Mal --}}
+            <div class="tab-pane fade show active" id="mal" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-12 col-lg-8">
+                        <div class="card zakat-card mb-4">
+                            <div class="card-body">
+                                <div class="zakat-section-label mb-3">
+                                    <span class="zakat-section-icon"><i class="ti tabler-currency"></i></span>
+                                    {{ __('zakat.select_currency') }}
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    @foreach ($currencies as $index => $currency)
+                                        <label class="zakat-currency-pill {{ $index === 0 ? 'active' : '' }}">
+                                            <input type="radio" name="currency"
+                                                id="currency{{ $currency->currency_code }}"
+                                                value="{{ $currency->currency_code }}"
+                                                data-symbol="{{ $currency->currency_symbol }}"
+                                                data-rate="{{ $currency->exchange_rate_to_idr }}"
+                                                {{ $index === 0 ? 'checked' : '' }} class="d-none">
+                                            <strong>{{ $currency->currency_symbol }}</strong>
+                                            <span class="ms-1"
+                                                style="font-size:.8rem;opacity:.7;">{{ $currency->currency_code }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                                <div class="zakat-info-box mt-3">
+                                    <i class="ti tabler-info-circle"></i>
+                                    <span id="exchangeRateInfo"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card zakat-card">
+                            <div class="card-body">
+                                <div class="zakat-section-label mb-1">
+                                    <span class="zakat-section-icon"><i class="ti tabler-coin"></i></span>
+                                    {{ __('zakat.calculate_zakat_mal') }}
+                                </div>
+                                <p class="text-muted mb-4" style="font-size:.875rem;padding-left:2.75rem;">
+                                    {{ __('zakat.mal_description') }}</p>
+                                <form id="zakatMalForm">
+                                    <div class="row g-3">
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label">{{ __('zakat.gold_owned') }}
+                                                ({{ __('zakat.grams') }})</label>
+                                            <input type="number" class="form-control" id="goldGrams" min="0"
+                                                step="0.01" value="0" placeholder="{{ __('zakat.enter_amount') }}">
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label">{{ __('zakat.silver_owned') }}
+                                                ({{ __('zakat.grams') }})</label>
+                                            <input type="number" class="form-control" id="silverGrams" min="0"
+                                                step="0.01" value="0" placeholder="{{ __('zakat.enter_amount') }}">
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label">{{ __('zakat.cash_savings') }}</label>
+                                            <input type="number" class="form-control" id="cash" min="0"
+                                                step="1000" value="0"
+                                                placeholder="{{ __('zakat.enter_amount') }}">
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label">{{ __('zakat.business_assets') }}</label>
+                                            <input type="number" class="form-control" id="assets" min="0"
+                                                step="1000" value="0"
+                                                placeholder="{{ __('zakat.enter_amount') }}">
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label">{{ __('zakat.debts') }}</label>
+                                            <input type="number" class="form-control" id="debts" min="0"
+                                                step="1000" value="0"
+                                                placeholder="{{ __('zakat.enter_amount') }}">
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="button" class="btn-calculate" onclick="calculateZakatMal()">
+                                            <i class="ti tabler-calculator"></i>
+                                            {{ __('zakat.calculate') }}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Tabs -->
-                    <ul class="nav nav-tabs nav-tabs-custom mb-4" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button type="button" class="nav-link active waves-effect" role="tab" data-bs-toggle="tab"
-                                data-bs-target="#mal" aria-controls="mal" aria-selected="true">
-                                <span class="d-none d-sm-inline-flex align-items-center">
-                                    <i class="icon-base ti tabler-coin icon-sm me-1_5"></i>{{ __('zakat.zakat_mal') }}
-                                </span>
-                                <i class="icon-base ti tabler-coin icon-sm d-sm-none"></i>
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab"
-                                data-bs-target="#fitrah" aria-controls="fitrah" aria-selected="false">
-                                <span class="d-none d-sm-inline-flex align-items-center">
-                                    <i class="icon-base ti tabler-users icon-sm me-1_5"></i>{{ __('zakat.zakat_fitrah') }}
-                                </span>
-                                <i class="icon-base ti tabler-users icon-sm d-sm-none"></i>
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab"
-                                data-bs-target="#profesi" aria-controls="profesi" aria-selected="false">
-                                <span class="d-none d-sm-inline-flex align-items-center">
-                                    <i
-                                        class="icon-base ti tabler-briefcase icon-sm me-1_5"></i>{{ __('zakat.zakat_profesi') }}
-                                </span>
-                                <i class="icon-base ti tabler-briefcase icon-sm d-sm-none"></i>
-                            </button>
-                        </li>
-                    </ul>
-
-                    <!-- Tab Content -->
-                    <div class="tab-content p-0">
-                        <!-- Zakat Mal -->
-                        <div class="tab-pane fade show active" id="mal" role="tabpanel">
-                            <div class="row">
-                                <div class="col-12 col-lg-8 mb-4 mb-lg-0">
-                                    <!-- Currency Selection Card -->
-                                    <div class="card zakat-card mb-4">
-                                        <div class="card-body">
-                                            <div class="section-title">
-                                                <i class="ti tabler-currency"></i>
-                                                <h6>{{ __('zakat.select_currency') }}</h6>
-                                            </div>
-                                            <div class="d-flex gap-3 flex-wrap">
-                                                @foreach ($currencies as $index => $currency)
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="currency"
-                                                            id="currency{{ $currency->currency_code }}"
-                                                            value="{{ $currency->currency_code }}"
-                                                            data-symbol="{{ $currency->currency_symbol }}"
-                                                            data-rate="{{ $currency->exchange_rate_to_idr }}"
-                                                            {{ $index === 0 ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="currency{{ $currency->currency_code }}">
-                                                            <strong>{{ $currency->currency_name }}
-                                                                ({{ $currency->currency_symbol }})
-                                                            </strong>
-                                                            <small
-                                                                class="text-muted d-block">{{ $currency->currency_code }}</small>
-                                                        </label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                            <div class="alert-zakat-info mt-3 mb-0 p-3">
-                                                <small>
-                                                    <i class="ti tabler-info-circle me-1"></i>
-                                                    <span id="exchangeRateInfo"></span>
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card zakat-card">
-                                        <div class="card-body">
-                                            <div class="section-title">
-                                                <i class="ti tabler-coin"></i>
-                                                <h5>{{ __('zakat.calculate_zakat_mal') }}</h5>
-                                            </div>
-                                            <p class="text-muted mb-4">{{ __('zakat.mal_description') }}</p>
-
-                                            <form id="zakatMalForm">
-                                                <div class="row">
-                                                    <div class="col-12 col-sm-6 mb-3">
-                                                        <label class="form-label">{{ __('zakat.gold_owned') }}
-                                                            ({{ __('zakat.grams') }})</label>
-                                                        <input type="number" class="form-control" id="goldGrams"
-                                                            min="0" step="0.01" value="0"
-                                                            placeholder="{{ __('zakat.enter_amount') }}">
-                                                    </div>
-                                                    <div class="col-12 col-sm-6 mb-3">
-                                                        <label class="form-label">{{ __('zakat.silver_owned') }}
-                                                            ({{ __('zakat.grams') }})</label>
-                                                        <input type="number" class="form-control" id="silverGrams"
-                                                            min="0" step="0.01" value="0"
-                                                            placeholder="{{ __('zakat.enter_amount') }}">
-                                                    </div>
-                                                    <div class="col-12 col-sm-6 mb-3">
-                                                        <label class="form-label">{{ __('zakat.cash_savings') }}</label>
-                                                        <input type="number" class="form-control" id="cash"
-                                                            min="0" step="1000" value="0"
-                                                            placeholder="{{ __('zakat.enter_amount') }}">
-                                                    </div>
-                                                    <div class="col-12 col-sm-6 mb-3">
-                                                        <label
-                                                            class="form-label">{{ __('zakat.business_assets') }}</label>
-                                                        <input type="number" class="form-control" id="assets"
-                                                            min="0" step="1000" value="0"
-                                                            placeholder="{{ __('zakat.enter_amount') }}">
-                                                    </div>
-                                                    <div class="col-12 col-sm-6 mb-3">
-                                                        <label class="form-label">{{ __('zakat.debts') }}</label>
-                                                        <input type="number" class="form-control" id="debts"
-                                                            min="0" step="1000" value="0"
-                                                            placeholder="{{ __('zakat.enter_amount') }}">
-                                                    </div>
-                                                </div>
-                                                <button type="button" class="btn-calculate w-sm-auto"
-                                                    onclick="calculateZakatMal()">
-                                                    <i class="ti tabler-calculator"></i>
-                                                    {{ __('zakat.calculate') }}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card result-card">
+                            <div class="card-body">
+                                <div class="result-header">
+                                    <i class="ti tabler-chart-bar"></i>
+                                    {{ __('zakat.calculation_result') }}
                                 </div>
-                                <div class="col-12 col-lg-4">
-                                    <div class="card result-card">
-                                        <div class="card-body">
-                                            <h6 class="mb-3">{{ __('zakat.calculation_result') }}</h6>
-                                            <div id="malResult">
-                                                <p class="text-muted">{{ __('zakat.enter_details_calculate') }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Zakat Fitrah -->
-                        <div class="tab-pane fade" id="fitrah" role="tabpanel">
-                            <div class="row">
-                                <div class="col-12 col-lg-8 mb-4 mb-lg-0">
-                                    <div class="card zakat-card">
-                                        <div class="card-body">
-                                            <div class="section-title">
-                                                <i class="ti tabler-users"></i>
-                                                <h5>{{ __('zakat.calculate_zakat_fitrah') }}</h5>
-                                            </div>
-                                            <p class="text-muted mb-4">{{ __('zakat.fitrah_description') }}</p>
-
-                                            <form id="zakatFitrahForm">
-                                                <div class="mb-3">
-                                                    <label class="form-label">{{ __('zakat.number_of_people') }}</label>
-                                                    <input type="number" class="form-control" id="numPeople"
-                                                        min="1" value="1"
-                                                        placeholder="{{ __('zakat.enter_number') }}">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">{{ __('zakat.payment_type') }}</label>
-                                                    <div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="fitrahType" id="fitrahMoney" value="money"
-                                                                checked>
-                                                            <label class="form-check-label"
-                                                                for="fitrahMoney">{{ __('zakat.money') }}</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="fitrahType" id="fitrahRice" value="rice">
-                                                            <label class="form-check-label"
-                                                                for="fitrahRice">{{ __('zakat.rice') }}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button type="button" class="btn-calculate w-sm-auto"
-                                                    onclick="calculateZakatFitrah()">
-                                                    <i class="ti tabler-calculator"></i>
-                                                    {{ __('zakat.calculate') }}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-4">
-                                    <div class="card result-card">
-                                        <div class="card-body">
-                                            <h6 class="mb-3">{{ __('zakat.calculation_result') }}</h6>
-                                            <div id="fitrahResult">
-                                                <p class="text-muted">{{ __('zakat.enter_details_calculate') }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Zakat Profesi -->
-                        <div class="tab-pane fade" id="profesi" role="tabpanel">
-                            <div class="row">
-                                <div class="col-12 col-lg-8 mb-4 mb-lg-0">
-                                    <div class="card zakat-card">
-                                        <div class="card-body">
-                                            <div class="section-title">
-                                                <i class="ti tabler-briefcase"></i>
-                                                <h5>{{ __('zakat.calculate_zakat_profesi') }}</h5>
-                                            </div>
-                                            <p class="text-muted mb-4">{{ __('zakat.profesi_description') }}</p>
-
-                                            <form id="zakatProfesiForm">
-                                                <div class="mb-3">
-                                                    <label class="form-label">{{ __('zakat.period') }}</label>
-                                                    <div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="profesiPeriod" id="profesiMonthly" value="monthly"
-                                                                checked>
-                                                            <label class="form-check-label"
-                                                                for="profesiMonthly">{{ __('zakat.monthly') }}</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="profesiPeriod" id="profesiAnnual" value="annual">
-                                                            <label class="form-check-label"
-                                                                for="profesiAnnual">{{ __('zakat.annual') }}</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">{{ __('zakat.income') }}</label>
-                                                    <input type="number" class="form-control" id="income"
-                                                        min="0" step="100000" value="0"
-                                                        placeholder="{{ __('zakat.enter_amount') }}">
-                                                </div>
-                                                <button type="button" class="btn-calculate w-sm-auto"
-                                                    onclick="calculateZakatProfesi()">
-                                                    <i class="ti tabler-calculator"></i>
-                                                    {{ __('zakat.calculate') }}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-4">
-                                    <div class="card result-card">
-                                        <div class="card-body">
-                                            <h6 class="mb-3">{{ __('zakat.calculation_result') }}</h6>
-                                            <div id="profesiResult">
-                                                <p class="text-muted">{{ __('zakat.enter_details_calculate') }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div id="malResult">
+                                    <p class="text-muted mb-0" style="font-size:.875rem;">
+                                        {{ __('zakat.enter_details_calculate') }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Configuration Info Card -->
-                    <div class="card config-card mt-4">
-                        <div class="card-header">
-                            <h6 class="mb-0">
-                                <i class="ti tabler-info-circle me-2"></i>
-                                {{ __('zakat.current_configuration') }}
-                            </h6>
-                            <p class="text-muted small mb-0">{{ __('zakat.configuration_info') }}</p>
-                        </div>
-                        <div class="card-body pt-3">
-                            <div class="row g-3">
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="config-item">
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <div class="d-flex align-items-center">
-                                                <i class="ti tabler-coin text-warning me-2"></i>
-                                                <small class="text-muted">{{ __('zakat.gold_price') }}</small>
-                                            </div>
-                                            <button type="button" class="btn btn-sm btn-link p-0 edit-config"
-                                                data-field="gold" title="Edit">
-                                                <i class="ti tabler-edit"></i>
-                                            </button>
-                                        </div>
-                                        <div class="config-display" id="goldPriceDisplay">
-                                            <h6 class="mb-0" id="displayGoldPrice"></h6>
-                                        </div>
-                                        <div class="config-edit d-none" id="goldPriceEdit">
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-text" id="goldPriceSymbol">Rp</span>
-                                                <input type="number" class="form-control" id="editGoldPrice"
-                                                    min="0" step="1000">
-                                            </div>
-                                        </div>
-                                        <small class="text-muted">{{ __('zakat.per_gram') }}</small>
-                                    </div>
+            {{-- Zakat Fitrah --}}
+            <div class="tab-pane fade" id="fitrah" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-12 col-lg-8">
+                        <div class="card zakat-card">
+                            <div class="card-body">
+                                <div class="zakat-section-label mb-1">
+                                    <span class="zakat-section-icon"><i class="ti tabler-users"></i></span>
+                                    {{ __('zakat.calculate_zakat_fitrah') }}
                                 </div>
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="config-item">
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <div class="d-flex align-items-center">
-                                                <i class="ti tabler-coin text-secondary me-2"></i>
-                                                <small class="text-muted">{{ __('zakat.silver_price') }}</small>
+                                <p class="text-muted mb-4" style="font-size:.875rem;padding-left:2.75rem;">
+                                    {{ __('zakat.fitrah_description') }}</p>
+                                <form id="zakatFitrahForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ __('zakat.number_of_people') }}</label>
+                                        <input type="number" class="form-control" id="numPeople" min="1"
+                                            value="1" placeholder="{{ __('zakat.enter_number') }}">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">{{ __('zakat.payment_type') }}</label>
+                                        <div class="d-flex gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="fitrahType"
+                                                    id="fitrahMoney" value="money" checked>
+                                                <label class="form-check-label"
+                                                    for="fitrahMoney">{{ __('zakat.money') }}</label>
                                             </div>
-                                            <button type="button" class="btn btn-sm btn-link p-0 edit-config"
-                                                data-field="silver" title="Edit">
-                                                <i class="ti tabler-edit"></i>
-                                            </button>
-                                        </div>
-                                        <div class="config-display" id="silverPriceDisplay">
-                                            <h6 class="mb-0" id="displaySilverPrice"></h6>
-                                        </div>
-                                        <div class="config-edit d-none" id="silverPriceEdit">
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-text" id="silverPriceSymbol">Rp</span>
-                                                <input type="number" class="form-control" id="editSilverPrice"
-                                                    min="0" step="1000">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="fitrahType"
+                                                    id="fitrahRice" value="rice">
+                                                <label class="form-check-label"
+                                                    for="fitrahRice">{{ __('zakat.rice') }}</label>
                                             </div>
                                         </div>
-                                        <small class="text-muted">{{ __('zakat.per_gram') }}</small>
                                     </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="config-item">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="ti tabler-scale text-warning me-2"></i>
-                                            <small class="text-muted">{{ __('zakat.gold_nisab') }}</small>
-                                        </div>
-                                        <h6 class="mb-0">{{ number_format($goldNisab, 0, ',', '.') }}
-                                            {{ __('zakat.grams') }}</h6>
-                                        <small class="text-muted" id="displayGoldNisabValue"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="config-item">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="ti tabler-scale text-secondary me-2"></i>
-                                            <small class="text-muted">{{ __('zakat.silver_nisab') }}</small>
-                                        </div>
-                                        <h6 class="mb-0">{{ number_format($silverNisab, 0, ',', '.') }}
-                                            {{ __('zakat.grams') }}</h6>
-                                        <small class="text-muted" id="displaySilverNisabValue"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="config-item">
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <div class="d-flex align-items-center">
-                                                <i class="ti tabler-grain text-success me-2"></i>
-                                                <small class="text-muted">{{ __('zakat.rice_price') }}</small>
-                                            </div>
-                                            <button type="button" class="btn btn-sm btn-link p-0 edit-config"
-                                                data-field="rice" title="Edit">
-                                                <i class="ti tabler-edit"></i>
-                                            </button>
-                                        </div>
-                                        <div class="config-display" id="ricePriceDisplay">
-                                            <h6 class="mb-0" id="displayRicePrice"></h6>
-                                        </div>
-                                        <div class="config-edit d-none" id="ricePriceEdit">
-                                            <div class="input-group input-group-sm">
-                                                <span class="input-group-text" id="ricePriceSymbol">Rp</span>
-                                                <input type="number" class="form-control" id="editRicePrice"
-                                                    min="0" step="1000">
-                                            </div>
-                                        </div>
-                                        <small class="text-muted">{{ __('zakat.per_kg') }}</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="config-item">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="ti tabler-users me-2" style="color: #1a6b47;"></i>
-                                            <small class="text-muted">{{ __('zakat.fitrah_per_person') }}</small>
-                                        </div>
-                                        <h6 class="mb-0">{{ number_format($fitrahAmount, 1) }} kg</h6>
-                                        <small class="text-muted" id="displayFitrahValue"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="config-item">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="ti tabler-percentage me-2" style="color: #1a6b47;"></i>
-                                            <small class="text-muted">{{ __('zakat.zakat_rate') }}</small>
-                                        </div>
-                                        <h6 class="mb-0">{{ number_format($zakatPercentage, 1) }}%</h6>
-                                        <small class="text-muted">{{ __('zakat.standard_rate') }}</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="alert-zakat-info mt-3 mb-0 p-3">
-                                <small>
-                                    <i class="ti tabler-info-circle me-1"></i>
-                                    {{ __('zakat.configuration_note') }}
-                                </small>
+                                    <button type="button" class="btn-calculate" onclick="calculateZakatFitrah()">
+                                        <i class="ti tabler-calculator"></i>
+                                        {{ __('zakat.calculate') }}
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card result-card">
+                            <div class="card-body">
+                                <div class="result-header">
+                                    <i class="ti tabler-chart-bar"></i>
+                                    {{ __('zakat.calculation_result') }}
+                                </div>
+                                <div id="fitrahResult">
+                                    <p class="text-muted mb-0" style="font-size:.875rem;">
+                                        {{ __('zakat.enter_details_calculate') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Zakat Profesi --}}
+            <div class="tab-pane fade" id="profesi" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-12 col-lg-8">
+                        <div class="card zakat-card">
+                            <div class="card-body">
+                                <div class="zakat-section-label mb-1">
+                                    <span class="zakat-section-icon"><i class="ti tabler-briefcase"></i></span>
+                                    {{ __('zakat.calculate_zakat_profesi') }}
+                                </div>
+                                <p class="text-muted mb-4" style="font-size:.875rem;padding-left:2.75rem;">
+                                    {{ __('zakat.profesi_description') }}</p>
+                                <form id="zakatProfesiForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ __('zakat.period') }}</label>
+                                        <div class="d-flex gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="profesiPeriod"
+                                                    id="profesiMonthly" value="monthly" checked>
+                                                <label class="form-check-label"
+                                                    for="profesiMonthly">{{ __('zakat.monthly') }}</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="profesiPeriod"
+                                                    id="profesiAnnual" value="annual">
+                                                <label class="form-check-label"
+                                                    for="profesiAnnual">{{ __('zakat.annual') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">{{ __('zakat.income') }}</label>
+                                        <input type="number" class="form-control" id="income" min="0"
+                                            step="100000" value="0" placeholder="{{ __('zakat.enter_amount') }}">
+                                    </div>
+                                    <button type="button" class="btn-calculate" onclick="calculateZakatProfesi()">
+                                        <i class="ti tabler-calculator"></i>
+                                        {{ __('zakat.calculate') }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card result-card">
+                            <div class="card-body">
+                                <div class="result-header">
+                                    <i class="ti tabler-chart-bar"></i>
+                                    {{ __('zakat.calculation_result') }}
+                                </div>
+                                <div id="profesiResult">
+                                    <p class="text-muted mb-0" style="font-size:.875rem;">
+                                        {{ __('zakat.enter_details_calculate') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Configuration Card --}}
+        <div class="card config-card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="ti tabler-settings me-2"></i>
+                    {{ __('zakat.current_configuration') }}
+                </h6>
+                <p class="text-muted small mb-0 mt-1">{{ __('zakat.configuration_info') }}</p>
+            </div>
+            <div class="card-body pt-3">
+                <div class="row g-3">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="config-item">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="ti tabler-coin text-warning me-2"></i>
+                                    <small class="text-muted">{{ __('zakat.gold_price') }}</small>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-link p-0 edit-config" data-field="gold"
+                                    title="Edit">
+                                    <i class="ti tabler-edit"></i>
+                                </button>
+                            </div>
+                            <div class="config-display" id="goldPriceDisplay">
+                                <h6 class="mb-0" id="displayGoldPrice"></h6>
+                            </div>
+                            <div class="config-edit d-none" id="goldPriceEdit">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" id="goldPriceSymbol">Rp</span>
+                                    <input type="number" class="form-control" id="editGoldPrice" min="0"
+                                        step="1000">
+                                </div>
+                            </div>
+                            <small class="text-muted">{{ __('zakat.per_gram') }}</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="config-item">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="ti tabler-coin text-secondary me-2"></i>
+                                    <small class="text-muted">{{ __('zakat.silver_price') }}</small>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-link p-0 edit-config" data-field="silver"
+                                    title="Edit">
+                                    <i class="ti tabler-edit"></i>
+                                </button>
+                            </div>
+                            <div class="config-display" id="silverPriceDisplay">
+                                <h6 class="mb-0" id="displaySilverPrice"></h6>
+                            </div>
+                            <div class="config-edit d-none" id="silverPriceEdit">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" id="silverPriceSymbol">Rp</span>
+                                    <input type="number" class="form-control" id="editSilverPrice" min="0"
+                                        step="1000">
+                                </div>
+                            </div>
+                            <small class="text-muted">{{ __('zakat.per_gram') }}</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="config-item">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="ti tabler-scale text-warning me-2"></i>
+                                <small class="text-muted">{{ __('zakat.gold_nisab') }}</small>
+                            </div>
+                            <h6 class="mb-0">{{ number_format($goldNisab, 0, ',', '.') }}
+                                {{ __('zakat.grams') }}</h6>
+                            <small class="text-muted" id="displayGoldNisabValue"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="config-item">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="ti tabler-scale text-secondary me-2"></i>
+                                <small class="text-muted">{{ __('zakat.silver_nisab') }}</small>
+                            </div>
+                            <h6 class="mb-0">{{ number_format($silverNisab, 0, ',', '.') }}
+                                {{ __('zakat.grams') }}</h6>
+                            <small class="text-muted" id="displaySilverNisabValue"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="config-item">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="ti tabler-grain text-success me-2"></i>
+                                    <small class="text-muted">{{ __('zakat.rice_price') }}</small>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-link p-0 edit-config" data-field="rice"
+                                    title="Edit">
+                                    <i class="ti tabler-edit"></i>
+                                </button>
+                            </div>
+                            <div class="config-display" id="ricePriceDisplay">
+                                <h6 class="mb-0" id="displayRicePrice"></h6>
+                            </div>
+                            <div class="config-edit d-none" id="ricePriceEdit">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text" id="ricePriceSymbol">Rp</span>
+                                    <input type="number" class="form-control" id="editRicePrice" min="0"
+                                        step="1000">
+                                </div>
+                            </div>
+                            <small class="text-muted">{{ __('zakat.per_kg') }}</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="config-item">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="ti tabler-users me-2" style="color: #1a6b47;"></i>
+                                <small class="text-muted">{{ __('zakat.fitrah_per_person') }}</small>
+                            </div>
+                            <h6 class="mb-0">{{ number_format($fitrahAmount, 1) }} kg</h6>
+                            <small class="text-muted" id="displayFitrahValue"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="config-item">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="ti tabler-percentage me-2" style="color: #1a6b47;"></i>
+                                <small class="text-muted">{{ __('zakat.zakat_rate') }}</small>
+                            </div>
+                            <h6 class="mb-0">{{ number_format($zakatPercentage, 1) }}%</h6>
+                            <small class="text-muted">{{ __('zakat.standard_rate') }}</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="zakat-info-box mt-3">
+                    <i class="ti tabler-info-circle"></i>
+                    <span>{{ __('zakat.configuration_note') }}</span>
                 </div>
             </div>
         </div>
@@ -419,93 +407,166 @@
 
 @push('styles')
     <style>
-        .page-header {
-            margin-bottom: 1.5rem;
+        /* ── Hero ── */
+        .zakat-hero {
+            background: linear-gradient(135deg, #1a6b47 0%, #2d8f5f 60%, #c4a962 100%);
+            border-radius: 1.25rem;
+            padding: 1.75rem 2rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .page-header h3 {
-            color: #1a6b47;
-            font-weight: 600;
-            display: flex;
+        .zakat-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.10) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .zakat-hero>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .zakat-hero-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.18);
+            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            flex-shrink: 0;
         }
 
-        .page-header h3 i {
-            color: #1a6b47;
+        /* ── Pill Tabs ── */
+        .zakat-tabs {
+            background: var(--bs-body-bg, #fff);
+            border: 1px solid var(--bs-border-color, #e8e8e8);
+            border-radius: 14px;
+            padding: 0.4rem;
+            display: inline-flex;
         }
 
-        /* Custom tabs styling */
-        .nav-tabs-custom {
-            border-bottom: 2px solid #e8e8e8;
-            gap: 0.5rem;
+        .zakat-nav-pills {
+            display: flex;
+            gap: 0.25rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex-wrap: wrap;
         }
 
-        .nav-tabs-custom .nav-link {
+        .zakat-tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.55rem 1.1rem;
             border: none;
-            border-bottom: 3px solid transparent;
-            color: #6c757d;
-            padding: 0.75rem 1.25rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border-radius: 0;
-        }
-
-        .nav-tabs-custom .nav-link:hover {
-            color: #1a6b47;
-            border-bottom-color: rgba(26, 107, 71, 0.3);
-        }
-
-        .nav-tabs-custom .nav-link.active {
-            color: #1a6b47;
-            border-bottom-color: #1a6b47;
+            border-radius: 10px;
             background: transparent;
+            color: var(--bs-secondary-color, #6c757d);
+            font-weight: 500;
+            font-size: .875rem;
+            cursor: pointer;
+            transition: background 150ms ease, color 150ms ease;
         }
 
-        .nav-tabs-custom .nav-link i {
-            color: inherit;
+        .zakat-tab-btn:hover {
+            background: rgba(26, 107, 71, 0.07);
+            color: #1a6b47;
         }
 
-        /* Card styling */
+        .zakat-tab-btn.active {
+            background: #1a6b47;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(26, 107, 71, 0.30);
+        }
+
+        /* ── Cards ── */
         .zakat-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
         }
 
         .zakat-card .card-body {
             padding: 1.5rem;
         }
 
-        .section-title {
+        /* ── Section Label ── */
+        .zakat-section-label {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .section-title i {
-            color: #1a6b47;
-            font-size: 1.25rem;
-        }
-
-        .section-title h5,
-        .section-title h6 {
+            gap: 0.6rem;
             font-weight: 600;
-            margin: 0;
-            color: #1a1a1a;
+            font-size: 1rem;
+            color: var(--bs-body-color, #1a1a1a);
         }
 
-        /* Form styling */
-        .form-label {
-            color: #333;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+        .zakat-section-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(26, 107, 71, 0.12);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a6b47;
+            font-size: 1rem;
+            flex-shrink: 0;
         }
 
-        .form-control:focus {
+        /* ── Currency Pills ── */
+        .zakat-currency-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.45rem 1rem;
+            border: 1.5px solid var(--bs-border-color, #dee2e6);
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: .875rem;
+            transition: all 150ms ease;
+            color: var(--bs-body-color, #333);
+        }
+
+        .zakat-currency-pill:hover {
             border-color: #1a6b47;
-            box-shadow: 0 0 0 0.2rem rgba(26, 107, 71, 0.15);
+        }
+
+        .zakat-currency-pill.active {
+            border-color: #1a6b47;
+            background: rgba(26, 107, 71, 0.08);
+            color: #1a6b47;
+        }
+
+        /* ── Info Box ── */
+        .zakat-info-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(26, 107, 71, 0.08);
+            border: 1px solid rgba(26, 107, 71, 0.18);
+            border-radius: 10px;
+            padding: 0.65rem 1rem;
+            color: #1a6b47;
+            font-size: .85rem;
+        }
+
+        /* ── Form ── */
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #1a6b47;
+            box-shadow: 0 0 0 3px rgba(26, 107, 71, 0.14);
         }
 
         .form-check-input:checked {
@@ -513,17 +574,17 @@
             border-color: #1a6b47;
         }
 
-        /* Button styling */
+        /* ── Buttons ── */
         .btn-calculate {
             background: linear-gradient(135deg, #1a6b47, #2d8f5f);
             color: #fff;
             border: none;
-            border-radius: 8px;
-            padding: 10px 24px;
-            font-weight: 500;
+            border-radius: 10px;
+            padding: 0.65rem 1.5rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
             transition: all 0.2s ease;
         }
 
@@ -537,14 +598,14 @@
             background: linear-gradient(135deg, #1a6b47, #2d8f5f);
             color: #fff;
             border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            font-weight: 500;
+            border-radius: 10px;
+            padding: 0.7rem 1.25rem;
+            font-weight: 600;
             width: 100%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 0.5rem;
             transition: all 0.2s ease;
         }
 
@@ -554,70 +615,86 @@
             transform: translateY(-1px);
         }
 
-        /* Result card */
+        /* ── Result Card ── */
         .result-card {
             background: linear-gradient(135deg, rgba(26, 107, 71, 0.05), rgba(45, 143, 95, 0.08));
-            border: 1px solid rgba(26, 107, 71, 0.15);
-            border-radius: 12px;
+            border: 1px solid rgba(26, 107, 71, 0.15) !important;
+            border-radius: 16px;
+            position: sticky;
+            top: 80px;
         }
 
         .result-card .card-body {
             padding: 1.5rem;
         }
 
-        .result-card h6 {
+        .result-card .result-header {
+            font-weight: 700;
+            font-size: 1rem;
             color: #1a6b47;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
-        /* Alert styling */
+        .result-card .result-header i {
+            font-size: 1.1rem;
+        }
+
+        /* ── Alert variants ── */
         .alert-zakat-info {
-            background: rgba(26, 107, 71, 0.1);
-            border: 1px solid rgba(26, 107, 71, 0.2);
-            border-radius: 8px;
+            background: rgba(26, 107, 71, 0.08);
+            border: 1px solid rgba(26, 107, 71, 0.18);
+            border-radius: 10px;
             color: #1a6b47;
-        }
-
-        .alert-zakat-info i {
-            color: #1a6b47;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: .875rem;
         }
 
         .alert-zakat-success {
-            background: rgba(26, 107, 71, 0.15);
-            border: 1px solid rgba(26, 107, 71, 0.3);
-            border-radius: 8px;
+            background: rgba(26, 107, 71, 0.12);
+            border: 1px solid rgba(26, 107, 71, 0.25);
+            border-radius: 10px;
             color: #155a3c;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: .875rem;
         }
 
-        /* Config card styling */
+        /* ── Config Card ── */
         .config-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            overflow: hidden;
         }
 
         .config-card .card-header {
-            background: linear-gradient(135deg, rgba(26, 107, 71, 0.05), rgba(45, 143, 95, 0.08));
-            border-bottom: 1px solid rgba(26, 107, 71, 0.1);
-            border-radius: 12px 12px 0 0;
+            background: linear-gradient(135deg, rgba(26, 107, 71, 0.06), rgba(45, 143, 95, 0.10));
+            border-bottom: 1px solid rgba(26, 107, 71, 0.10);
             padding: 1rem 1.5rem;
         }
 
         .config-card .card-header h6 {
             color: #1a6b47;
-            font-weight: 600;
+            font-weight: 700;
+            margin: 0;
         }
 
         .config-item {
-            border: 1px solid #e8e8e8;
-            border-radius: 10px;
+            border: 1px solid var(--bs-border-color, #e8e8e8);
+            border-radius: 12px;
             padding: 1rem;
             height: 100%;
-            transition: all 0.2s ease;
+            transition: border-color 150ms ease, background 150ms ease;
         }
 
         .config-item:hover {
-            border-color: rgba(26, 107, 71, 0.3);
+            border-color: rgba(26, 107, 71, 0.30);
             background: rgba(26, 107, 71, 0.02);
         }
 
@@ -634,74 +711,118 @@
             color: #155a3c;
         }
 
-        /* Currency selection */
-        .currency-option {
-            display: flex;
-            align-items: center;
-            padding: 10px 14px;
-            border: 2px solid #e8e8e8;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+        /* ── Dark Mode ── */
+        [data-bs-theme="dark"] .zakat-tabs {
+            background: var(--bs-body-bg);
+            border-color: var(--bs-border-color);
         }
 
-        .currency-option:hover {
-            border-color: #1a6b47;
+        [data-bs-theme="dark"] .zakat-tab-btn {
+            color: rgba(226, 232, 240, 0.55);
         }
 
-        .currency-option.selected {
-            border-color: #1a6b47;
-            background: rgba(26, 107, 71, 0.05);
+        [data-bs-theme="dark"] .zakat-tab-btn:hover {
+            background: rgba(16, 185, 129, 0.10);
+            color: #34d399;
         }
 
-        /* Responsive tabs for mobile */
-        @media (max-width: 767px) {
-            .nav-tabs-custom {
-                border-bottom: 1px solid #dee2e6;
-            }
-
-            .nav-tabs-custom .nav-item {
-                flex: 1;
-                min-width: auto;
-            }
-
-            .nav-tabs-custom .nav-link {
-                padding: 0.5rem 0.25rem;
-                font-size: 0.875rem;
-                text-align: center;
-                white-space: normal;
-                word-wrap: break-word;
-            }
-
-            .nav-tabs-custom .nav-link i {
-                display: block;
-                margin: 0 auto 0.25rem;
-                font-size: 1.25rem;
-            }
+        [data-bs-theme="dark"] .zakat-tab-btn.active {
+            background: #1a6b47;
+            color: #fff;
         }
 
-        @media (max-width: 576px) {
-            .nav-tabs-custom .nav-link {
-                padding: 0.5rem 0.15rem;
-                font-size: 0.75rem;
-            }
+        [data-bs-theme="dark"] .zakat-section-label {
+            color: #e2e8f0;
+        }
 
-            .nav-tabs-custom .nav-link i {
-                font-size: 1rem;
-            }
+        [data-bs-theme="dark"] .zakat-section-icon {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] .zakat-currency-pill {
+            color: #cbd5e1;
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        [data-bs-theme="dark"] .zakat-currency-pill:hover {
+            border-color: #10b981;
+        }
+
+        [data-bs-theme="dark"] .zakat-currency-pill.active {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.12);
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] .zakat-info-box {
+            background: rgba(16, 185, 129, 0.10);
+            border-color: rgba(16, 185, 129, 0.20);
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] .form-label {
+            color: #cbd5e1;
+        }
+
+        [data-bs-theme="dark"] .result-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.07), rgba(16, 185, 129, 0.12));
+            border-color: rgba(16, 185, 129, 0.20) !important;
+        }
+
+        [data-bs-theme="dark"] .result-card .result-header {
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] .alert-zakat-info {
+            background: rgba(16, 185, 129, 0.10);
+            border-color: rgba(16, 185, 129, 0.20);
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] .alert-zakat-success {
+            background: rgba(16, 185, 129, 0.14);
+            border-color: rgba(16, 185, 129, 0.28);
+            color: #6ee7b7;
+        }
+
+        [data-bs-theme="dark"] .config-card .card-header {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.12);
+        }
+
+        [data-bs-theme="dark"] .config-card .card-header h6 {
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] .config-item {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        [data-bs-theme="dark"] .config-item:hover {
+            border-color: rgba(16, 185, 129, 0.30);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        [data-bs-theme="dark"] .config-item h6 {
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] .edit-config {
+            color: #34d399;
         }
     </style>
 @endpush
 
 @push('scripts')
     <script>
-        // Zakat settings from backend
-        const GOLD_PRICE = {{ $goldPrice }};
-        const SILVER_PRICE = {{ $silverPrice }};
+        // Zakat settings from backend (let so they can be updated by user)
+        let GOLD_PRICE = {{ $goldPrice }};
+        let SILVER_PRICE = {{ $silverPrice }};
         const GOLD_NISAB = {{ $goldNisab }};
         const SILVER_NISAB = {{ $silverNisab }};
         const ZAKAT_PERCENTAGE = {{ $zakatPercentage }};
-        const RICE_PRICE = {{ $ricePrice }};
+        let RICE_PRICE = {{ $ricePrice }};
         const FITRAH_AMOUNT = {{ $fitrahAmount }};
 
         // Store calculated zakat amount for payment
@@ -819,13 +940,13 @@
                     const newValue = parseFloat(editInput.value) || 0;
                     const newValueIDR = newValue * selectedRate;
 
-                    // Update the constant
+                    // Update the mutable price variables
                     if (field === 'gold') {
-                        window.GOLD_PRICE = newValueIDR;
+                        GOLD_PRICE = newValueIDR;
                     } else if (field === 'silver') {
-                        window.SILVER_PRICE = newValueIDR;
+                        SILVER_PRICE = newValueIDR;
                     } else if (field === 'rice') {
-                        window.RICE_PRICE = newValueIDR;
+                        RICE_PRICE = newValueIDR;
                     }
 
                     // Update display
@@ -896,25 +1017,56 @@
 
         // Add event listeners for currency change
         document.addEventListener('DOMContentLoaded', function() {
-            // Add listeners to all currency radio buttons
-            document.querySelectorAll('input[name="currency"]').forEach(radio => {
-                radio.addEventListener('change', updateCurrency);
-            });
-
-            // Initialize exchange rate info
-            updateCurrency();
-
-            // Update currency symbols in edit inputs when currency changes
-            const updateSymbols = function() {
+            // Define updateSymbols first so it can be used in handlers below
+            function updateSymbols() {
                 document.getElementById('goldPriceSymbol').textContent = selectedSymbol;
                 document.getElementById('silverPriceSymbol').textContent = selectedSymbol;
                 document.getElementById('ricePriceSymbol').textContent = selectedSymbol;
-            };
+            }
+
+            // Currency pill: clicking the label checks the radio AND calls updateCurrency
+            document.querySelectorAll('.zakat-currency-pill').forEach(pill => {
+                pill.addEventListener('click', function() {
+                    document.querySelectorAll('.zakat-currency-pill').forEach(p => p.classList
+                        .remove('active'));
+                    this.classList.add('active');
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                        updateCurrency();
+                        updateSymbols();
+                    }
+                });
+            });
+
+            // Also handle direct radio change (keyboard / programmatic)
+            document.querySelectorAll('input[name="currency"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.querySelectorAll('.zakat-currency-pill').forEach(p => p.classList
+                        .remove('active'));
+                    const parentPill = this.closest('.zakat-currency-pill');
+                    if (parentPill) parentPill.classList.add('active');
+                    updateCurrency();
+                    updateSymbols();
+                });
+            });
+
+            // Initialize
+            updateCurrency();
             updateSymbols();
 
-            // Update symbols when currency changes
-            document.querySelectorAll('input[name="currency"]').forEach(radio => {
-                radio.addEventListener('change', updateSymbols);
+            // Sync zakat-tab-btn active state with Bootstrap tab events
+            document.querySelectorAll('.zakat-tab-btn').forEach(btn => {
+                btn.addEventListener('shown.bs.tab', function() {
+                    document.querySelectorAll('.zakat-tab-btn').forEach(b => b.classList.remove(
+                        'active'));
+                    this.classList.add('active');
+                });
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.zakat-tab-btn').forEach(b => b.classList.remove(
+                        'active'));
+                    this.classList.add('active');
+                });
             });
         });
 

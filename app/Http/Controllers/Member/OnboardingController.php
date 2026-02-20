@@ -10,7 +10,7 @@ class OnboardingController extends Controller
 {
   public function __construct()
   {
-    $this->middleware('member.auth');
+    $this->middleware('auth:member');
   }
 
   /**
@@ -122,7 +122,7 @@ class OnboardingController extends Controller
       return redirect()->route('dashboard');
     }
 
-    if (!$member->monthly_income) {
+    if (is_null($member->monthly_income)) {
       return redirect()->route('onboarding.step2');
     }
 
@@ -188,7 +188,7 @@ class OnboardingController extends Controller
       return redirect()->route('dashboard');
     }
 
-    if (!$member->monthly_expense) {
+    if (is_null($member->monthly_expense)) {
       return redirect()->route('onboarding.step3');
     }
 

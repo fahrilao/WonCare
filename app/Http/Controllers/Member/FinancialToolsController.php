@@ -95,18 +95,39 @@ class FinancialToolsController extends Controller
 
     public function storeExpense(Request $request)
     {
-        $validated = $request->validate([
-            'category' => 'required|in:rent,food,remittance,transport,entertainment,charity,other',
-            'amount' => 'required|numeric|min:0',
-            'expense_date' => 'required|date',
-            'description' => 'nullable|string|max:255',
-            'notes' => 'nullable|string',
-        ]);
-
         $member = Auth::guard('member')->user();
-        $validated['member_id'] = $member->id;
 
-        FinancialExpense::create($validated);
+        // Support both single-category (modal) and per-category (onboarding-style) submission
+        if ($request->has('category') && $request->has('amount')) {
+            // Single category mode (modal form)
+            $validated = $request->validate([
+                'category' => 'required|in:rent,food,remittance,transport,entertainment,charity,other',
+                'amount' => 'required|numeric|min:0',
+                'expense_date' => 'required|date',
+                'description' => 'nullable|string|max:255',
+                'notes' => 'nullable|string',
+            ]);
+            $validated['member_id'] = $member->id;
+            FinancialExpense::create($validated);
+        } else {
+            // Per-category mode (onboarding-style: fields named rent, food, etc.)
+            $categories = array_keys(FinancialExpense::getCategories());
+            $request->validate([
+                'expense_date' => 'nullable|date',
+            ]);
+            $expenseDate = $request->input('expense_date', date('Y-m-d'));
+            foreach ($categories as $cat) {
+                $amount = (float) $request->input($cat, 0);
+                if ($amount > 0) {
+                    FinancialExpense::create([
+                        'member_id' => $member->id,
+                        'category' => $cat,
+                        'amount' => $amount,
+                        'expense_date' => $expenseDate,
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('member.financial-tools.index')
             ->with('success', __('financial.expense_added'));
@@ -117,13 +138,20 @@ class FinancialToolsController extends Controller
         $validated = $request->validate([
             'target_year' => 'required|integer|min:2024',
             'target_amount' => 'required|numeric|min:0',
-            'current_amount' => 'nullable|numeric|min:0',
             'description' => 'nullable|string',
         ]);
 
         $member = Auth::guard('member')->user();
         $validated['member_id'] = $member->id;
-        $validated['current_amount'] = $validated['current_amount'] ?? 0;
+
+        // Auto-compute current_amount from actual net income for the target year
+        $yearlyIncome = FinancialIncome::forMember($member->id)
+            ->inYear($validated['target_year'])
+            ->sum('net_salary');
+        $yearlyExpenses = FinancialExpense::forMember($member->id)
+            ->inYear($validated['target_year'])
+            ->sum('amount');
+        $validated['current_amount'] = max(0, $yearlyIncome - $yearlyExpenses);
 
         SavingsTarget::updateOrCreate(
             ['member_id' => $member->id, 'target_year' => $validated['target_year']],
@@ -139,7 +167,7 @@ class FinancialToolsController extends Controller
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
             'estimated_cost' => 'required|numeric|min:0',
-            'priority' => 'required|integer|min:1|max:10',
+            'priority' => 'required|integer|min:1|max:3',
             'target_date' => 'nullable|date',
             'description' => 'nullable|string',
         ]);
@@ -151,6 +179,166 @@ class FinancialToolsController extends Controller
 
         return redirect()->route('member.financial-tools.index')
             ->with('success', __('financial.dream_asset_added'));
+    }
+
+    public function incomeDetail(Request $request)
+    {
+        $member = Auth::guard('member')->user();
+        $year = $request->input('year', date('Y'));
+        $month = $request->input('month', '');
+
+        $query = FinancialIncome::forMember($member->id)
+            ->whereYear('income_date', $year)
+            ->orderBy('income_date', 'desc');
+
+        if ($month) {
+            $query->whereMonth('income_date', $month);
+        }
+
+        $incomes = $query->get();
+
+        $totalGross = $incomes->sum('gross_salary');
+        $totalDeductions = $incomes->sum(
+            fn($i) =>
+            $i->kookmin_yeongeum + $i->twejigeum + $i->insurance + $i->tax + $i->other_deductions
+        );
+        $totalNet = $incomes->sum('net_salary');
+
+        $availableYears = FinancialIncome::forMember($member->id)
+            ->selectRaw('YEAR(income_date) as year')
+            ->groupBy('year')
+            ->orderByDesc('year')
+            ->pluck('year');
+
+        return view('member.financial-tools.income-detail', compact(
+            'incomes',
+            'totalGross',
+            'totalDeductions',
+            'totalNet',
+            'year',
+            'month',
+            'availableYears'
+        ));
+    }
+
+    public function expenseDetail(Request $request)
+    {
+        $member = Auth::guard('member')->user();
+        $year = $request->input('year', date('Y'));
+        $month = $request->input('month', '');
+        $category = $request->input('category', '');
+
+        $query = FinancialExpense::forMember($member->id)
+            ->whereYear('expense_date', $year)
+            ->orderBy('expense_date', 'desc');
+
+        if ($month) {
+            $query->whereMonth('expense_date', $month);
+        }
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        $expenses = $query->get();
+
+        $totalExpenses = $expenses->sum('amount');
+
+        $byCategory = FinancialExpense::forMember($member->id)
+            ->whereYear('expense_date', $year)
+            ->when($month, fn($q) => $q->whereMonth('expense_date', $month))
+            ->selectRaw('category, SUM(amount) as total, COUNT(*) as count')
+            ->groupBy('category')
+            ->orderByDesc('total')
+            ->get();
+
+        $availableYears = FinancialExpense::forMember($member->id)
+            ->selectRaw('YEAR(expense_date) as year')
+            ->groupBy('year')
+            ->orderByDesc('year')
+            ->pluck('year');
+
+        $categories = FinancialExpense::getCategories();
+
+        return view('member.financial-tools.expense-detail', compact(
+            'expenses',
+            'totalExpenses',
+            'byCategory',
+            'year',
+            'month',
+            'category',
+            'availableYears',
+            'categories'
+        ));
+    }
+
+    public function savingsDetail(Request $request)
+    {
+        $member = Auth::guard('member')->user();
+
+        $allTargets = SavingsTarget::forMember($member->id)
+            ->orderByDesc('target_year')
+            ->get();
+
+        $selectedYear = $request->input('year', date('Y'));
+
+        $monthlyData = collect(range(1, 12))->map(function ($m) use ($member, $selectedYear) {
+            $income  = FinancialIncome::forMember($member->id)->inMonth($selectedYear, $m)->sum('net_salary');
+            $expense = FinancialExpense::forMember($member->id)->inMonth($selectedYear, $m)->sum('amount');
+            return [
+                'month'   => $m,
+                'income'  => (float) $income,
+                'expense' => (float) $expense,
+                'savings' => max(0, (float) $income - (float) $expense),
+            ];
+        });
+
+        $yearlyIncome  = FinancialIncome::forMember($member->id)->whereYear('income_date', $selectedYear)->sum('net_salary');
+        $yearlyExpense = FinancialExpense::forMember($member->id)->whereYear('expense_date', $selectedYear)->sum('amount');
+        $yearlySavings = max(0, $yearlyIncome - $yearlyExpense);
+
+        $savingsTarget = SavingsTarget::forMember($member->id)->forYear($selectedYear)->first();
+
+        $availableYears = FinancialIncome::forMember($member->id)
+            ->selectRaw('YEAR(income_date) as year')
+            ->groupBy('year')
+            ->orderByDesc('year')
+            ->pluck('year');
+
+        if ($availableYears->isEmpty()) {
+            $availableYears = collect([date('Y')]);
+        }
+
+        return view('member.financial-tools.savings-detail', compact(
+            'allTargets',
+            'selectedYear',
+            'monthlyData',
+            'yearlyIncome',
+            'yearlyExpense',
+            'yearlySavings',
+            'savingsTarget',
+            'availableYears'
+        ));
+    }
+
+    public function monthlyChartData(Request $request)
+    {
+        $member = Auth::guard('member')->user();
+        $year = $request->input('year', date('Y'));
+
+        $months = collect(range(1, 12))->map(function ($m) use ($member, $year) {
+            $income = FinancialIncome::forMember($member->id)
+                ->inMonth($year, $m)->sum('net_salary');
+            $expense = FinancialExpense::forMember($member->id)
+                ->inMonth($year, $m)->sum('amount');
+            return [
+                'month' => $m,
+                'income' => (float) $income,
+                'expense' => (float) $expense,
+                'savings' => max(0, (float) $income - (float) $expense),
+            ];
+        });
+
+        return response()->json(['year' => $year, 'data' => $months]);
     }
 
     public function calculateZakatAuto()
@@ -219,10 +407,11 @@ class FinancialToolsController extends Controller
             ];
         }
 
-        $savingsRate = (($income - $expenses) / $income) * 100;
-        $expenseRate = ($expenses / $income) * 100;
+        $netSavings = $income - $expenses;
+        // Clamp rates: expenses can exceed income (negative savings)
+        $savingsRate = ($netSavings / $income) * 100;
+        $expenseRate = min(($expenses / $income) * 100, 100);
 
-        // 50/30/20 rule: 50% needs, 30% wants, 20% savings
         $recommendations = [];
 
         if ($savingsRate >= 20) {
@@ -257,7 +446,7 @@ class FinancialToolsController extends Controller
         $recommendations['summary'] = [
             'income' => $income,
             'expenses' => $expenses,
-            'savings' => $income - $expenses,
+            'savings' => $netSavings,
             'savings_rate' => round($savingsRate, 2),
             'expense_rate' => round($expenseRate, 2),
         ];
@@ -267,31 +456,31 @@ class FinancialToolsController extends Controller
 
     private function calculateZakat($memberId)
     {
-        $currentYear = date('Y');
+        // Accumulated net savings across all recorded years (approximates hawl wealth)
+        $totalIncome = FinancialIncome::forMember($memberId)->sum('net_salary');
+        $totalExpenses = FinancialExpense::forMember($memberId)->sum('amount');
+        $netWealth = max(0, $totalIncome - $totalExpenses);
 
-        // Get total income for the year
-        $totalIncome = FinancialIncome::forMember($memberId)
-            ->inYear($currentYear)
-            ->sum('net_salary');
-
-        // Get total expenses
-        $totalExpenses = FinancialExpense::forMember($memberId)
-            ->inYear($currentYear)
-            ->sum('amount');
-
-        // Net wealth
-        $netWealth = $totalIncome - $totalExpenses;
-
-        // Nisab threshold (approximately 85 grams of gold, ~IDR 85,000,000 or ~KRW 7,000,000)
-        // This should be configurable based on current gold prices
-        $nisabThreshold = 85000000; // IDR
+        // Nisab = 85g gold. ZakatSetting uses key-value pairs.
+        $nisabThreshold = 85000000; // IDR fallback (~85g gold)
+        try {
+            $goldPriceSetting = \App\Models\ZakatSetting::where('key', 'gold_price_per_gram')
+                ->where('is_active', true)->first();
+            $goldNisabSetting = \App\Models\ZakatSetting::where('key', 'gold_nisab_grams')
+                ->where('is_active', true)->first();
+            if ($goldPriceSetting && $goldNisabSetting && $goldPriceSetting->value > 0) {
+                $nisabThreshold = $goldNisabSetting->value * $goldPriceSetting->value;
+            }
+        } catch (\Exception $e) {
+            // ZakatSetting not available, use fallback
+        }
 
         $zakatAmount = 0;
         $isEligible = false;
 
         if ($netWealth >= $nisabThreshold) {
             $isEligible = true;
-            $zakatAmount = $netWealth * 0.025; // 2.5% of net wealth
+            $zakatAmount = $netWealth * 0.025; // 2.5% zakat mal rate
         }
 
         return [

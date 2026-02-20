@@ -41,13 +41,13 @@
                                     <div class="card-body">
                                         <h6 class="card-title">{{ __('events.fields.date_range') }}</h6>
                                         <p class="mb-2"><i
-                                                class="ti ti-calendar me-2"></i>{{ $event->formatted_date_range }}
+                                                class="ti tabler-calendar me-2"></i>{{ $event->formatted_date_range }}
                                         </p>
 
                                         @if ($event->type === 'offline')
                                             <h6 class="card-title mt-3">{{ __('events.fields.location') }}</h6>
                                             <p class="mb-2"><i
-                                                    class="ti ti-map-pin me-2"></i>{{ $event->location ?? '-' }}
+                                                    class="ti tabler-map-pin me-2"></i>{{ $event->location ?? '-' }}
                                             </p>
                                         @else
                                             <h6 class="card-title mt-3">{{ __('events.fields.meeting_link') }}</h6>
@@ -55,7 +55,7 @@
                                                 @if ($event->meeting_link)
                                                     <a href="{{ $event->meeting_link }}" target="_blank"
                                                         class="btn btn-sm btn-primary">
-                                                        <i class="ti ti-video me-1"></i>{{ __('events.types.online') }}
+                                                        <i class="ti tabler-video me-1"></i>{{ __('events.types.online') }}
                                                     </a>
                                                 @else
                                                     -
@@ -98,7 +98,7 @@
                         <h5>{{ __('events.rsvp_title') }} ({{ $event->rsvps->count() }})</h5>
                         @if ($event->send_reminder && $event->confirmedRsvps()->where('reminder_sent', false)->count() > 0)
                             <button type="button" class="btn btn-primary btn-sm" id="sendRemindersBtn">
-                                <i class="ti ti-bell me-1"></i>{{ __('events.reminders.send_all') }}
+                                <i class="ti tabler-bell me-1"></i>{{ __('events.reminders.send_all') }}
                                 ({{ $event->confirmedRsvps()->where('reminder_sent', false)->count() }})
                             </button>
                         @endif
@@ -137,7 +137,7 @@
                                                             class="btn btn-sm btn-success mark-attended-btn"
                                                             data-rsvp-id="{{ $rsvp->id }}">
                                                             <i
-                                                                class="ti ti-check"></i>{{ __('events.rsvp.mark_attended') }}
+                                                                class="ti tabler-check"></i>{{ __('events.rsvp.mark_attended') }}
                                                         </button>
                                                     @endif
                                                 </td>
@@ -158,7 +158,7 @@
                         <h5>{{ __('events.documentation.title') }} ({{ $event->documentation->count() }})</h5>
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#uploadDocModal">
-                            <i class="ti ti-upload me-1"></i>{{ __('events.documentation.upload') }}
+                            <i class="ti tabler-upload me-1"></i>{{ __('events.documentation.upload') }}
                         </button>
                     </div>
                     <div class="card-body">
@@ -173,14 +173,14 @@
                                             @else
                                                 <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
                                                     style="height: 200px;">
-                                                    <i class="ti ti-video" style="font-size: 48px;"></i>
+                                                    <i class="ti tabler-video" style="font-size: 48px;"></i>
                                                 </div>
                                             @endif
                                             <div class="card-body">
                                                 <p class="card-text small">{{ $doc->title ?? $doc->type }}</p>
                                                 <button type="button" class="btn btn-sm btn-danger delete-doc-btn"
                                                     data-doc-id="{{ $doc->id }}">
-                                                    <i class="ti ti-trash"></i>
+                                                    <i class="ti tabler-trash"></i>
                                                 </button>
                                             </div>
                                         </div>

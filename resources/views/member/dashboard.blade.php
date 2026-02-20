@@ -41,6 +41,46 @@
             align-items: center;
             justify-content: center;
         }
+
+        .dash-search-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 999px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+        }
+
+        .dash-search-box .input-group-text {
+            background: transparent;
+            border: 0;
+            color: #6c757d;
+        }
+
+        .dash-search-box .form-control {
+            background: transparent;
+            border: 0;
+            color: #212529;
+        }
+
+        .dash-search-box .form-control::placeholder {
+            color: rgba(33, 37, 41, 0.45);
+        }
+
+        /* Dark mode overrides */
+        [data-bs-theme="dark"] .dash-search-box {
+            background: rgba(255, 255, 255, 0.10);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        [data-bs-theme="dark"] .dash-search-box .input-group-text {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        [data-bs-theme="dark"] .dash-search-box .form-control {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        [data-bs-theme="dark"] .dash-search-box .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
     </style>
 @endpush
 
@@ -56,12 +96,11 @@
                 </div>
 
                 <div class="col-lg-7 col-xl-6 p-0">
-                    <div class="input-group input-group-merge bg-white rounded-pill shadow-sm">
-                        <span class="input-group-text bg-transparent border-0">
+                    <div class="input-group input-group-merge dash-search-box">
+                        <span class="input-group-text">
                             <i class="icon-base ti tabler-search"></i>
                         </span>
-                        <input type="text" class="form-control border-0"
-                            placeholder="{{ __('members.dashboard_search') }}" />
+                        <input type="text" class="form-control" placeholder="{{ __('members.dashboard_search') }}" />
                     </div>
                 </div>
             </div>

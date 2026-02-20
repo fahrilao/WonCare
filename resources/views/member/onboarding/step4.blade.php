@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-sm btn-outline-primary" id="add-dream-asset">
-                            <i class="ti ti-plus"></i> {{ __('onboarding.add_dream_asset') }}
+                            <i class="ti tabler-plus"></i> {{ __('onboarding.add_dream_asset') }}
                         </button>
                     </div>
 

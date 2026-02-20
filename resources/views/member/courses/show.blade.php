@@ -214,6 +214,52 @@
             font-size: 0.8rem;
             color: #999;
         }
+
+        /* ── Dark Mode ── */
+        [data-bs-theme="dark"] .course-stats-row {
+            color: rgba(226, 232, 240, 0.50);
+        }
+
+        [data-bs-theme="dark"] .course-progress-bar {
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        [data-bs-theme="dark"] .module-header {
+            border-bottom-color: rgba(255, 255, 255, 0.07);
+        }
+
+        [data-bs-theme="dark"] .module-title {
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .module-meta {
+            color: rgba(226, 232, 240, 0.45);
+        }
+
+        [data-bs-theme="dark"] .module-toggle {
+            color: rgba(226, 232, 240, 0.45);
+        }
+
+        [data-bs-theme="dark"] .lesson-item {
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-bs-theme="dark"] .lesson-status.pending {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(226, 232, 240, 0.35);
+        }
+
+        [data-bs-theme="dark"] .lesson-title {
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .lesson-duration {
+            color: rgba(226, 232, 240, 0.40);
+        }
+
+        [data-bs-theme="dark"] .course-progress-label {
+            color: rgba(226, 232, 240, 0.55);
+        }
     </style>
 @endpush
 

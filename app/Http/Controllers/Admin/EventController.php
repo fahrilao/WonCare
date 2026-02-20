@@ -43,16 +43,16 @@ class EventController extends Controller
                     return '
                         <div class="d-flex gap-2 justify-content-center">
                             <a href="' . $showUrl . '" class="btn btn-sm btn-info" title="' . __('common.view') . '">
-                                <i class="ti ti-eye"></i>
+                                <i class="ti tabler-eye"></i>
                             </a>
                             <a href="' . $editUrl . '" class="btn btn-sm btn-warning" title="' . __('common.edit') . '">
-                                <i class="ti ti-edit"></i>
+                                <i class="ti tabler-edit"></i>
                             </a>
                             <button type="button" class="btn btn-sm btn-danger delete-btn" 
                                 data-url="' . $deleteUrl . '" 
                                 data-title="' . __('events.delete_title') . '" 
                                 title="' . __('common.delete') . '">
-                                <i class="ti ti-trash"></i>
+                                <i class="ti tabler-trash"></i>
                             </button>
                         </div>
                     ';

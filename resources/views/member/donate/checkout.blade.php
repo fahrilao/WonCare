@@ -172,6 +172,46 @@
         .gateway-info i {
             color: #1a6b47;
         }
+
+        /* ── Dark Mode ── */
+        [data-bs-theme="dark"] .section-title h2 {
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .form-label {
+            color: #cbd5e1;
+        }
+
+        [data-bs-theme="dark"] .currency-option {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        [data-bs-theme="dark"] .currency-option:hover {
+            border-color: #10b981;
+        }
+
+        [data-bs-theme="dark"] .currency-option.selected {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        [data-bs-theme="dark"] .campaign-progress-bar {
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        [data-bs-theme="dark"] .sidebar-stat-label {
+            color: rgba(226, 232, 240, 0.50);
+        }
+
+        [data-bs-theme="dark"] .gateway-info {
+            background: rgba(16, 185, 129, 0.10);
+            border-color: rgba(16, 185, 129, 0.20);
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] .gateway-info i {
+            color: #34d399;
+        }
     </style>
 @endpush
 

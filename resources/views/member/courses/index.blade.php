@@ -25,14 +25,14 @@
         }
 
         .course-filter-btn {
-            background: #fff;
-            border: 1px solid #dee2e6;
+            background: var(--bs-body-bg, #fff);
+            border: 1px solid var(--bs-border-color, #dee2e6);
             border-radius: 0.5rem;
             padding: 0.5rem 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: #495057;
+            color: var(--bs-body-color, #495057);
             font-size: 0.9rem;
         }
 
@@ -76,7 +76,7 @@
         .course-progress-bar {
             flex: 1;
             height: 10px;
-            background: #e9ecef;
+            background: var(--bs-secondary-bg, #e9ecef);
             border-radius: 5px;
             overflow: hidden;
         }
@@ -108,7 +108,7 @@
         }
 
         .badge-status.available {
-            background: #fff;
+            background: transparent;
             border: 1px solid #1e8e74;
             color: #1e8e74;
         }
@@ -119,13 +119,17 @@
         }
 
         .badge-status.locked {
-            background: #fff;
+            background: transparent;
             border: 1px solid #ffc107;
             color: #856404;
         }
 
+        [data-bs-theme="dark"] .badge-status.locked {
+            color: #ffc107;
+        }
+
         .btn-join-course {
-            background: #fff;
+            background: transparent;
             border: 1px solid #1e8e74;
             color: #1e8e74;
             padding: 0.35rem 0.75rem;
@@ -139,6 +143,43 @@
         .btn-join-course:hover {
             background: #1e8e74;
             color: #fff;
+        }
+
+        .course-search-box {
+            background: var(--bs-body-bg, #fff);
+            border: 1px solid var(--bs-border-color, #dee2e6);
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .course-search-box .input-group-text {
+            color: var(--bs-secondary-color, #6c757d);
+        }
+
+        .course-search-box .form-control {
+            color: var(--bs-body-color, #212529);
+        }
+
+        .course-search-box .form-control::placeholder {
+            color: var(--bs-secondary-color, #6c757d);
+        }
+
+        /* Dark mode */
+        [data-bs-theme="dark"] .course-search-box {
+            background: var(--bs-body-bg);
+            border-color: var(--bs-border-color);
+        }
+
+        [data-bs-theme="dark"] .course-progress-label {
+            color: rgba(226, 232, 240, 0.55);
+        }
+
+        [data-bs-theme="dark"] .course-stats {
+            color: rgba(226, 232, 240, 0.50);
+        }
+
+        [data-bs-theme="dark"] .course-progress-percent {
+            color: #34d399;
         }
     </style>
 @endpush
@@ -157,7 +198,7 @@
 
                 <div class="d-flex gap-3 mb-4">
                     <div class="grow">
-                        <div class="input-group input-group-merge bg-white shadow-sm">
+                        <div class="input-group input-group-merge course-search-box">
                             <span class="input-group-text bg-transparent border-0">
                                 <i class="icon-base ti tabler-search"></i>
                             </span>

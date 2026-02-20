@@ -32,6 +32,13 @@
          <span>{{ __('financial.title') }}</span>
      </a>
  </li>
+ <li class="nav-item {{ request()->routeIs('member.community.*') ? 'active' : '' }}">
+     <a href="{{ route('member.community.index') }}"
+         class="nav-link {{ request()->routeIs('member.community.*') ? 'active' : '' }}">
+         <i class="icon-base ti tabler-users me-2"></i>
+         <span>{{ __('community.title') }}</span>
+     </a>
+ </li>
  <li class="nav-item {{ request()->routeIs('member.donate.history') ? 'active' : '' }}">
      <a href="{{ route('member.donate.history') }}"
          class="nav-link {{ request()->routeIs('member.donate.history') ? 'active' : '' }}">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClassController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\Member\DonateController;
 use App\Http\Controllers\Member\PaymentCallbackController;
 use App\Http\Controllers\Member\OnboardingController;
 use App\Http\Controllers\Member\FinancialToolsController;
+use App\Http\Controllers\Member\CommunityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,8 +45,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', function () {
-  return redirect()->route('auth.login');
+// Public Landing Pages
+Route::group(['as' => 'landing.'], function () {
+  Route::get('/', [LandingController::class, 'home'])->name('home');
+  Route::get('/tentang', [LandingController::class, 'about'])->name('about');
+  Route::get('/blog', [LandingController::class, 'blog'])->name('blog');
+  Route::get('/blog/{id}', [LandingController::class, 'blogDetail'])->name('blog.detail');
+  Route::get('/event', [LandingController::class, 'events'])->name('events');
+  Route::get('/kontak', [LandingController::class, 'contact'])->name('contact');
 });
 
 Route::get('language/{locale}', LanguageController::class)->name('language.change');
@@ -211,6 +219,22 @@ Route::group(['middleware' => ['auth:member', 'member.verified']], function () {
     Route::post('/dream-asset', [FinancialToolsController::class, 'storeDreamAsset'])->name('store-dream-asset');
     Route::get('/calculate-zakat', [FinancialToolsController::class, 'calculateZakatAuto'])->name('calculate-zakat');
     Route::get('/download-report', [FinancialToolsController::class, 'downloadReport'])->name('download-report');
+    Route::get('/income', [FinancialToolsController::class, 'incomeDetail'])->name('income-detail');
+    Route::get('/expenses', [FinancialToolsController::class, 'expenseDetail'])->name('expense-detail');
+    Route::get('/savings', [FinancialToolsController::class, 'savingsDetail'])->name('savings-detail');
+    Route::get('/monthly-chart', [FinancialToolsController::class, 'monthlyChartData'])->name('monthly-chart');
+  });
+
+  // Community routes
+  Route::prefix('community')->name('member.community.')->group(function () {
+    Route::get('/', [CommunityController::class, 'index'])->name('index');
+    Route::get('/posts', [CommunityController::class, 'getPosts'])->name('posts');
+    Route::get('/whatsapp-groups', [CommunityController::class, 'whatsappGroups'])->name('whatsapp-groups');
+    Route::get('/volunteer/register', [CommunityController::class, 'volunteerRegister'])->name('volunteer-register');
+    Route::post('/volunteer/register', [CommunityController::class, 'storeVolunteerRegistration'])->name('volunteer-register.store');
+    Route::get('/volunteer/events', [CommunityController::class, 'volunteerEvents'])->name('volunteer-events');
+    Route::get('/mentors', [CommunityController::class, 'mentors'])->name('mentors');
+    Route::get('/{post}', [CommunityController::class, 'show'])->name('show');
   });
 
   Route::get('logout', [MemberLoginController::class, 'logout'])->name('logout');

@@ -29,6 +29,12 @@ class DatabaseSeeder extends Seeder
             MemberSeeder::class,
             PaymentGatewaySeeder::class,
             DonationDemoSeeder::class,
+            ZakatSettingSeeder::class,
+            CurrencySettingSeeder::class,
+            CommunityPostSeeder::class,
+            CommunityWhatsappGroupSeeder::class,
+            VolunteerEventSeeder::class,
+            MentorProfileSeeder::class,
         ]);
     }
 }

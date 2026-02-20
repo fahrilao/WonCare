@@ -285,6 +285,47 @@
         .back-link:hover {
             color: #155a3c;
         }
+
+        /* ── Dark Mode ── */
+        [data-bs-theme="dark"] .campaign-stats-row {
+            color: rgba(226, 232, 240, 0.50);
+        }
+
+        [data-bs-theme="dark"] .campaign-progress-bar {
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        [data-bs-theme="dark"] .campaign-progress-label {
+            color: rgba(226, 232, 240, 0.55);
+        }
+
+        [data-bs-theme="dark"] .donation-item {
+            border-bottom-color: rgba(255, 255, 255, 0.06);
+        }
+
+        [data-bs-theme="dark"] .donation-name {
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .donation-note {
+            color: rgba(226, 232, 240, 0.50);
+        }
+
+        [data-bs-theme="dark"] .donation-time {
+            color: rgba(226, 232, 240, 0.35);
+        }
+
+        [data-bs-theme="dark"] .sidebar-stat {
+            border-bottom-color: rgba(255, 255, 255, 0.06);
+        }
+
+        [data-bs-theme="dark"] .sidebar-stat-label {
+            color: rgba(226, 232, 240, 0.50);
+        }
+
+        [data-bs-theme="dark"] .sidebar-stat-value {
+            color: #e2e8f0;
+        }
     </style>
 @endpush
 

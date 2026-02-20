@@ -1,4 +1,5 @@
 @extends('layouts.member')
+@section('body_class', 'member-modern')
 
 @section('content')
     <div class="container-fluid">

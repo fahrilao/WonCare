@@ -56,8 +56,8 @@ class EventDocumentation extends Model
     public function getTypeBadgeAttribute()
     {
         $badges = [
-            'photo' => '<span class="badge bg-primary"><i class="ti ti-photo"></i> Photo</span>',
-            'video' => '<span class="badge bg-info"><i class="ti ti-video"></i> Video</span>',
+            'photo' => '<span class="badge bg-primary"><i class="ti tabler-photo"></i> Photo</span>',
+            'video' => '<span class="badge bg-info"><i class="ti tabler-video"></i> Video</span>',
         ];
         return $badges[$this->type] ?? '<span class="badge bg-secondary">Unknown</span>';
     }

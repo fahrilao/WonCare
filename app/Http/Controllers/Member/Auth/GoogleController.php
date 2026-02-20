@@ -38,7 +38,7 @@ class GoogleController extends Controller
             if ($member) {
                 // Existing Google user - login
                 if (!$member->is_active) {
-                    return redirect()->route('login')
+                    return redirect()->route('auth.login')
                         ->with('error', __('members.account_deactivated'));
                 }
 

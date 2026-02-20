@@ -19,5 +19,6 @@ class MentorProfile extends Model
   protected $casts = [
     'is_active' => 'boolean',
     'sort_order' => 'integer',
+    'expertise' => 'array',
   ];
 }

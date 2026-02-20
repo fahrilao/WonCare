@@ -14,7 +14,7 @@
                         </h5>
                         <div class="pe-5">
                             <a href="{{ route('admin.events.create') }}" class="btn btn-primary">
-                                <i class="ti ti-plus me-1"></i>{{ __('common.create') }}
+                                <i class="ti tabler-plus me-1"></i>{{ __('common.create') }}
                             </a>
                         </div>
                     </div>

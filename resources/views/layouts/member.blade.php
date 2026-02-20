@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
         rel="stylesheet" />
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" />
@@ -237,72 +237,330 @@
             }
         }
 
+        /* ── Mobile Navbar Collapse ── */
+        @media (max-width: 1199.98px) {
+            #layout-navbar {
+                position: relative;
+            }
+
+            #navbar-collapse {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 1030;
+                background: #fff;
+                border-top: 1px solid rgba(15, 23, 42, 0.07);
+                border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+                box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10);
+                padding: 0.75rem 1.25rem;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+            }
+
+            #navbar-collapse .navbar-nav:first-child {
+                flex-direction: column !important;
+                width: 100%;
+                gap: 0.25rem;
+                margin-bottom: 0.5rem;
+            }
+
+            #navbar-collapse .navbar-nav:first-child .nav-link {
+                width: 100%;
+                padding: 0.6rem 0.75rem !important;
+                border-radius: 10px;
+            }
+
+            #navbar-collapse .navbar-nav.ms-md-auto {
+                flex-direction: row !important;
+                width: 100%;
+                justify-content: flex-start;
+                gap: 0.25rem;
+                padding-top: 0.5rem;
+                border-top: 1px solid rgba(15, 23, 42, 0.06);
+            }
+
+            [data-bs-theme="dark"] #navbar-collapse {
+                background: #172118;
+                border-color: rgba(255, 255, 255, 0.07);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.30);
+            }
+
+            [data-bs-theme="dark"] #navbar-collapse .navbar-nav.ms-md-auto {
+                border-top-color: rgba(255, 255, 255, 0.07);
+            }
+        }
+
+        /* ── Onboarding Dark Mode ── */
+        [data-bs-theme="dark"] body.member-onboarding {
+            background: #0f1a17;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .content-wrapper {
+            background: transparent;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-card {
+            background: #1a2820;
+            border-color: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-step {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-title {
+            color: #f1f5f9;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-subtitle {
+            color: rgba(241, 245, 249, 0.55);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-progress span {
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-progress span.is-done {
+            background: rgba(16, 185, 129, 0.40);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-progress span.is-active {
+            background: #10b981;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-tile {
+            border-color: rgba(255, 255, 255, 0.07);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-tile.tile-primary {
+            background: rgba(16, 185, 129, 0.12);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-tile.tile-success {
+            background: rgba(20, 184, 166, 0.12);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-tile.tile-info {
+            background: rgba(56, 189, 248, 0.10);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-tile.tile-warning {
+            background: rgba(251, 191, 36, 0.10);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-tile h5 {
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-tile .text-muted {
+            color: rgba(226, 232, 240, 0.50) !important;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-tile .tile-icon {
+            background: rgba(16, 185, 129, 0.18);
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-actions .btn.btn-label-secondary {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.10);
+            color: #cbd5e1;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .onboarding-actions .btn.btn-label-secondary:hover {
+            background: rgba(255, 255, 255, 0.11);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .form-control,
+        [data-bs-theme="dark"] body.member-onboarding .form-select {
+            background: #1e3028;
+            border-color: rgba(255, 255, 255, 0.10);
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .form-control::placeholder {
+            color: rgba(226, 232, 240, 0.35);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .form-control:focus,
+        [data-bs-theme="dark"] body.member-onboarding .form-select:focus {
+            background: #1e3028;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .form-label {
+            color: #cbd5e1;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .form-text {
+            color: rgba(203, 213, 225, 0.55) !important;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .input-group-text {
+            background: #1e3028;
+            border-color: rgba(255, 255, 255, 0.10);
+            color: #94a3b8;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .alert-info {
+            background: rgba(56, 189, 248, 0.10);
+            border-color: rgba(56, 189, 248, 0.20);
+            color: #7dd3fc;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .card {
+            background: #1a2820;
+            border-color: rgba(255, 255, 255, 0.07);
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding .text-heading {
+            color: #f1f5f9 !important;
+        }
+
+        [data-bs-theme="dark"] body.member-onboarding small.text-muted,
+        [data-bs-theme="dark"] body.member-onboarding .text-muted {
+            color: rgba(226, 232, 240, 0.50) !important;
+        }
+
+        /* =============================================
+           MEMBER MODERN — Design System
+           Font: Inter + Plus Jakarta Sans
+        ============================================= */
+        body.member-modern,
+        body.member-modern * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body.member-modern h1,
+        body.member-modern h2,
+        body.member-modern h3,
+        body.member-modern h4,
+        body.member-modern h5,
+        body.member-modern h6,
+        body.member-modern .fw-bold,
+        body.member-modern .fw-semibold {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
         body.member-modern {
-            background: #f7faf9;
+            background: #f0f4f3;
         }
 
         body.member-modern .content-wrapper {
             background: transparent;
         }
 
+        /* Page animation */
         body.member-modern .page-animate {
-            animation: memberFadeUp 520ms cubic-bezier(.2, .8, .2, 1) both;
+            animation: memberFadeUp 480ms cubic-bezier(.16, 1, .3, 1) both;
         }
 
+        /* Cards */
         body.member-modern .card {
-            border: 1px solid rgba(15, 23, 42, 0.06);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid rgba(15, 23, 42, 0.07);
+            border-radius: 20px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.05);
+            transition: box-shadow 200ms ease, transform 200ms ease;
         }
 
+        body.member-modern .card:hover {
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        /* Buttons */
         body.member-modern .btn {
             border-radius: 12px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
         }
 
-        body.member-modern .btn.btn-success,
-        body.member-modern .btn.btn-primary {
-            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.18);
+        body.member-modern .btn.btn-success {
+            background: #10b981;
+            border-color: #10b981;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.30);
+        }
+
+        body.member-modern .btn.btn-success:hover {
+            background: #059669;
+            border-color: #059669;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.38);
         }
 
         body.member-modern .badge {
             border-radius: 999px;
-        }
-
-        body.member-modern #layout-navbar {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-        }
-
-        body.member-modern #layout-navbar .navbar-nav .nav-link {
-            color: rgba(15, 23, 42, 0.72);
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
-            padding: .55rem .85rem;
-            border-radius: 999px;
-            display: inline-flex;
-            align-items: center;
-            gap: .35rem;
+            letter-spacing: 0;
         }
 
-        body.member-modern #layout-navbar .navbar-nav .nav-link:hover {
-            background: rgba(15, 23, 42, 0.06);
-            color: rgba(15, 23, 42, 0.86);
+        /* Navbar */
+        body.member-modern #layout-navbar {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: saturate(180%) blur(16px);
+            -webkit-backdrop-filter: saturate(180%) blur(16px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.07);
         }
 
-        body.member-modern #layout-navbar .navbar-nav .nav-link.active {
-            background: rgba(16, 185, 129, 0.12);
+        body.member-modern #layout-navbar .app-brand-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.15rem;
+            letter-spacing: -0.03em;
             color: #0f766e;
         }
 
+        body.member-modern #layout-navbar .navbar-nav .nav-link {
+            color: rgba(15, 23, 42, 0.65);
+            font-weight: 500;
+            font-size: .875rem;
+            padding: .5rem .85rem;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            transition: background 150ms ease, color 150ms ease;
+        }
+
+        body.member-modern #layout-navbar .navbar-nav .nav-link:hover {
+            background: rgba(15, 23, 42, 0.05);
+            color: rgba(15, 23, 42, 0.9);
+        }
+
+        body.member-modern #layout-navbar .navbar-nav .nav-link.active {
+            background: rgba(16, 185, 129, 0.10);
+            color: #065f46;
+            font-weight: 600;
+        }
+
         body.member-modern #layout-navbar .navbar-nav .nav-link .icon-base {
-            font-size: 1.05rem;
+            font-size: 1rem;
+        }
+
+        /* Form controls */
+        body.member-modern .form-control,
+        body.member-modern .form-select {
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: .875rem;
+            border-color: rgba(15, 23, 42, 0.12);
+        }
+
+        body.member-modern .form-control:focus,
+        body.member-modern .form-select:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
 
         @keyframes memberFadeUp {
             from {
                 opacity: 0;
-                transform: translate3d(0, 12px, 0);
+                transform: translate3d(0, 16px, 0);
             }
 
             to {
@@ -315,6 +573,95 @@
             body.member-modern .page-animate {
                 animation: none !important;
             }
+        }
+
+        /* ── Member Modern Dark Mode ── */
+        [data-bs-theme="dark"] body.member-modern {
+            background: #0d1512;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .content-wrapper {
+            background: transparent;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .card {
+            background: #172118;
+            border-color: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-bs-theme="dark"] body.member-modern .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 16px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        [data-bs-theme="dark"] body.member-modern #layout-navbar {
+            background: rgba(15, 26, 20, 0.90);
+            border-bottom-color: rgba(255, 255, 255, 0.07);
+        }
+
+        [data-bs-theme="dark"] body.member-modern #layout-navbar .navbar-nav .nav-link {
+            color: rgba(226, 232, 240, 0.60);
+        }
+
+        [data-bs-theme="dark"] body.member-modern #layout-navbar .navbar-nav .nav-link:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(226, 232, 240, 0.90);
+        }
+
+        [data-bs-theme="dark"] body.member-modern #layout-navbar .navbar-nav .nav-link.active {
+            background: rgba(16, 185, 129, 0.14);
+            color: #34d399;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .form-control,
+        [data-bs-theme="dark"] body.member-modern .form-select {
+            background: #1a2820;
+            border-color: rgba(255, 255, 255, 0.10);
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .form-control::placeholder {
+            color: rgba(226, 232, 240, 0.30);
+        }
+
+        [data-bs-theme="dark"] body.member-modern .form-control:focus,
+        [data-bs-theme="dark"] body.member-modern .form-select:focus {
+            background: #1a2820;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .text-heading {
+            color: #f1f5f9 !important;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .text-muted {
+            color: rgba(226, 232, 240, 0.45) !important;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .input-group-text {
+            background: #1a2820;
+            border-color: rgba(255, 255, 255, 0.10);
+            color: #94a3b8;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .dropdown-menu {
+            background: #1e2f24;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        [data-bs-theme="dark"] body.member-modern .dropdown-item {
+            color: #cbd5e1;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #f1f5f9;
+        }
+
+        [data-bs-theme="dark"] body.member-modern .dropdown-divider {
+            border-color: rgba(255, 255, 255, 0.08);
         }
     </style>
 </head>
@@ -334,20 +681,24 @@
                             </span>
                         </a>
 
-                        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
+                        <a href="javascript:void(0);"
+                            class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
                             <i
                                 class="icon-base ti tabler-x icon-sm d-flex align-items-center justify-content-center"></i>
                         </a>
                     </div>
 
-                    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0  d-xl-none  ">
-                        <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
+                    <div class="navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                        <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)" data-bs-toggle="collapse"
+                            data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false"
+                            aria-label="Toggle navigation">
                             <i class="icon-base ti tabler-menu-2 icon-md"></i>
                         </a>
                     </div>
 
-                    <div class="navbar-nav-right d-flex align-items-center w-100" id="navbar-collapse">
-                        <ul class="navbar-nav me-auto align-items-xl-center d-none d-xl-flex">
+                    <div class="collapse navbar-collapse navbar-nav-right d-xl-flex align-items-center w-100"
+                        id="navbar-collapse">
+                        <ul class="navbar-nav me-auto align-items-xl-center">
                             @include('layouts.navigations.member')
                         </ul>
 
@@ -357,8 +708,8 @@
 
                         <ul class="navbar-nav flex-row align-items-center ms-md-auto">
                             <li class="nav-item dropdown me-2 me-xl-0">
-                                <a class="nav-link dropdown-toggle hide-arrow" id="nav-theme" href="javascript:void(0);"
-                                    data-bs-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow" id="nav-theme"
+                                    href="javascript:void(0);" data-bs-toggle="dropdown">
                                     <i class="icon-base ti tabler-sun icon-md theme-icon-active"></i>
                                     <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
                                 </a>

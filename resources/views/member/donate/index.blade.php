@@ -254,6 +254,74 @@
                 font-size: 0.9rem;
             }
         }
+
+        /* ── Dark Mode ── */
+        [data-bs-theme="dark"] .section-title h2 {
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .campaign-card {
+            background: var(--bs-body-bg);
+            border-color: var(--bs-border-color);
+        }
+
+        [data-bs-theme="dark"] .campaign-card h3 {
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .campaign-card .description {
+            color: rgba(226, 232, 240, 0.55);
+        }
+
+        [data-bs-theme="dark"] .campaign-stats .collected {
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .campaign-progress {
+            background: rgba(255, 255, 255, 0.10);
+        }
+
+        [data-bs-theme="dark"] .campaign-meta {
+            color: rgba(226, 232, 240, 0.45);
+        }
+
+        [data-bs-theme="dark"] .campaign-tag.education {
+            background: rgba(21, 101, 192, 0.18);
+            color: #90caf9;
+        }
+
+        [data-bs-theme="dark"] .campaign-tag.food {
+            background: rgba(239, 108, 0, 0.15);
+            color: #ffcc80;
+        }
+
+        [data-bs-theme="dark"] .campaign-tag.health {
+            background: rgba(46, 125, 50, 0.18);
+            color: #a5d6a7;
+        }
+
+        [data-bs-theme="dark"] .campaign-tag.emergency {
+            background: rgba(198, 40, 40, 0.15);
+            color: #ef9a9a;
+        }
+
+        [data-bs-theme="dark"] .campaign-tag.orphanage {
+            background: rgba(123, 31, 162, 0.15);
+            color: #ce93d8;
+        }
+
+        [data-bs-theme="dark"] .filter-tab {
+            background: var(--bs-body-bg);
+            border-color: var(--bs-border-color);
+            color: rgba(226, 232, 240, 0.65);
+        }
+
+        [data-bs-theme="dark"] .filter-tab:hover,
+        [data-bs-theme="dark"] .filter-tab.active {
+            background: #1a6b47;
+            border-color: #1a6b47;
+            color: #fff;
+        }
     </style>
 @endpush
 

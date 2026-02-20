@@ -17,6 +17,7 @@ return new class extends Migration {
       $table->decimal('amount', 15, 2);
       $table->string('status')->default('pending'); // pending, paid, failed, cancelled
       $table->text('note')->nullable();
+      $table->string('snap_redirect_url')->nullable();
       $table->timestamps();
 
       $table->index(['member_id', 'donation_campaign_id']);
